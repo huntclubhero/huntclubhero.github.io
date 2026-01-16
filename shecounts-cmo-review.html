@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SheCounts GTM Strategy — CMO Review</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        .slide {
+            min-height: 100vh;
+            padding: 60px 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-bottom: 1px solid #222;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide-number {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            font-size: 14px;
+            color: #666;
+            font-weight: 300;
+        }
+
+        /* Slide 1 - Title */
+        .slide-title {
+            background: linear-gradient(135deg, #1a0a2e 0%, #16213e 50%, #0f3460 100%);
+            text-align: center;
+        }
+
+        .slide-title h1 {
+            font-size: 72px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #e94560, #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .slide-title .subtitle {
+            font-size: 28px;
+            color: #888;
+            font-weight: 300;
+            margin-bottom: 40px;
+        }
+
+        .slide-title .tagline {
+            font-size: 42px;
+            font-weight: 600;
+            color: #fff;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.3;
+        }
+
+        .cmo-badge {
+            display: inline-block;
+            background: linear-gradient(90deg, #e94560, #ff6b6b);
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 50px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Slide 2 - Gut Reaction */
+        .slide-gut {
+            background: #0d0d0d;
+        }
+
+        .slide-gut h2 {
+            font-size: 24px;
+            color: #e94560;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 40px;
+        }
+
+        .gut-quote {
+            font-size: 56px;
+            font-weight: 700;
+            line-height: 1.2;
+            max-width: 900px;
+            margin-bottom: 50px;
+        }
+
+        .gut-quote span {
+            color: #e94560;
+        }
+
+        .gut-subtext {
+            font-size: 24px;
+            color: #888;
+            max-width: 700px;
+            line-height: 1.6;
+        }
+
+        /* Slide 3 - The Gem */
+        .slide-gem {
+            background: linear-gradient(180deg, #0a0a0a 0%, #1a0a2e 100%);
+        }
+
+        .slide-gem h2 {
+            font-size: 24px;
+            color: #ffd700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 50px;
+        }
+
+        .gem-box {
+            background: rgba(255, 215, 0, 0.1);
+            border-left: 4px solid #ffd700;
+            padding: 40px;
+            margin-bottom: 40px;
+            max-width: 900px;
+        }
+
+        .gem-box blockquote {
+            font-size: 32px;
+            font-style: italic;
+            color: #ffd700;
+            line-height: 1.4;
+        }
+
+        .gem-commentary {
+            font-size: 22px;
+            color: #ccc;
+            margin-top: 30px;
+        }
+
+        .gem-keep {
+            background: rgba(0, 255, 100, 0.1);
+            border: 1px solid rgba(0, 255, 100, 0.3);
+            padding: 25px 35px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-top: 40px;
+        }
+
+        .gem-keep .label {
+            color: #00ff64;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .gem-keep .content {
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        /* Elevation Slides */
+        .slide-elevation {
+            background: #0a0a0a;
+        }
+
+        .elevation-number {
+            font-size: 120px;
+            font-weight: 800;
+            color: rgba(233, 69, 96, 0.2);
+            position: absolute;
+            top: 40px;
+            left: 60px;
+        }
+
+        .elevation-content {
+            padding-left: 80px;
+        }
+
+        .elevation-content h2 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 40px;
+            color: #fff;
+        }
+
+        .elevation-content h2 span {
+            color: #e94560;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin: 40px 0;
+            max-width: 1000px;
+        }
+
+        .comparison-box {
+            padding: 30px;
+            border-radius: 10px;
+        }
+
+        .comparison-box.before {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #333;
+        }
+
+        .comparison-box.after {
+            background: rgba(233, 69, 96, 0.1);
+            border: 1px solid #e94560;
+        }
+
+        .comparison-box .label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            color: #666;
+        }
+
+        .comparison-box.after .label {
+            color: #e94560;
+        }
+
+        .comparison-box p {
+            font-size: 20px;
+            line-height: 1.5;
+        }
+
+        .insight {
+            font-size: 22px;
+            color: #888;
+            margin-top: 30px;
+            padding-left: 20px;
+            border-left: 3px solid #444;
+        }
+
+        /* Slide - Grant Wall */
+        .slide-grant {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+        }
+
+        .grant-visual {
+            background: rgba(255, 215, 0, 0.05);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 15px;
+            padding: 40px;
+            max-width: 700px;
+            margin: 40px 0;
+        }
+
+        .grant-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .grant-header h3 {
+            font-size: 28px;
+            color: #ffd700;
+        }
+
+        .grant-number {
+            font-size: 64px;
+            font-weight: 800;
+            color: #ffd700;
+            margin-bottom: 10px;
+        }
+
+        .grant-subtext {
+            color: #888;
+            font-size: 18px;
+        }
+
+        .grant-bars {
+            margin-top: 30px;
+        }
+
+        .grant-bar {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .grant-bar-label {
+            width: 80px;
+            font-size: 14px;
+            color: #888;
+        }
+
+        .grant-bar-fill {
+            height: 24px;
+            background: linear-gradient(90deg, #ffd700, #ffaa00);
+            border-radius: 4px;
+        }
+
+        .grant-bar-value {
+            font-size: 14px;
+            color: #ffd700;
+        }
+
+        /* Founder Story Slide */
+        .slide-founder {
+            background: #0d0d0d;
+        }
+
+        .founder-quote {
+            font-size: 42px;
+            font-style: italic;
+            line-height: 1.4;
+            max-width: 900px;
+            color: #fff;
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .founder-quote::before {
+            content: '"';
+            position: absolute;
+            left: -20px;
+            top: -20px;
+            font-size: 120px;
+            color: #e94560;
+            opacity: 0.3;
+            font-family: Georgia, serif;
+        }
+
+        .founder-note {
+            font-size: 22px;
+            color: #e94560;
+            margin-top: 50px;
+        }
+
+        /* Bench Campaign Slide */
+        .slide-bench {
+            background: linear-gradient(180deg, #1a0a0a 0%, #0a0a0a 100%);
+        }
+
+        .headline-box {
+            background: rgba(233, 69, 96, 0.1);
+            border: 2px solid #e94560;
+            padding: 30px 50px;
+            display: inline-block;
+            margin: 30px 0;
+        }
+
+        .headline-box h3 {
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .bench-insight {
+            font-size: 28px;
+            color: #fff;
+            max-width: 800px;
+            margin-top: 40px;
+        }
+
+        .bench-insight span {
+            color: #e94560;
+            font-weight: 600;
+        }
+
+        /* Moments Slide */
+        .slide-moments {
+            background: #0a0a0a;
+        }
+
+        .moments-grid {
+            display: grid;
+            gap: 30px;
+            max-width: 900px;
+            margin-top: 40px;
+        }
+
+        .moment-card {
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+        }
+
+        .moment-week {
+            background: rgba(233, 69, 96, 0.2);
+            color: #e94560;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .moment-text {
+            font-size: 22px;
+            line-height: 1.5;
+            color: #ccc;
+        }
+
+        .moment-text em {
+            color: #fff;
+            font-style: normal;
+            font-weight: 600;
+        }
+
+        /* Fear Test Slide */
+        .slide-fear {
+            background: linear-gradient(135deg, #2a0a0a 0%, #0a0a0a 100%);
+            text-align: center;
+        }
+
+        .fear-question {
+            font-size: 48px;
+            font-weight: 300;
+            margin-bottom: 40px;
+        }
+
+        .fear-answer {
+            font-size: 72px;
+            font-weight: 800;
+            color: #e94560;
+            margin-bottom: 50px;
+        }
+
+        .fear-list {
+            text-align: left;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .fear-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            margin-bottom: 15px;
+            background: rgba(233, 69, 96, 0.1);
+            border-radius: 8px;
+        }
+
+        .fear-item .icon {
+            font-size: 24px;
+        }
+
+        .fear-item p {
+            font-size: 20px;
+        }
+
+        /* Protect Slide */
+        .slide-protect {
+            background: #0a0a0a;
+        }
+
+        .protect-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            max-width: 900px;
+            margin-top: 40px;
+        }
+
+        .protect-item {
+            background: rgba(0, 255, 100, 0.05);
+            border: 1px solid rgba(0, 255, 100, 0.2);
+            padding: 25px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .protect-check {
+            color: #00ff64;
+            font-size: 24px;
+        }
+
+        .protect-item p {
+            font-size: 18px;
+        }
+
+        /* Bottom Line Slide */
+        .slide-bottom {
+            background: linear-gradient(135deg, #1a0a2e 0%, #0a0a0a 100%);
+            text-align: center;
+        }
+
+        .bottom-stat {
+            font-size: 140px;
+            font-weight: 800;
+            background: linear-gradient(90deg, #e94560, #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+        }
+
+        .bottom-label {
+            font-size: 28px;
+            color: #888;
+            margin-bottom: 60px;
+        }
+
+        .bottom-gap {
+            font-size: 36px;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+
+        .bottom-gap span {
+            color: #e94560;
+        }
+
+        /* Final Slide */
+        .slide-final {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a2e 50%, #2a0a1e 100%);
+            text-align: center;
+        }
+
+        .final-quote {
+            font-size: 56px;
+            font-weight: 700;
+            line-height: 1.3;
+            max-width: 900px;
+            margin: 0 auto 50px;
+        }
+
+        .final-quote span {
+            color: #e94560;
+        }
+
+        .final-subtext {
+            font-size: 24px;
+            color: #888;
+        }
+
+        /* Navigation */
+        .nav-hint {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            color: #444;
+            font-size: 12px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .slide {
+                padding: 40px 30px;
+            }
+
+            .slide-title h1 {
+                font-size: 42px;
+            }
+
+            .slide-title .tagline {
+                font-size: 28px;
+            }
+
+            .gut-quote {
+                font-size: 32px;
+            }
+
+            .elevation-content h2 {
+                font-size: 32px;
+            }
+
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            .protect-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .bottom-stat {
+                font-size: 80px;
+            }
+
+            .final-quote {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Slide 1: Title -->
+<section class="slide slide-title">
+    <span class="slide-number">01</span>
+    <h1>SheCounts</h1>
+    <p class="subtitle">GTM Strategy Review</p>
+    <p class="tagline">Solid. Smart. Competent.<br>And that's the problem.</p>
+    <span class="cmo-badge">CMO Creative Review</span>
+</section>
+
+<!-- Slide 2: Gut Reaction -->
+<section class="slide slide-gut">
+    <span class="slide-number">02</span>
+    <h2>Gut Reaction</h2>
+    <p class="gut-quote">This strategy will work. But nobody will <span>talk about it.</span></p>
+    <p class="gut-subtext">Nobody will say "you have to see what my accountant did." It's good consulting disguised as marketing. The tactics are right. The soul is missing.</p>
+</section>
+
+<!-- Slide 3: The Gem -->
+<section class="slide slide-gem">
+    <span class="slide-number">03</span>
+    <h2>The Gem</h2>
+    <div class="gem-box">
+        <blockquote>"You are not competing with software. You are not competing with big firms. You are competing with neglect."</blockquote>
+    </div>
+    <p class="gem-commentary">That's the truth. That's the emotion. But it's buried on slide 10 when it should be on slide 1.</p>
+    <div class="gem-keep">
+        <p class="label">Keep This</p>
+        <p class="content">"Your CFO. Without the salary."</p>
+    </div>
+</section>
+
+<!-- Slide 4: Elevation 1 - Enemy -->
+<section class="slide slide-elevation">
+    <span class="slide-number">04</span>
+    <span class="elevation-number">01</span>
+    <div class="elevation-content">
+        <h2>The enemy needs <span>a face.</span></h2>
+        <div class="comparison">
+            <div class="comparison-box before">
+                <p class="label">Current</p>
+                <p>"Most Canadian SMBs have an accountant who only calls when something's wrong."</p>
+            </div>
+            <div class="comparison-box after">
+                <p class="label">Elevated</p>
+                <p>"You know that sinking feeling when you see 'CRA' in your inbox? That's what happens when your accountant treats you like a line item."</p>
+            </div>
+        </div>
+        <p class="insight">"Neglect" is abstract. Give the enemy a scene, not a bullet point.</p>
+    </div>
+</section>
+
+<!-- Slide 5: Elevation 2 - Women Founders -->
+<section class="slide slide-elevation">
+    <span class="slide-number">05</span>
+    <span class="elevation-number">02</span>
+    <div class="elevation-content">
+        <h2>Stop hedging the <span>women founder</span> angle.</h2>
+        <div class="comparison">
+            <div class="comparison-box before">
+                <p class="label">Fear talking</p>
+                <p>"Built for women founders. Open to all."</p>
+            </div>
+            <div class="comparison-box after">
+                <p class="label">Conviction</p>
+                <p>"Built by a woman founder. For women founders. Because we're tired of being talked down to by guys in grey suits."</p>
+            </div>
+        </div>
+        <p class="insight">Polarize. The right clients lean in harder. The wrong ones self-select out. That's the point.</p>
+    </div>
+</section>
+
+<!-- Slide 6: Elevation 3 - Grant Wall -->
+<section class="slide slide-elevation slide-grant">
+    <span class="slide-number">06</span>
+    <span class="elevation-number">03</span>
+    <div class="elevation-content">
+        <h2>Grant Hunter needs <span>a signature move.</span></h2>
+        <p style="font-size: 22px; color: #888; margin-bottom: 30px;">Right now it's a feature. Make it a story.</p>
+        <div class="grant-visual">
+            <div class="grant-header">
+                <h3>The Grant Wall</h3>
+            </div>
+            <p class="grant-number">$847,000</p>
+            <p class="grant-subtext">in grants found for clients last year</p>
+            <div class="grant-bars">
+                <div class="grant-bar">
+                    <span class="grant-bar-label">SR&ED</span>
+                    <div class="grant-bar-fill" style="width: 280px;"></div>
+                    <span class="grant-bar-value">$312K</span>
+                </div>
+                <div class="grant-bar">
+                    <span class="grant-bar-label">IRAP</span>
+                    <div class="grant-bar-fill" style="width: 200px;"></div>
+                    <span class="grant-bar-value">$245K</span>
+                </div>
+                <div class="grant-bar">
+                    <span class="grant-bar-label">CDAP</span>
+                    <div class="grant-bar-fill" style="width: 140px;"></div>
+                    <span class="grant-bar-value">$180K</span>
+                </div>
+                <div class="grant-bar">
+                    <span class="grant-bar-label">Regional</span>
+                    <div class="grant-bar-fill" style="width: 90px;"></div>
+                    <span class="grant-bar-value">$110K</span>
+                </div>
+            </div>
+        </div>
+        <p class="insight">A live scoreboard. Updated publicly. That's talkable. That's "I can't believe my accountant does that."</p>
+    </div>
+</section>
+
+<!-- Slide 7: Elevation 4 - Founder Story -->
+<section class="slide slide-elevation slide-founder">
+    <span class="slide-number">07</span>
+    <span class="elevation-number">04</span>
+    <div class="elevation-content">
+        <h2>Where's the <span>founder story?</span></h2>
+        <p style="font-size: 22px; color: #888; margin: 30px 0;">20 years of experience is credibility. But why SheCounts? Why now? Why HER?</p>
+        <p class="founder-quote">After 20 years of watching women founders get patronized by big firms and abandoned by software, I started SheCounts.</p>
+        <p class="founder-note">Now it's a movement, not a service.</p>
+    </div>
+</section>
+
+<!-- Slide 8: Elevation 5 - Bench Campaign -->
+<section class="slide slide-elevation slide-bench">
+    <span class="slide-number">08</span>
+    <span class="elevation-number">05</span>
+    <div class="elevation-content">
+        <h2>Push <span>Bench Rescue</span> further.</h2>
+        <p style="font-size: 22px; color: #888; margin-bottom: 20px;">"Your Accountant Disappeared. We're Here." is solid. But don't just rescue—own the story.</p>
+        <div class="headline-box">
+            <h3>Bench Left 10,000 Canadian Businesses Without Books. Here's What We're Seeing.</h3>
+        </div>
+        <p class="bench-insight">Now you're not running ads. You're <span>breaking news.</span> That's the difference between marketing and movement.</p>
+    </div>
+</section>
+
+<!-- Slide 9: Elevation 6 - Moments -->
+<section class="slide slide-elevation slide-moments">
+    <span class="slide-number">09</span>
+    <span class="elevation-number">06</span>
+    <div class="elevation-content">
+        <h2>Lead with <span>moments,</span> not tactics.</h2>
+        <p style="font-size: 22px; color: #888; margin-bottom: 10px;">The 90-day calendar is "set up CRM, create one-pager..." Necessary but not inspiring.</p>
+        <div class="moments-grid">
+            <div class="moment-card">
+                <span class="moment-week">WEEK 4</span>
+                <p class="moment-text">The first Bench refugee sends a thank-you email. <em>Screenshot it. That's your proof.</em></p>
+            </div>
+            <div class="moment-card">
+                <span class="moment-week">WEEK 9</span>
+                <p class="moment-text">You walk into a room of 40 women founders and tell them <em>the cash flow truth no one else will.</em></p>
+            </div>
+            <div class="moment-card">
+                <span class="moment-week">WEEK 12</span>
+                <p class="moment-text">You turn someone away because you're full. <em>That's when you know it's working.</em></p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Slide 10: The Fear Test -->
+<section class="slide slide-fear">
+    <span class="slide-number">10</span>
+    <p class="fear-question">Does this strategy make me nervous?</p>
+    <p class="fear-answer">No.</p>
+    <p style="font-size: 24px; color: #888; margin-bottom: 40px;">It's sensible. It's safe. That's why it'll be invisible.</p>
+    <div class="fear-list">
+        <div class="fear-item">
+            <span class="icon">1</span>
+            <p>Own "women founders" without apology</p>
+        </div>
+        <div class="fear-item">
+            <span class="icon">2</span>
+            <p>Publish a Grant Wall with real numbers</p>
+        </div>
+        <div class="fear-item">
+            <span class="icon">3</span>
+            <p>Become the voice of the Bench collapse</p>
+        </div>
+    </div>
+</section>
+
+<!-- Slide 11: What to Protect -->
+<section class="slide slide-protect">
+    <span class="slide-number">11</span>
+    <h2 style="font-size: 48px; margin-bottom: 20px;">What to <span style="color: #00ff64;">Protect</span></h2>
+    <p style="font-size: 22px; color: #888; margin-bottom: 20px;">These elements work. Don't touch them.</p>
+    <div class="protect-grid">
+        <div class="protect-item">
+            <span class="protect-check">&#10003;</span>
+            <p>"Your CFO. Without the salary."</p>
+        </div>
+        <div class="protect-item">
+            <span class="protect-check">&#10003;</span>
+            <p>Bench Rescue campaign angle</p>
+        </div>
+        <div class="protect-item">
+            <span class="protect-check">&#10003;</span>
+            <p>Service tier structure</p>
+        </div>
+        <div class="protect-item">
+            <span class="protect-check">&#10003;</span>
+            <p>90-day calendar framework</p>
+        </div>
+    </div>
+</section>
+
+<!-- Slide 12: Bottom Line -->
+<section class="slide slide-bottom">
+    <span class="slide-number">12</span>
+    <p class="bottom-stat">75%</p>
+    <p class="bottom-label">there</p>
+    <p class="bottom-gap">The gap isn't competence.<br>It's <span>conviction.</span></p>
+    <p style="font-size: 20px; color: #666; margin-top: 40px;">The strategy is sound. The tactics are executable.<br>But it's missing the soul—the thing that makes someone say "that's MY accountant."</p>
+</section>
+
+<!-- Slide 13: Final -->
+<section class="slide slide-final">
+    <span class="slide-number">13</span>
+    <p class="final-quote">The version that <span>scares you</span> is the version that <span>works.</span></p>
+    <p class="final-subtext">CMO Review Complete</p>
+</section>
+
+<p class="nav-hint">Scroll to navigate</p>
+
+</body>
+</html>
