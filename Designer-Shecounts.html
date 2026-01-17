@@ -1,0 +1,1629 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SheCounts | Your CFO. Without the salary.</title>
+    <meta name="description" content="Proactive accounting and fractional CFO services for Canadian women founders. We find grants you didn't know existed and call before there's a crisis.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --gold: #b8860b;
+            --gold-light: #d4a843;
+            --sage: #2d5a4a;
+            --sage-light: #3d7a6a;
+            --cream: #faf8f5;
+            --cream-dark: #f5f2ed;
+            --charcoal: #1a1a1a;
+            --text: #2c2c2c;
+            --text-light: #666666;
+            --text-lighter: #999999;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--cream);
+            color: var(--text);
+            line-height: 1.55;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-weight: 400;
+            line-height: 1.15;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ==================== NAVIGATION ==================== */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 20px 0;
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            background: rgba(250, 248, 245, 0.95);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 1px 0 rgba(0,0,0,0.05);
+            padding: 14px 0;
+        }
+
+        nav .nav-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-family: 'Instrument Serif', serif;
+            font-size: 26px;
+            color: var(--sage);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .nav-links a {
+            font-size: 14px;
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--sage);
+        }
+
+        .nav-cta {
+            background: var(--charcoal);
+            color: white !important;
+            padding: 12px 24px;
+            border-radius: 100px;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            color: white !important;
+        }
+
+        /* ==================== HERO ==================== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 140px 0 100px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 80%;
+            height: 150%;
+            background: radial-gradient(ellipse at center, rgba(184, 134, 11, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .hero-text {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(45, 90, 74, 0.08);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--sage);
+            margin-bottom: 28px;
+        }
+
+        .hero-tag::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--sage);
+            border-radius: 50%;
+        }
+
+        .hero h1 {
+            font-size: clamp(48px, 5.5vw, 72px);
+            margin-bottom: 24px;
+            letter-spacing: -1px;
+        }
+
+        .hero h1 em {
+            font-style: italic;
+            color: var(--gold);
+        }
+
+        .hero-subtitle {
+            font-size: 18px;
+            color: var(--text-light);
+            max-width: 480px;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .hero-ctas {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--charcoal);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 100px;
+            font-weight: 600;
+            font-size: 15px;
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        }
+
+        .btn-primary svg {
+            transition: transform 0.2s;
+        }
+
+        .btn-primary:hover svg {
+            transform: translateX(3px);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text);
+            padding: 16px 24px;
+            font-weight: 600;
+            font-size: 15px;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .btn-secondary:hover {
+            color: var(--sage);
+        }
+
+        .hero-visual {
+            position: relative;
+        }
+
+        .hero-card {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 24px 80px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.03);
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-card-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+        }
+
+        .hero-card-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 22px;
+        }
+
+        .hero-card-title {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--text);
+        }
+
+        .hero-card-subtitle {
+            font-size: 13px;
+            color: var(--text-lighter);
+            margin-top: 2px;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .hero-stat {
+            text-align: center;
+            padding: 20px;
+            background: var(--cream);
+            border-radius: 16px;
+        }
+
+        .hero-stat-value {
+            font-family: 'Instrument Serif', serif;
+            font-size: 36px;
+            color: var(--sage);
+            margin-bottom: 4px;
+        }
+
+        .hero-stat-label {
+            font-size: 12px;
+            color: var(--text-lighter);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+
+        .hero-float-card {
+            position: absolute;
+            background: white;
+            border-radius: 16px;
+            padding: 20px 24px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+            z-index: 3;
+        }
+
+        .hero-float-card.grants {
+            bottom: -30px;
+            left: -40px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .float-icon {
+            width: 44px;
+            height: 44px;
+            background: rgba(45, 90, 74, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .float-value {
+            font-family: 'Instrument Serif', serif;
+            font-size: 24px;
+            color: var(--sage);
+        }
+
+        .float-label {
+            font-size: 12px;
+            color: var(--text-lighter);
+        }
+
+        /* ==================== PROBLEM SECTION ==================== */
+        .problem {
+            padding: 120px 0;
+            background: white;
+        }
+
+        .problem-inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 100px;
+            align-items: center;
+        }
+
+        .problem-content h2 {
+            font-size: clamp(36px, 4vw, 48px);
+            margin-bottom: 28px;
+        }
+
+        .problem-content h2 span {
+            color: var(--gold);
+        }
+
+        .problem-description {
+            font-size: 17px;
+            color: var(--text-light);
+            margin-bottom: 36px;
+            line-height: 1.65;
+        }
+
+        .inbox-demo {
+            background: var(--cream);
+            border-radius: 16px;
+            padding: 32px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        }
+
+        .inbox-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+        }
+
+        .inbox-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .inbox-dot.red { background: #ff5f57; }
+        .inbox-dot.yellow { background: #ffbd2e; }
+        .inbox-dot.green { background: #28ca42; }
+
+        .inbox-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.04);
+        }
+
+        .inbox-item.urgent {
+            background: rgba(220, 38, 38, 0.06);
+            margin: 0 -20px;
+            padding: 14px 20px;
+            border-radius: 8px;
+        }
+
+        .inbox-sender {
+            font-weight: 600;
+            font-size: 13px;
+            min-width: 80px;
+            color: var(--text);
+        }
+
+        .inbox-sender.cra {
+            color: #dc2626;
+        }
+
+        .inbox-subject {
+            font-size: 13px;
+            color: var(--text-light);
+        }
+
+        .problem-visual {
+            position: relative;
+        }
+
+        .problem-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .problem-card {
+            background: var(--cream);
+            border-radius: 16px;
+            padding: 28px;
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .problem-card:hover {
+            transform: translateX(8px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.06);
+        }
+
+        .problem-card-icon {
+            width: 44px;
+            height: 44px;
+            background: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .problem-card h4 {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 6px;
+        }
+
+        .problem-card p {
+            font-size: 14px;
+            color: var(--text-light);
+            line-height: 1.5;
+        }
+
+        /* ==================== SOLUTION SECTION ==================== */
+        .solution {
+            padding: 120px 0;
+            background: var(--charcoal);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .solution::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at top right, rgba(184, 134, 11, 0.15) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .solution-header {
+            text-align: center;
+            margin-bottom: 80px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .solution-header h2 {
+            font-size: clamp(36px, 4.5vw, 56px);
+            margin-bottom: 20px;
+        }
+
+        .solution-header h2 em {
+            font-style: italic;
+            color: var(--gold-light);
+        }
+
+        .solution-header p {
+            font-size: 18px;
+            color: rgba(255,255,255,0.6);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .solution-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .solution-card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 36px 28px;
+            transition: all 0.3s ease;
+        }
+
+        .solution-card:hover {
+            background: rgba(255,255,255,0.08);
+            transform: translateY(-4px);
+        }
+
+        .solution-card-icon {
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 100%);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 24px;
+        }
+
+        .solution-card h4 {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 600;
+            font-size: 17px;
+            margin-bottom: 12px;
+        }
+
+        .solution-card p {
+            font-size: 14px;
+            color: rgba(255,255,255,0.55);
+            line-height: 1.55;
+        }
+
+        /* ==================== GRANT WALL ==================== */
+        .grants {
+            padding: 120px 0;
+            background: linear-gradient(180deg, var(--cream) 0%, white 100%);
+        }
+
+        .grants-inner {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .grants-content h2 {
+            font-size: clamp(36px, 4vw, 48px);
+            margin-bottom: 24px;
+        }
+
+        .grants-content h2 span {
+            color: var(--gold);
+        }
+
+        .grants-description {
+            font-size: 17px;
+            color: var(--text-light);
+            margin-bottom: 32px;
+            line-height: 1.65;
+        }
+
+        .grants-total {
+            background: white;
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.06);
+            display: inline-block;
+        }
+
+        .grants-total-label {
+            font-size: 13px;
+            color: var(--text-lighter);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .grants-total-value {
+            font-family: 'Instrument Serif', serif;
+            font-size: 56px;
+            color: var(--sage);
+            line-height: 1;
+        }
+
+        .grants-visual {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .grant-card {
+            background: white;
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            border: 1px solid rgba(0,0,0,0.04);
+            transition: all 0.25s ease;
+        }
+
+        .grant-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+        }
+
+        .grant-card-amount {
+            font-family: 'Instrument Serif', serif;
+            font-size: 32px;
+            color: var(--gold);
+            margin-bottom: 8px;
+        }
+
+        .grant-card-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .grant-card-type {
+            font-size: 12px;
+            color: var(--text-lighter);
+        }
+
+        .grant-card-bar {
+            margin-top: 20px;
+            height: 4px;
+            background: rgba(184, 134, 11, 0.15);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .grant-card-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--gold-light), var(--gold));
+            border-radius: 2px;
+        }
+
+        /* ==================== SERVICES ==================== */
+        .services {
+            padding: 120px 0;
+            background: white;
+        }
+
+        .services-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .services-header h2 {
+            font-size: clamp(36px, 4vw, 48px);
+            margin-bottom: 16px;
+        }
+
+        .services-header p {
+            font-size: 17px;
+            color: var(--text-light);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+        }
+
+        .service-card {
+            background: var(--cream);
+            border-radius: 24px;
+            padding: 40px 32px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .service-card.featured {
+            background: var(--charcoal);
+            color: white;
+        }
+
+        .service-card.featured::before {
+            content: 'Most Popular';
+            position: absolute;
+            top: -12px;
+            left: 32px;
+            background: var(--gold);
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 100px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .service-tier {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--gold);
+            margin-bottom: 12px;
+        }
+
+        .service-card.featured .service-tier {
+            color: var(--gold-light);
+        }
+
+        .service-name {
+            font-family: 'Instrument Serif', serif;
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .service-price {
+            font-size: 15px;
+            color: var(--text-light);
+            margin-bottom: 8px;
+        }
+
+        .service-card.featured .service-price {
+            color: rgba(255,255,255,0.6);
+        }
+
+        .service-revenue {
+            font-size: 12px;
+            color: var(--text-lighter);
+            padding-bottom: 24px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+        }
+
+        .service-card.featured .service-revenue {
+            color: rgba(255,255,255,0.4);
+            border-color: rgba(255,255,255,0.1);
+        }
+
+        .service-features {
+            list-style: none;
+        }
+
+        .service-features li {
+            font-size: 14px;
+            padding: 10px 0;
+            padding-left: 28px;
+            position: relative;
+            color: var(--text-light);
+        }
+
+        .service-card.featured .service-features li {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .service-features li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            background: var(--sage);
+            border-radius: 50%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E");
+            background-size: 12px;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        /* ==================== FOUNDER ==================== */
+        .founder {
+            padding: 120px 0;
+            background: var(--cream);
+        }
+
+        .founder-inner {
+            display: grid;
+            grid-template-columns: 0.85fr 1.15fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .founder-image {
+            position: relative;
+        }
+
+        .founder-image-main {
+            background: linear-gradient(135deg, var(--sage) 0%, var(--sage-light) 100%);
+            border-radius: 24px;
+            aspect-ratio: 4/5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .founder-image-main::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+
+        .founder-placeholder {
+            width: 180px;
+            height: 180px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 72px;
+            color: rgba(255,255,255,0.6);
+        }
+
+        .founder-experience {
+            position: absolute;
+            bottom: -20px;
+            right: -20px;
+            background: white;
+            border-radius: 16px;
+            padding: 20px 28px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+        }
+
+        .founder-experience-value {
+            font-family: 'Instrument Serif', serif;
+            font-size: 40px;
+            color: var(--gold);
+            line-height: 1;
+        }
+
+        .founder-experience-label {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
+
+        .founder-content h2 {
+            font-size: clamp(32px, 3.5vw, 44px);
+            margin-bottom: 28px;
+            font-style: italic;
+            line-height: 1.25;
+        }
+
+        .founder-quote {
+            font-size: 18px;
+            color: var(--text-light);
+            line-height: 1.7;
+            margin-bottom: 32px;
+            padding-left: 24px;
+            border-left: 3px solid var(--gold);
+        }
+
+        .founder-stance {
+            background: white;
+            border-radius: 16px;
+            padding: 28px 32px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+        }
+
+        .founder-stance p {
+            font-size: 17px;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .founder-stance p strong {
+            color: var(--sage);
+        }
+
+        /* ==================== TESTIMONIALS ==================== */
+        .testimonials {
+            padding: 120px 0;
+            background: white;
+        }
+
+        .testimonials-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .testimonials-header h2 {
+            font-size: clamp(36px, 4vw, 48px);
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 32px;
+        }
+
+        .testimonial-card {
+            background: var(--cream);
+            border-radius: 24px;
+            padding: 40px;
+        }
+
+        .testimonial-text {
+            font-size: 18px;
+            line-height: 1.65;
+            margin-bottom: 28px;
+            color: var(--text);
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .testimonial-avatar {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--sage) 0%, var(--sage-light) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .testimonial-info h4 {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 2px;
+        }
+
+        .testimonial-info p {
+            font-size: 13px;
+            color: var(--text-lighter);
+        }
+
+        /* ==================== BENCH RESCUE ==================== */
+        .bench {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #1a0808 0%, var(--charcoal) 100%);
+        }
+
+        .bench-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 60px;
+        }
+
+        .bench-content {
+            max-width: 600px;
+        }
+
+        .bench-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(220, 38, 38, 0.2);
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #fca5a5;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        .bench-tag::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: #ef4444;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .bench h3 {
+            font-size: clamp(28px, 3vw, 36px);
+            color: white;
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        .bench-description {
+            font-size: 16px;
+            color: rgba(255,255,255,0.6);
+            line-height: 1.6;
+        }
+
+        .bench-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: white;
+            color: var(--charcoal);
+            padding: 16px 32px;
+            border-radius: 100px;
+            font-weight: 600;
+            font-size: 15px;
+            text-decoration: none;
+            transition: all 0.25s ease;
+            flex-shrink: 0;
+        }
+
+        .bench-cta:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 32px rgba(255,255,255,0.2);
+        }
+
+        /* ==================== CTA ==================== */
+        .cta {
+            padding: 140px 0;
+            background: var(--cream);
+            text-align: center;
+        }
+
+        .cta h2 {
+            font-size: clamp(40px, 5vw, 64px);
+            margin-bottom: 20px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta h2 em {
+            font-style: italic;
+            color: var(--gold);
+        }
+
+        .cta-subtitle {
+            font-size: 18px;
+            color: var(--text-light);
+            margin-bottom: 48px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .cta-note {
+            font-size: 14px;
+            color: var(--text-lighter);
+        }
+
+        .cta-note a {
+            color: var(--sage);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .cta-note a:hover {
+            text-decoration: underline;
+        }
+
+        /* ==================== FOOTER ==================== */
+        footer {
+            padding: 60px 0;
+            background: white;
+            border-top: 1px solid rgba(0,0,0,0.06);
+        }
+
+        .footer-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-logo {
+            font-family: 'Instrument Serif', serif;
+            font-size: 24px;
+            color: var(--sage);
+        }
+
+        .footer-tagline {
+            font-size: 13px;
+            color: var(--text-lighter);
+            margin-top: 4px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 32px;
+        }
+
+        .footer-links a {
+            font-size: 14px;
+            color: var(--text-light);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--sage);
+        }
+
+        .footer-copy {
+            font-size: 13px;
+            color: var(--text-lighter);
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 1024px) {
+            .hero-content,
+            .problem-inner,
+            .grants-inner,
+            .founder-inner {
+                grid-template-columns: 1fr;
+                gap: 60px;
+            }
+
+            .hero-visual {
+                order: -1;
+            }
+
+            .solution-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+                max-width: 400px;
+                margin: 0 auto;
+            }
+
+            .grants-visual {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .bench-inner {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .founder-image {
+                max-width: 400px;
+                margin: 0 auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                padding-top: 100px;
+            }
+
+            .solution-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .grants-visual {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-float-card {
+                display: none;
+            }
+
+            .footer-inner {
+                flex-direction: column;
+                gap: 24px;
+                text-align: center;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav id="nav">
+        <div class="container">
+            <div class="nav-inner">
+                <a href="#" class="logo">SheCounts</a>
+                <div class="nav-links">
+                    <a href="#services">Services</a>
+                    <a href="#grants">Grant Wall</a>
+                    <a href="#about">About</a>
+                    <a href="https://calendly.com/hunt-halldon" class="nav-cta">Book a Call</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <div class="hero-tag">Now Accepting New Clients</div>
+                    <h1>Your CFO.<br><em>Without the salary.</em></h1>
+                    <p class="hero-subtitle">Proactive accounting and fractional CFO services for Canadian businesses making $150K–$5M. One point of contact. No surprises. We call before there's a crisis.</p>
+                    <div class="hero-ctas">
+                        <a href="https://calendly.com/hunt-halldon" class="btn-primary">
+                            Book a Free Review
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </a>
+                        <a href="#services" class="btn-secondary">See pricing</a>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="hero-card">
+                        <div class="hero-card-header">
+                            <div class="hero-card-icon">$</div>
+                            <div>
+                                <div class="hero-card-title">Financial Health Score</div>
+                                <div class="hero-card-subtitle">Real-time business insights</div>
+                            </div>
+                        </div>
+                        <div class="hero-stats">
+                            <div class="hero-stat">
+                                <div class="hero-stat-value">98%</div>
+                                <div class="hero-stat-label">On-time Filing</div>
+                            </div>
+                            <div class="hero-stat">
+                                <div class="hero-stat-value">$0</div>
+                                <div class="hero-stat-label">CRA Penalties</div>
+                            </div>
+                            <div class="hero-stat">
+                                <div class="hero-stat-value">24hr</div>
+                                <div class="hero-stat-label">Response Time</div>
+                            </div>
+                            <div class="hero-stat">
+                                <div class="hero-stat-value">1</div>
+                                <div class="hero-stat-label">Point of Contact</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hero-float-card grants">
+                        <div class="float-icon">$</div>
+                        <div>
+                            <div class="float-value">$847K+</div>
+                            <div class="float-label">Grants found for clients</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem -->
+    <section class="problem">
+        <div class="container">
+            <div class="problem-inner">
+                <div class="problem-content">
+                    <h2>You know the <span>sinking feeling.</span></h2>
+                    <p class="problem-description">'CRA' in your inbox. That's what happens when your accountant treats you like a line item instead of a business owner. Most accountants only call when something's wrong. We believe that's backwards.</p>
+                    <div class="inbox-demo">
+                        <div class="inbox-header">
+                            <span class="inbox-dot red"></span>
+                            <span class="inbox-dot yellow"></span>
+                            <span class="inbox-dot green"></span>
+                        </div>
+                        <div class="inbox-item urgent">
+                            <span class="inbox-sender cra">CRA</span>
+                            <span class="inbox-subject">URGENT: Notice of Assessment - Action Required</span>
+                        </div>
+                        <div class="inbox-item">
+                            <span class="inbox-sender">Bank</span>
+                            <span class="inbox-subject">Your business account statement is ready</span>
+                        </div>
+                        <div class="inbox-item">
+                            <span class="inbox-sender">Vendor</span>
+                            <span class="inbox-subject">Invoice #4521 - Payment reminder</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="problem-visual">
+                    <div class="problem-cards">
+                        <div class="problem-card">
+                            <div class="problem-card-icon">📞</div>
+                            <div>
+                                <h4>They only call when it's bad</h4>
+                                <p>Reactive instead of proactive. By then, it's too late to avoid the penalty.</p>
+                            </div>
+                        </div>
+                        <div class="problem-card">
+                            <div class="problem-card-icon">🤷</div>
+                            <div>
+                                <h4>They don't know your business</h4>
+                                <p>You're a number to them. They don't understand your industry or goals.</p>
+                            </div>
+                        </div>
+                        <div class="problem-card">
+                            <div class="problem-card-icon">💸</div>
+                            <div>
+                                <h4>They miss grants you qualify for</h4>
+                                <p>Most SMBs leave $10K–$50K on the table every year. They never tell you.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution -->
+    <section class="solution">
+        <div class="container">
+            <div class="solution-header">
+                <h2>A better way to <em>count.</em></h2>
+                <p>Proactive accounting that actually helps you grow. Not just compliance—strategy.</p>
+            </div>
+            <div class="solution-grid">
+                <div class="solution-card">
+                    <div class="solution-card-icon">☎️</div>
+                    <h4>One Contact</h4>
+                    <p>No chatbots. No offshore teams. One person who knows your business and actually answers.</p>
+                </div>
+                <div class="solution-card">
+                    <div class="solution-card-icon">🔮</div>
+                    <h4>Proactive Calls</h4>
+                    <p>We call before there's a crisis. Quarterly check-ins, tax planning, and heads-up on deadlines.</p>
+                </div>
+                <div class="solution-card">
+                    <div class="solution-card-icon">💰</div>
+                    <h4>Grant Hunting</h4>
+                    <p>We proactively track what you qualify for and handle the applications. Over $847K found.</p>
+                </div>
+                <div class="solution-card">
+                    <div class="solution-card-icon">🛡️</div>
+                    <h4>20 Years Experience</h4>
+                    <p>Battle-tested expertise. Not a tech bro with an app. Real accounting for real businesses.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Grant Wall -->
+    <section class="grants" id="grants">
+        <div class="container">
+            <div class="grants-inner">
+                <div class="grants-content">
+                    <h2>The <span>Grant Wall.</span></h2>
+                    <p class="grants-description">Money we've found that our clients didn't know existed. Most accountants don't hunt for grants—they're too busy filing. We make it part of our job.</p>
+                    <div class="grants-total">
+                        <div class="grants-total-label">Total Secured for Clients</div>
+                        <div class="grants-total-value">$847,000+</div>
+                    </div>
+                </div>
+                <div class="grants-visual">
+                    <div class="grant-card">
+                        <div class="grant-card-amount">$312K</div>
+                        <div class="grant-card-name">SR&ED Tax Credits</div>
+                        <div class="grant-card-type">R&D Innovation Credits</div>
+                        <div class="grant-card-bar"><div class="grant-card-bar-fill" style="width: 100%"></div></div>
+                    </div>
+                    <div class="grant-card">
+                        <div class="grant-card-amount">$245K</div>
+                        <div class="grant-card-name">IRAP Funding</div>
+                        <div class="grant-card-type">Industrial Research Assistance</div>
+                        <div class="grant-card-bar"><div class="grant-card-bar-fill" style="width: 78%"></div></div>
+                    </div>
+                    <div class="grant-card">
+                        <div class="grant-card-amount">$180K</div>
+                        <div class="grant-card-name">CDAP Grants</div>
+                        <div class="grant-card-type">Digital Adoption Program</div>
+                        <div class="grant-card-bar"><div class="grant-card-bar-fill" style="width: 58%"></div></div>
+                    </div>
+                    <div class="grant-card">
+                        <div class="grant-card-amount">$110K</div>
+                        <div class="grant-card-name">Regional Programs</div>
+                        <div class="grant-card-type">Provincial & Local Grants</div>
+                        <div class="grant-card-bar"><div class="grant-card-bar-fill" style="width: 35%"></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services -->
+    <section class="services" id="services">
+        <div class="container">
+            <div class="services-header">
+                <h2>How we work together.</h2>
+                <p>Clear pricing. Clear deliverables. No surprises.</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-tier">Foundation</div>
+                    <div class="service-name">$500–800/mo</div>
+                    <div class="service-price">The essentials, done right</div>
+                    <div class="service-revenue">For businesses at $150K–$500K revenue</div>
+                    <ul class="service-features">
+                        <li>Monthly bookkeeping</li>
+                        <li>Bank reconciliation</li>
+                        <li>HST filing</li>
+                        <li>Annual T2 preparation</li>
+                        <li>Email support</li>
+                    </ul>
+                </div>
+                <div class="service-card featured">
+                    <div class="service-tier">Growth</div>
+                    <div class="service-name">$1,200–2,000/mo</div>
+                    <div class="service-price">Strategy meets execution</div>
+                    <div class="service-revenue">For businesses at $500K–$2M revenue</div>
+                    <ul class="service-features">
+                        <li>Everything in Foundation</li>
+                        <li>Quarterly strategy calls</li>
+                        <li>Grant hunting & applications</li>
+                        <li>Cash flow forecasting</li>
+                        <li>Tax planning</li>
+                    </ul>
+                </div>
+                <div class="service-card">
+                    <div class="service-tier">Fractional CFO</div>
+                    <div class="service-name">$2,500–4,000/mo</div>
+                    <div class="service-price">Your financial partner</div>
+                    <div class="service-revenue">For businesses at $2M–$5M revenue</div>
+                    <ul class="service-features">
+                        <li>Everything in Growth</li>
+                        <li>Monthly strategy calls</li>
+                        <li>Board-ready reporting</li>
+                        <li>Fundraise support</li>
+                        <li>Pricing strategy</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Founder -->
+    <section class="founder" id="about">
+        <div class="container">
+            <div class="founder-inner">
+                <div class="founder-image">
+                    <div class="founder-image-main">
+                        <div class="founder-placeholder">👩‍💼</div>
+                    </div>
+                    <div class="founder-experience">
+                        <div class="founder-experience-value">20+</div>
+                        <div class="founder-experience-label">Years Experience</div>
+                    </div>
+                </div>
+                <div class="founder-content">
+                    <h2>"After 20 years of watching women founders get patronized by big firms and abandoned by software, I started SheCounts."</h2>
+                    <p class="founder-quote">Built by a woman founder. For women founders. Because we're tired of being talked down to by guys in grey suits.</p>
+                    <div class="founder-stance">
+                        <p>We're not competing with software. We're not competing with big firms. <strong>We're competing with neglect.</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials">
+        <div class="container">
+            <div class="testimonials-header">
+                <h2>What clients say.</h2>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"SheCounts didn't just organize my books—they gave me my peace of mind back. Their proactive approach means I never get surprised by deadlines or CRA letters anymore."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">SC</div>
+                        <div class="testimonial-info">
+                            <h4>Business Founder</h4>
+                            <p>Creative Services · Toronto</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"They found $23K in grants I had no idea existed. My previous accountant never even mentioned these programs. The quarterly calls alone are worth the fee."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">JM</div>
+                        <div class="testimonial-info">
+                            <h4>Managing Director</h4>
+                            <p>Tech Startup · Vancouver</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bench Rescue -->
+    <section class="bench">
+        <div class="container">
+            <div class="bench-inner">
+                <div class="bench-content">
+                    <div class="bench-tag">Limited Availability</div>
+                    <h3>Former Bench client?<br>We're here to help.</h3>
+                    <p class="bench-description">Thousands of Canadian businesses were left scrambling. We've helped dozens recover their books, get HST current, and file on time. One-time cleanup from $1,500.</p>
+                </div>
+                <a href="https://calendly.com/hunt-halldon" class="bench-cta">
+                    Book Rescue Call
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta">
+        <div class="container">
+            <h2>Ready for an accountant who <em>counts?</em></h2>
+            <p class="cta-subtitle">Book a free 30-minute financial review. No pitch. Just clarity on where you stand.</p>
+            <div class="cta-buttons">
+                <a href="https://calendly.com/hunt-halldon" class="btn-primary">
+                    Book Your Free Review
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </a>
+            </div>
+            <p class="cta-note">Questions first? <a href="mailto:hello@shecounts.ca">hello@shecounts.ca</a></p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-inner">
+                <div>
+                    <div class="footer-logo">SheCounts</div>
+                    <div class="footer-tagline">Your CFO. Without the salary.</div>
+                </div>
+                <div class="footer-links">
+                    <a href="#services">Services</a>
+                    <a href="#grants">Grant Wall</a>
+                    <a href="#about">About</a>
+                    <a href="mailto:hello@shecounts.ca">Contact</a>
+                </div>
+                <div class="footer-copy">© 2026 SheCounts. All rights reserved.</div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Nav scroll effect
+        const nav = document.getElementById('nav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
