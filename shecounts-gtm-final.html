@@ -1,0 +1,1483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SheCounts — Go-To-Market Strategy</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        .slide {
+            min-height: 100vh;
+            padding: 60px 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-bottom: 1px solid #1a1a1a;
+            position: relative;
+        }
+
+        .slide-number {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            font-size: 14px;
+            color: #444;
+            font-weight: 300;
+        }
+
+        /* Color System */
+        :root {
+            --primary: #c9a227;
+            --primary-light: #e8c547;
+            --accent: #2d5a4a;
+            --accent-light: #3d7a6a;
+            --danger: #8b2635;
+            --success: #2d5a4a;
+            --text: #ffffff;
+            --text-muted: #888888;
+            --bg-dark: #0a0a0a;
+            --bg-card: #111111;
+        }
+
+        /* Slide 1: The Manifesto */
+        .slide-manifesto {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            text-align: center;
+        }
+
+        .manifesto-text {
+            font-size: 42px;
+            font-weight: 300;
+            line-height: 1.5;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .manifesto-text .strike {
+            color: #555;
+            text-decoration: line-through;
+        }
+
+        .manifesto-text .highlight {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .manifesto-logo {
+            margin-top: 60px;
+        }
+
+        .manifesto-logo h1 {
+            font-size: 64px;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: -2px;
+        }
+
+        .manifesto-logo .tagline {
+            font-size: 24px;
+            color: var(--text-muted);
+            margin-top: 10px;
+        }
+
+        /* Slide 2: The Enemy */
+        .slide-enemy {
+            background: linear-gradient(180deg, #1a0a0a 0%, #0a0a0a 100%);
+        }
+
+        .enemy-label {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--danger);
+            margin-bottom: 30px;
+        }
+
+        .enemy-scene {
+            font-size: 38px;
+            line-height: 1.4;
+            max-width: 850px;
+            margin-bottom: 50px;
+        }
+
+        .enemy-scene .inbox {
+            background: rgba(139, 38, 53, 0.3);
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-family: monospace;
+        }
+
+        .enemy-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            max-width: 900px;
+        }
+
+        .enemy-item {
+            padding: 25px;
+            background: rgba(139, 38, 53, 0.1);
+            border-left: 3px solid var(--danger);
+        }
+
+        .enemy-item p {
+            font-size: 18px;
+            color: var(--text-muted);
+        }
+
+        /* Slide 3: The Founder Story */
+        .slide-founder {
+            background: #0a0a0a;
+        }
+
+        .founder-story {
+            max-width: 800px;
+        }
+
+        .founder-label {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--primary);
+            margin-bottom: 40px;
+        }
+
+        .founder-quote {
+            font-size: 36px;
+            font-style: italic;
+            line-height: 1.5;
+            margin-bottom: 40px;
+            position: relative;
+            padding-left: 30px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .founder-declaration {
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 30px;
+        }
+
+        .founder-stance {
+            font-size: 22px;
+            color: #fff;
+            background: rgba(201, 162, 39, 0.1);
+            padding: 25px 30px;
+            border-radius: 8px;
+            display: inline-block;
+        }
+
+        /* Slide 4: The Promise */
+        .slide-promise {
+            background: linear-gradient(135deg, #0a0a0a 0%, #0a1a1a 100%);
+            text-align: center;
+        }
+
+        .promise-tagline {
+            font-size: 72px;
+            font-weight: 700;
+            margin-bottom: 30px;
+        }
+
+        .promise-tagline span {
+            color: var(--primary);
+        }
+
+        .promise-sub {
+            font-size: 24px;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto 50px;
+        }
+
+        .promise-pillars {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin-top: 40px;
+        }
+
+        .pillar {
+            text-align: center;
+        }
+
+        .pillar-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .pillar h3 {
+            font-size: 20px;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .pillar p {
+            font-size: 16px;
+            color: var(--text-muted);
+        }
+
+        /* Slide 5: The Grant Wall */
+        .slide-grants {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a0a 100%);
+        }
+
+        .grants-header {
+            margin-bottom: 40px;
+        }
+
+        .grants-header h2 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .grants-header p {
+            font-size: 20px;
+            color: var(--text-muted);
+        }
+
+        .grant-wall {
+            background: rgba(201, 162, 39, 0.05);
+            border: 2px solid rgba(201, 162, 39, 0.3);
+            border-radius: 15px;
+            padding: 50px;
+            max-width: 900px;
+        }
+
+        .grant-total {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .grant-total .number {
+            font-size: 96px;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1;
+        }
+
+        .grant-total .label {
+            font-size: 20px;
+            color: var(--text-muted);
+            margin-top: 10px;
+        }
+
+        .grant-breakdown {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .grant-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+        }
+
+        .grant-item .amount {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+            min-width: 100px;
+        }
+
+        .grant-item .name {
+            font-size: 16px;
+            color: var(--text-muted);
+        }
+
+        .grant-item .bar {
+            flex: 1;
+            height: 8px;
+            background: rgba(201, 162, 39, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .grant-item .bar-fill {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        .grant-cta {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 18px;
+            color: var(--text-muted);
+        }
+
+        .grant-cta span {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Slide 6: Service Tiers */
+        .slide-tiers {
+            background: #0a0a0a;
+        }
+
+        .tiers-header {
+            margin-bottom: 50px;
+        }
+
+        .tiers-header h2 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .tiers-header p {
+            font-size: 20px;
+            color: var(--text-muted);
+        }
+
+        .tiers-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            max-width: 1100px;
+        }
+
+        .tier-card {
+            background: var(--bg-card);
+            border: 1px solid #222;
+            border-radius: 12px;
+            padding: 35px;
+            transition: all 0.3s ease;
+        }
+
+        .tier-card.featured {
+            border-color: var(--primary);
+            transform: scale(1.02);
+        }
+
+        .tier-card .tier-name {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .tier-card h3 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .tier-card .price {
+            font-size: 20px;
+            color: var(--text-muted);
+            margin-bottom: 25px;
+        }
+
+        .tier-card .revenue {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 25px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #222;
+        }
+
+        .tier-card ul {
+            list-style: none;
+        }
+
+        .tier-card ul li {
+            font-size: 15px;
+            color: var(--text-muted);
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .tier-card ul li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--success);
+        }
+
+        .tier-rescue {
+            margin-top: 40px;
+            padding: 30px;
+            background: rgba(139, 38, 53, 0.1);
+            border: 1px solid rgba(139, 38, 53, 0.3);
+            border-radius: 10px;
+            max-width: 500px;
+        }
+
+        .tier-rescue h4 {
+            color: #ff6b6b;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .tier-rescue p {
+            font-size: 15px;
+            color: var(--text-muted);
+        }
+
+        /* Slide 7: Bench Rescue Campaign */
+        .slide-bench {
+            background: linear-gradient(180deg, #1a0505 0%, #0a0a0a 100%);
+        }
+
+        .bench-breaking {
+            display: inline-block;
+            background: var(--danger);
+            padding: 8px 20px;
+            border-radius: 4px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+        }
+
+        .bench-headline {
+            font-size: 48px;
+            font-weight: 700;
+            line-height: 1.2;
+            max-width: 800px;
+            margin-bottom: 40px;
+        }
+
+        .bench-subhead {
+            font-size: 22px;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin-bottom: 50px;
+        }
+
+        .bench-offer {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 40px;
+            max-width: 700px;
+        }
+
+        .bench-offer h3 {
+            font-size: 24px;
+            margin-bottom: 25px;
+            color: var(--primary);
+        }
+
+        .bench-offer ul {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+
+        .bench-offer ul li {
+            font-size: 18px;
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .bench-offer ul li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+        }
+
+        .bench-cta {
+            display: inline-block;
+            background: var(--primary);
+            color: #000;
+            padding: 15px 35px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        /* Slide 8: 90-Day Journey */
+        .slide-journey {
+            background: #0a0a0a;
+        }
+
+        .journey-header {
+            margin-bottom: 50px;
+        }
+
+        .journey-header h2 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .journey-header p {
+            font-size: 20px;
+            color: var(--text-muted);
+        }
+
+        .journey-phases {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            max-width: 1100px;
+        }
+
+        .phase-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 35px;
+            border-top: 4px solid var(--primary);
+        }
+
+        .phase-card .phase-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .phase-card .moment {
+            font-size: 22px;
+            font-style: italic;
+            line-height: 1.4;
+            margin-bottom: 30px;
+            color: #fff;
+            min-height: 100px;
+        }
+
+        .phase-card .tactics {
+            border-top: 1px solid #222;
+            padding-top: 25px;
+        }
+
+        .phase-card .tactics h4 {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .phase-card .tactics ul {
+            list-style: none;
+        }
+
+        .phase-card .tactics ul li {
+            font-size: 14px;
+            color: var(--text-muted);
+            padding: 6px 0;
+        }
+
+        /* Slide 9: Partnerships */
+        .slide-partners {
+            background: linear-gradient(135deg, #0a0a0a 0%, #0a1a0a 100%);
+        }
+
+        .partners-header {
+            margin-bottom: 50px;
+        }
+
+        .partners-header h2 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .partners-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            max-width: 900px;
+        }
+
+        .partner-card {
+            background: var(--bg-card);
+            border: 1px solid #222;
+            border-radius: 10px;
+            padding: 30px;
+        }
+
+        .partner-card h3 {
+            font-size: 20px;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .partner-card .exchange {
+            font-size: 15px;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+        }
+
+        .partner-card .targets {
+            font-size: 13px;
+            color: #666;
+        }
+
+        /* Slide 10: Content Engine */
+        .slide-content {
+            background: #0a0a0a;
+        }
+
+        .content-header {
+            margin-bottom: 40px;
+        }
+
+        .content-header h2 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .content-pillars {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            max-width: 1000px;
+            margin-bottom: 50px;
+        }
+
+        .pillar-card {
+            background: var(--bg-card);
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .pillar-card .icon {
+            font-size: 32px;
+            margin-bottom: 15px;
+        }
+
+        .pillar-card h4 {
+            font-size: 16px;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .pillar-card p {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .content-calendar {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 1000px;
+        }
+
+        .content-calendar h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .calendar-week {
+            background: rgba(255,255,255,0.03);
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .calendar-week .week-label {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .calendar-week .posts {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .calendar-week .posts div {
+            padding: 5px 0;
+        }
+
+        .calendar-week .theme {
+            font-size: 14px;
+            color: var(--primary);
+            margin-top: 15px;
+            font-weight: 600;
+        }
+
+        /* Slide 11: KPIs */
+        .slide-kpis {
+            background: linear-gradient(180deg, #0a0a0a 0%, #0a0a1a 100%);
+        }
+
+        .kpis-header {
+            margin-bottom: 50px;
+        }
+
+        .kpis-header h2 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .kpis-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            max-width: 900px;
+            margin-bottom: 50px;
+        }
+
+        .kpi-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .kpi-card .number {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .kpi-card .label {
+            font-size: 16px;
+            color: var(--text-muted);
+            margin-top: 10px;
+        }
+
+        .kpi-card .timeframe {
+            font-size: 13px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .signals-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            max-width: 800px;
+        }
+
+        .signal-box {
+            padding: 25px;
+            border-radius: 10px;
+        }
+
+        .signal-box.green {
+            background: rgba(45, 90, 74, 0.2);
+            border: 1px solid var(--success);
+        }
+
+        .signal-box.red {
+            background: rgba(139, 38, 53, 0.2);
+            border: 1px solid var(--danger);
+        }
+
+        .signal-box h4 {
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .signal-box.green h4 {
+            color: var(--accent-light);
+        }
+
+        .signal-box.red h4 {
+            color: #ff6b6b;
+        }
+
+        .signal-box ul {
+            list-style: none;
+        }
+
+        .signal-box ul li {
+            font-size: 14px;
+            color: var(--text-muted);
+            padding: 5px 0;
+        }
+
+        /* Slide 12: First 14 Days */
+        .slide-14days {
+            background: #0a0a0a;
+        }
+
+        .days-header {
+            margin-bottom: 40px;
+        }
+
+        .days-header h2 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .days-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            max-width: 1000px;
+        }
+
+        .week-box {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 35px;
+        }
+
+        .week-box h3 {
+            font-size: 20px;
+            color: var(--primary);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #222;
+        }
+
+        .week-box ul {
+            list-style: none;
+        }
+
+        .week-box ul li {
+            font-size: 15px;
+            color: var(--text-muted);
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        .week-box ul li:last-child {
+            border-bottom: none;
+        }
+
+        .week-box ul li::before {
+            content: "□";
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+        }
+
+        /* Slide 13: CTA */
+        .slide-cta {
+            background: linear-gradient(135deg, #1a1a0a 0%, #0a0a0a 50%, #0a1a1a 100%);
+            text-align: center;
+        }
+
+        .cta-statement {
+            font-size: 48px;
+            font-weight: 700;
+            line-height: 1.3;
+            max-width: 800px;
+            margin: 0 auto 20px;
+        }
+
+        .cta-statement span {
+            color: var(--primary);
+        }
+
+        .cta-sub {
+            font-size: 22px;
+            color: var(--text-muted);
+            margin-bottom: 50px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: var(--primary);
+            color: #000;
+            padding: 20px 50px;
+            border-radius: 10px;
+            font-size: 20px;
+            font-weight: 700;
+            text-decoration: none;
+            margin-bottom: 30px;
+        }
+
+        .cta-alternative {
+            font-size: 16px;
+            color: #666;
+        }
+
+        .cta-alternative a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        /* Final Slide */
+        .slide-final {
+            background: #0a0a0a;
+            text-align: center;
+        }
+
+        .final-logo {
+            font-size: 72px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .final-tagline {
+            font-size: 28px;
+            color: var(--text-muted);
+            margin-bottom: 60px;
+        }
+
+        .final-manifesto {
+            font-size: 24px;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .final-manifesto strong {
+            color: var(--primary);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .slide {
+                padding: 40px;
+            }
+
+            .tiers-grid,
+            .journey-phases,
+            .kpis-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .partners-grid,
+            .days-grid,
+            .signals-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .content-pillars,
+            .calendar-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .enemy-list {
+                grid-template-columns: 1fr;
+            }
+
+            .grant-breakdown {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .manifesto-text {
+                font-size: 28px;
+            }
+
+            .promise-tagline {
+                font-size: 42px;
+            }
+
+            .promise-pillars {
+                flex-direction: column;
+                gap: 30px;
+            }
+
+            .bench-headline {
+                font-size: 32px;
+            }
+
+            .cta-statement {
+                font-size: 32px;
+            }
+
+            .content-pillars,
+            .calendar-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Slide 1: The Manifesto -->
+<section class="slide slide-manifesto">
+    <span class="slide-number">01</span>
+    <p class="manifesto-text">
+        You are not competing with <span class="strike">software</span>.<br>
+        You are not competing with <span class="strike">big firms</span>.<br>
+        You are competing with <span class="highlight">neglect.</span>
+    </p>
+    <div class="manifesto-logo">
+        <h1>SheCounts</h1>
+        <p class="tagline">Your CFO. Without the salary.</p>
+    </div>
+</section>
+
+<!-- Slide 2: The Enemy -->
+<section class="slide slide-enemy">
+    <span class="slide-number">02</span>
+    <p class="enemy-label">The Real Problem</p>
+    <p class="enemy-scene">
+        You know that sinking feeling when you see <span class="inbox">'CRA'</span> in your inbox?<br><br>
+        That's what happens when your accountant treats you like a line item.
+    </p>
+    <div class="enemy-list">
+        <div class="enemy-item">
+            <p>They only call when something's wrong</p>
+        </div>
+        <div class="enemy-item">
+            <p>They don't know your business</p>
+        </div>
+        <div class="enemy-item">
+            <p>They miss grants you qualify for</p>
+        </div>
+    </div>
+</section>
+
+<!-- Slide 3: The Founder Story -->
+<section class="slide slide-founder">
+    <span class="slide-number">03</span>
+    <div class="founder-story">
+        <p class="founder-label">Why SheCounts Exists</p>
+        <p class="founder-quote">
+            After 20 years of watching women founders get patronized by big firms and abandoned by software, I started SheCounts.
+        </p>
+        <p class="founder-declaration">
+            Built by a woman founder. For women founders.
+        </p>
+        <p class="founder-stance">
+            Because we're tired of being talked down to by guys in grey suits.
+        </p>
+    </div>
+</section>
+
+<!-- Slide 4: The Promise -->
+<section class="slide slide-promise">
+    <span class="slide-number">04</span>
+    <h2 class="promise-tagline">Your <span>CFO.</span> Without the salary.</h2>
+    <p class="promise-sub">
+        Proactive accounting, tax strategy, and financial guidance for Canadian small businesses making $150K–$5M. One point of contact. No surprises.
+    </p>
+    <div class="promise-pillars">
+        <div class="pillar">
+            <div class="pillar-icon">☎️</div>
+            <h3>One Contact</h3>
+            <p>No chatbots. No offshore teams.<br>Someone who answers.</p>
+        </div>
+        <div class="pillar">
+            <div class="pillar-icon">🔮</div>
+            <h3>Proactive</h3>
+            <p>We call before there's a crisis.<br>Not after.</p>
+        </div>
+        <div class="pillar">
+            <div class="pillar-icon">💰</div>
+            <h3>Grant Hunter</h3>
+            <p>We find money you didn't<br>know existed.</p>
+        </div>
+        <div class="pillar">
+            <div class="pillar-icon">🤝</div>
+            <h3>20 Years</h3>
+            <p>Battle-tested. Not a tech bro<br>with an app.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Slide 5: The Grant Wall -->
+<section class="slide slide-grants">
+    <span class="slide-number">05</span>
+    <div class="grants-header">
+        <h2>The Grant Wall</h2>
+        <p>Money we've found that our clients didn't know existed</p>
+    </div>
+    <div class="grant-wall">
+        <div class="grant-total">
+            <p class="number">$847,000+</p>
+            <p class="label">in grants secured for clients</p>
+        </div>
+        <div class="grant-breakdown">
+            <div class="grant-item">
+                <span class="amount">$312K</span>
+                <div>
+                    <p class="name">SR&ED Tax Credits</p>
+                    <div class="bar"><div class="bar-fill" style="width: 100%;"></div></div>
+                </div>
+            </div>
+            <div class="grant-item">
+                <span class="amount">$245K</span>
+                <div>
+                    <p class="name">IRAP Funding</p>
+                    <div class="bar"><div class="bar-fill" style="width: 78%;"></div></div>
+                </div>
+            </div>
+            <div class="grant-item">
+                <span class="amount">$180K</span>
+                <div>
+                    <p class="name">CDAP Digital Grants</p>
+                    <div class="bar"><div class="bar-fill" style="width: 58%;"></div></div>
+                </div>
+            </div>
+            <div class="grant-item">
+                <span class="amount">$110K</span>
+                <div>
+                    <p class="name">Regional Programs</p>
+                    <div class="bar"><div class="bar-fill" style="width: 35%;"></div></div>
+                </div>
+            </div>
+        </div>
+        <p class="grant-cta">Most SMBs leave <span>$10K–$50K</span> on the table every year. We hunt it down.</p>
+    </div>
+</section>
+
+<!-- Slide 6: Service Tiers -->
+<section class="slide slide-tiers">
+    <span class="slide-number">06</span>
+    <div class="tiers-header">
+        <h2>How We Work Together</h2>
+        <p>Clear pricing. Clear deliverables. No surprises.</p>
+    </div>
+    <div class="tiers-grid">
+        <div class="tier-card">
+            <p class="tier-name">Foundation</p>
+            <h3>$500–800/mo</h3>
+            <p class="price">The essentials, done right</p>
+            <p class="revenue">For businesses at $150K–$500K revenue</p>
+            <ul>
+                <li>Monthly bookkeeping</li>
+                <li>Bank reconciliation</li>
+                <li>HST filing</li>
+                <li>Annual T2 preparation</li>
+                <li>Email support</li>
+            </ul>
+        </div>
+        <div class="tier-card featured">
+            <p class="tier-name">Growth</p>
+            <h3>$1,200–2,000/mo</h3>
+            <p class="price">Strategy meets execution</p>
+            <p class="revenue">For businesses at $500K–$2M revenue</p>
+            <ul>
+                <li>Everything in Foundation</li>
+                <li>Quarterly strategy calls</li>
+                <li>Grant hunting & applications</li>
+                <li>Cash flow forecasting</li>
+                <li>Tax planning</li>
+            </ul>
+        </div>
+        <div class="tier-card">
+            <p class="tier-name">Fractional CFO</p>
+            <h3>$2,500–4,000/mo</h3>
+            <p class="price">Your financial partner</p>
+            <p class="revenue">For businesses at $2M–$5M revenue</p>
+            <ul>
+                <li>Everything in Growth</li>
+                <li>Monthly strategy calls</li>
+                <li>Board-ready reporting</li>
+                <li>Fundraise support</li>
+                <li>Pricing strategy</li>
+            </ul>
+        </div>
+    </div>
+    <div class="tier-rescue">
+        <h4>Bench Rescue Package</h4>
+        <p>One-time cleanup: $1,500–$5,000 (scoped after review)<br>
+        Rebuild chart of accounts, reconcile 12 months, HST catch-up, CRA correspondence</p>
+    </div>
+</section>
+
+<!-- Slide 7: Bench Rescue Campaign -->
+<section class="slide slide-bench">
+    <span class="slide-number">07</span>
+    <span class="bench-breaking">Breaking</span>
+    <h2 class="bench-headline">Bench Left 10,000 Canadian Businesses Without Books.<br>Here's What We're Seeing.</h2>
+    <p class="bench-subhead">Thousands of SMBs are scrambling for their books, HST filings, and tax returns. We're taking on Bench refugees.</p>
+    <div class="bench-offer">
+        <h3>The Bench Rescue Package</h3>
+        <ul>
+            <li>Recover and reconcile your books (we've seen the mess)</li>
+            <li>Get your HST filings current</li>
+            <li>Prepare your T2 on time</li>
+            <li>One point of contact who actually answers</li>
+        </ul>
+        <span class="bench-cta">Book Your Rescue Call — Limited Spots</span>
+    </div>
+</section>
+
+<!-- Slide 8: 90-Day Journey -->
+<section class="slide slide-journey">
+    <span class="slide-number">08</span>
+    <div class="journey-header">
+        <h2>The 90-Day Journey</h2>
+        <p>Not tactics. Moments.</p>
+    </div>
+    <div class="journey-phases">
+        <div class="phase-card">
+            <p class="phase-label">Phase 1: Foundation (Weeks 1–4)</p>
+            <p class="moment">"The first Bench refugee sends a thank-you email. Screenshot it. That's your proof."</p>
+            <div class="tactics">
+                <h4>The Work</h4>
+                <ul>
+                    <li>Set up CRM & scheduling</li>
+                    <li>Launch Bench Rescue campaign</li>
+                    <li>Activate warm network</li>
+                    <li>Start 3x/week LinkedIn rhythm</li>
+                    <li>Join Bench Facebook groups</li>
+                </ul>
+            </div>
+        </div>
+        <div class="phase-card">
+            <p class="phase-label">Phase 2: Traction (Weeks 5–8)</p>
+            <p class="moment">"You walk into a room of 40 women founders and tell them the cash flow truth no one else will."</p>
+            <div class="tactics">
+                <h4>The Work</h4>
+                <ul>
+                    <li>Pitch 5 women founder orgs</li>
+                    <li>Deliver first workshop</li>
+                    <li>Publish Grant Guide article</li>
+                    <li>Contact 3 lawyers for referrals</li>
+                    <li>Collect 5 testimonials</li>
+                </ul>
+            </div>
+        </div>
+        <div class="phase-card">
+            <p class="phase-label">Phase 3: Scale (Weeks 9–12)</p>
+            <p class="moment">"You turn someone away because you're full. That's when you know it's working."</p>
+            <div class="tactics">
+                <h4>The Work</h4>
+                <ul>
+                    <li>Launch formal referral program</li>
+                    <li>Document processes</li>
+                    <li>Capacity check: hire or cap?</li>
+                    <li>Q2 planning</li>
+                    <li>Partnership renewals</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Slide 9: Partnerships -->
+<section class="slide slide-partners">
+    <span class="slide-number">09</span>
+    <div class="partners-header">
+        <h2>Partnership Flywheels</h2>
+        <p>Borrow audiences. Build referral networks.</p>
+    </div>
+    <div class="partners-grid">
+        <div class="partner-card">
+            <h3>Women Founder Networks</h3>
+            <p class="exchange">You speak at events → They send referrals</p>
+            <p class="targets">SheEO (Coralus), Women's Enterprise Centres, Canadian Women's Chamber, Forum for Women Entrepreneurs</p>
+        </div>
+        <div class="partner-card">
+            <h3>Business Lawyers</h3>
+            <p class="exchange">They do incorporations → You do post-incorp accounting</p>
+            <p class="targets">Reciprocal referral agreements, $250 referral fee or credit</p>
+        </div>
+        <div class="partner-card">
+            <h3>Bookkeepers (Non-Tax)</h3>
+            <p class="exchange">They prep → You advise and file</p>
+            <p class="targets">White-label or referral fee arrangements</p>
+        </div>
+        <div class="partner-card">
+            <h3>Software Consultants</h3>
+            <p class="exchange">QBO/Xero implementers → Need accounting partners</p>
+            <p class="targets">Co-marketing, shared clients, referral network</p>
+        </div>
+    </div>
+</section>
+
+<!-- Slide 10: Content Engine -->
+<section class="slide slide-content">
+    <span class="slide-number">10</span>
+    <div class="content-header">
+        <h2>Content Engine</h2>
+        <p>3x/week on LinkedIn. Authority compounds.</p>
+    </div>
+    <div class="content-pillars">
+        <div class="pillar-card">
+            <div class="icon">💥</div>
+            <h4>Bold Takes</h4>
+            <p>Pattern interrupts. Things others won't say.</p>
+        </div>
+        <div class="pillar-card">
+            <div class="icon">📚</div>
+            <h4>Education</h4>
+            <p>Grant guides. Tax tips. Cash flow truths.</p>
+        </div>
+        <div class="pillar-card">
+            <div class="icon">🎬</div>
+            <h4>Behind Scenes</h4>
+            <p>Founder journey. Real client wins.</p>
+        </div>
+        <div class="pillar-card">
+            <div class="icon">📣</div>
+            <h4>Proof</h4>
+            <p>Testimonials. Grant Wall updates.</p>
+        </div>
+    </div>
+    <div class="content-calendar">
+        <h3>Month 1 Calendar</h3>
+        <div class="calendar-grid">
+            <div class="calendar-week">
+                <p class="week-label">Week 1</p>
+                <div class="posts">
+                    <div>Mon: "Taking new clients" post</div>
+                    <div>Wed: Bench rescue announcement</div>
+                    <div>Fri: CRA audit warning</div>
+                </div>
+                <p class="theme">Theme: Urgency</p>
+            </div>
+            <div class="calendar-week">
+                <p class="week-label">Week 2</p>
+                <div class="posts">
+                    <div>Mon: Grant nobody knows about</div>
+                    <div>Wed: Cash flow mistake #1</div>
+                    <div>Fri: Client win story</div>
+                </div>
+                <p class="theme">Theme: Value</p>
+            </div>
+            <div class="calendar-week">
+                <p class="week-label">Week 3</p>
+                <div class="posts">
+                    <div>Mon: Why I started SheCounts</div>
+                    <div>Wed: HST deadline reminder</div>
+                    <div>Fri: Behind the scenes</div>
+                </div>
+                <p class="theme">Theme: Trust</p>
+            </div>
+            <div class="calendar-week">
+                <p class="week-label">Week 4</p>
+                <div class="posts">
+                    <div>Mon: Grant Wall update</div>
+                    <div>Wed: Bench article publish</div>
+                    <div>Fri: Newsletter launch</div>
+                </div>
+                <p class="theme">Theme: Proof</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Slide 11: KPIs -->
+<section class="slide slide-kpis">
+    <span class="slide-number">11</span>
+    <div class="kpis-header">
+        <h2>What Success Looks Like</h2>
+        <p>90-day targets</p>
+    </div>
+    <div class="kpis-grid">
+        <div class="kpi-card">
+            <p class="number">10-15</p>
+            <p class="label">New Clients</p>
+            <p class="timeframe">by Day 90</p>
+        </div>
+        <div class="kpi-card">
+            <p class="number">500+</p>
+            <p class="label">Email Subscribers</p>
+            <p class="timeframe">owned audience</p>
+        </div>
+        <div class="kpi-card">
+            <p class="number">2</p>
+            <p class="label">Workshops Delivered</p>
+            <p class="timeframe">women founder orgs</p>
+        </div>
+    </div>
+    <div class="signals-grid">
+        <div class="signal-box green">
+            <h4>Double Down When:</h4>
+            <ul>
+                <li>Bench content gets 3x engagement</li>
+                <li>Workshop converts >20% to calls</li>
+                <li>One channel drives 50%+ of leads</li>
+                <li>Referrals come without asking</li>
+            </ul>
+        </div>
+        <div class="signal-box red">
+            <h4>Pivot When:</h4>
+            <ul>
+                <li>&lt;5 discovery calls in 3 weeks</li>
+                <li>Calls not converting to clients</li>
+                <li>Bench angle drying up</li>
+                <li>&lt;50% capacity at week 8</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- Slide 12: First 14 Days -->
+<section class="slide slide-14days">
+    <span class="slide-number">12</span>
+    <div class="days-header">
+        <h2>First 14 Days</h2>
+        <p>Start Monday. Ship by Friday.</p>
+    </div>
+    <div class="days-grid">
+        <div class="week-box">
+            <h3>Week 1: Foundation</h3>
+            <ul>
+                <li>Create Calendly with intake questions</li>
+                <li>Write service tier one-pager</li>
+                <li>Draft Bench Rescue landing page</li>
+                <li>Set up HubSpot free CRM</li>
+                <li>Join 3 Bench Facebook groups</li>
+                <li>Email 20 warm contacts for referrals</li>
+                <li>Post "taking new clients" on LinkedIn</li>
+            </ul>
+        </div>
+        <div class="week-box">
+            <h3>Week 2: Launch</h3>
+            <ul>
+                <li>Post Bench Rescue in Facebook groups</li>
+                <li>DM 10 warm LinkedIn connections</li>
+                <li>Publish Bench article on LinkedIn</li>
+                <li>Send first email newsletter</li>
+                <li>Book 5+ discovery calls</li>
+                <li>Ask 2 clients for testimonials</li>
+                <li>Post 3x on LinkedIn (Mon/Wed/Fri)</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- Slide 13: CTA -->
+<section class="slide slide-cta">
+    <span class="slide-number">13</span>
+    <p class="cta-statement">
+        The real competitor is<br>"<span>I'll deal with it later.</span>"
+    </p>
+    <p class="cta-sub">Your job is to make "later" feel dangerous and "now" feel safe.</p>
+    <a href="#" class="cta-button">Book a Free Financial Review</a>
+    <p class="cta-alternative">or <a href="#">See If We're a Fit</a> — we're selective too</p>
+</section>
+
+<!-- Slide 14: Final -->
+<section class="slide slide-final">
+    <span class="slide-number">14</span>
+    <h1 class="final-logo">SheCounts</h1>
+    <p class="final-tagline">Your CFO. Without the salary.</p>
+    <p class="final-manifesto">
+        You are not competing with software.<br>
+        You are not competing with big firms.<br>
+        You are competing with <strong>neglect</strong>.<br><br>
+        And neglect just met its match.
+    </p>
+</section>
+
+</body>
+</html>
