@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SheCounts — Accounting for Canadian Small Businesses</title>
+    <meta name="description" content="Proactive accounting and bookkeeping for Canadian small businesses. One point of contact. No surprises.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        /* ============================================
+           DESIGN TOKENS
+        ============================================ */
+        :root {
+            /* Colors — Restrained palette */
+            --color-bg: #FDFCFA;
+            --color-bg-subtle: #F6F4F0;
+            --color-text: #1C1C1C;
+            --color-text-secondary: #5C5C5C;
+            --color-text-tertiary: #8C8C8C;
+            --color-accent: #2C4A3E;
+            --color-accent-hover: #1E3529;
+            --color-border: #E8E6E1;
+            --color-border-subtle: #F0EDE8;
+
+            /* Typography */
+            --font-serif: 'Instrument Serif', Georgia, serif;
+            --font-sans: 'Inter', -apple-system, system-ui, sans-serif;
+
+            /* Type Scale */
+            --text-sm: 0.875rem;
+            --text-base: 1rem;
+            --text-lg: 1.125rem;
+            --text-xl: 1.25rem;
+            --text-2xl: 1.5rem;
+            --text-3xl: 2rem;
+            --text-4xl: 2.75rem;
+            --text-5xl: 3.5rem;
+
+            /* Spacing */
+            --space-4: 1rem;
+            --space-6: 1.5rem;
+            --space-8: 2rem;
+            --space-12: 3rem;
+            --space-16: 4rem;
+            --space-24: 6rem;
+            --space-32: 8rem;
+            --space-40: 10rem;
+
+            /* Layout */
+            --max-width: 1120px;
+            --content-width: 680px;
+        }
+
+        /* ============================================
+           RESET & BASE
+        ============================================ */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            font-size: var(--text-base);
+            font-weight: 400;
+            line-height: 1.6;
+            color: var(--color-text);
+            background-color: var(--color-bg);
+        }
+
+        ::selection {
+            background-color: var(--color-accent);
+            color: white;
+        }
+
+        /* ============================================
+           TYPOGRAPHY
+        ============================================ */
+        h1, h2, h3 {
+            font-family: var(--font-serif);
+            font-weight: 400;
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+            color: var(--color-text);
+        }
+
+        p {
+            color: var(--color-text-secondary);
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* ============================================
+           LAYOUT
+        ============================================ */
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 var(--space-6);
+        }
+
+        .container--narrow {
+            max-width: var(--content-width);
+        }
+
+        section {
+            padding: var(--space-24) 0;
+        }
+
+        @media (min-width: 768px) {
+            section {
+                padding: var(--space-32) 0;
+            }
+        }
+
+        /* ============================================
+           HEADER
+        ============================================ */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: var(--color-bg);
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.3s ease, background 0.3s ease;
+        }
+
+        header.scrolled {
+            border-bottom-color: var(--color-border);
+            background: rgba(253, 252, 250, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 72px;
+        }
+
+        .logo {
+            font-family: var(--font-serif);
+            font-size: var(--text-xl);
+            color: var(--color-text);
+            letter-spacing: -0.01em;
+        }
+
+        .header-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: var(--text-sm);
+            font-weight: 500;
+            color: var(--color-accent);
+            padding: 0.625rem 1.25rem;
+            border: 1px solid var(--color-accent);
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .header-cta:hover {
+            background: var(--color-accent);
+            color: white;
+        }
+
+        /* ============================================
+           HERO
+        ============================================ */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: var(--space-32);
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-size: clamp(var(--text-4xl), 6vw, var(--text-5xl));
+            margin-bottom: var(--space-6);
+            line-height: 1.1;
+        }
+
+        .hero-sub {
+            font-size: var(--text-lg);
+            line-height: 1.7;
+            max-width: 560px;
+            margin-bottom: var(--space-8);
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: var(--text-base);
+            font-weight: 500;
+            color: white;
+            background: var(--color-accent);
+            padding: 1rem 1.75rem;
+            border-radius: 4px;
+            transition: background 0.2s ease;
+        }
+
+        .hero-cta:hover {
+            background: var(--color-accent-hover);
+        }
+
+        .hero-cta svg {
+            width: 16px;
+            height: 16px;
+            transition: transform 0.2s ease;
+        }
+
+        .hero-cta:hover svg {
+            transform: translateX(3px);
+        }
+
+        /* ============================================
+           APPROACH SECTION
+        ============================================ */
+        .approach {
+            background: var(--color-bg-subtle);
+        }
+
+        .approach-header {
+            margin-bottom: var(--space-12);
+        }
+
+        .approach-header h2 {
+            font-size: clamp(var(--text-3xl), 4vw, var(--text-4xl));
+            margin-bottom: var(--space-4);
+        }
+
+        .approach-header p {
+            font-size: var(--text-lg);
+            max-width: 520px;
+        }
+
+        .approach-grid {
+            display: grid;
+            gap: var(--space-8);
+        }
+
+        @media (min-width: 768px) {
+            .approach-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: var(--space-12);
+            }
+        }
+
+        .approach-item {
+            padding-top: var(--space-6);
+            border-top: 1px solid var(--color-border);
+        }
+
+        .approach-item h3 {
+            font-size: var(--text-xl);
+            margin-bottom: var(--space-4);
+        }
+
+        .approach-item p {
+            font-size: var(--text-base);
+            line-height: 1.7;
+        }
+
+        /* ============================================
+           SERVICES SECTION
+        ============================================ */
+        .services-header {
+            text-align: center;
+            margin-bottom: var(--space-12);
+        }
+
+        .services-header h2 {
+            font-size: clamp(var(--text-3xl), 4vw, var(--text-4xl));
+            margin-bottom: var(--space-4);
+        }
+
+        .services-header p {
+            font-size: var(--text-lg);
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        .services-grid {
+            display: grid;
+            gap: 1px;
+            background: var(--color-border);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        @media (min-width: 768px) {
+            .services-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .service-item {
+            background: var(--color-bg);
+            padding: var(--space-8);
+        }
+
+        .service-item h3 {
+            font-size: var(--text-xl);
+            margin-bottom: var(--space-4);
+        }
+
+        .service-item p {
+            font-size: var(--text-base);
+            line-height: 1.7;
+        }
+
+        /* ============================================
+           FOUNDER SECTION
+        ============================================ */
+        .founder {
+            background: var(--color-bg-subtle);
+        }
+
+        .founder-content {
+            max-width: var(--content-width);
+            margin: 0 auto;
+        }
+
+        .founder-label {
+            font-size: var(--text-sm);
+            font-weight: 500;
+            color: var(--color-text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: var(--space-6);
+        }
+
+        .founder-quote {
+            font-family: var(--font-serif);
+            font-size: clamp(var(--text-2xl), 3.5vw, var(--text-3xl));
+            line-height: 1.4;
+            color: var(--color-text);
+            margin-bottom: var(--space-8);
+        }
+
+        .founder-bio {
+            font-size: var(--text-base);
+            line-height: 1.8;
+            color: var(--color-text-secondary);
+            padding-top: var(--space-6);
+            border-top: 1px solid var(--color-border);
+        }
+
+        /* ============================================
+           SITUATIONS SECTION
+        ============================================ */
+        .situations-header {
+            margin-bottom: var(--space-12);
+        }
+
+        .situations-header h2 {
+            font-size: clamp(var(--text-3xl), 4vw, var(--text-4xl));
+            margin-bottom: var(--space-4);
+        }
+
+        .situations-header p {
+            font-size: var(--text-lg);
+            max-width: 520px;
+        }
+
+        .situations-list {
+            display: grid;
+            gap: var(--space-6);
+            max-width: 640px;
+        }
+
+        .situation-item {
+            display: flex;
+            gap: var(--space-4);
+            align-items: flex-start;
+        }
+
+        .situation-icon {
+            flex-shrink: 0;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 2px;
+        }
+
+        .situation-icon svg {
+            width: 16px;
+            height: 16px;
+            color: var(--color-accent);
+        }
+
+        .situation-item p {
+            font-size: var(--text-lg);
+            line-height: 1.6;
+        }
+
+        /* ============================================
+           CTA SECTION
+        ============================================ */
+        .cta-section {
+            background: var(--color-accent);
+            color: white;
+        }
+
+        .cta-content {
+            max-width: var(--content-width);
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .cta-content h2 {
+            font-size: clamp(var(--text-3xl), 4vw, var(--text-4xl));
+            color: white;
+            margin-bottom: var(--space-4);
+        }
+
+        .cta-content > p {
+            font-size: var(--text-lg);
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: var(--space-8);
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: var(--text-base);
+            font-weight: 500;
+            color: var(--color-accent);
+            background: white;
+            padding: 1rem 2rem;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .cta-button:hover {
+            background: var(--color-bg);
+            transform: translateY(-1px);
+        }
+
+        .cta-note {
+            margin-top: var(--space-6);
+            font-size: var(--text-sm);
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* ============================================
+           FOOTER
+        ============================================ */
+        footer {
+            padding: var(--space-16) 0;
+            border-top: 1px solid var(--color-border);
+        }
+
+        .footer-inner {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-6);
+        }
+
+        @media (min-width: 768px) {
+            .footer-inner {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+        }
+
+        .footer-logo {
+            font-family: var(--font-serif);
+            font-size: var(--text-lg);
+            color: var(--color-text);
+        }
+
+        .footer-text {
+            font-size: var(--text-sm);
+            color: var(--color-text-tertiary);
+        }
+
+        .footer-contact {
+            font-size: var(--text-sm);
+            color: var(--color-text-secondary);
+        }
+
+        .footer-contact a {
+            color: var(--color-accent);
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+
+        .footer-contact a:hover {
+            color: var(--color-accent-hover);
+        }
+
+        /* ============================================
+           ANIMATIONS
+        ============================================ */
+        @media (prefers-reduced-motion: no-preference) {
+            .fade-in {
+                opacity: 0;
+                transform: translateY(20px);
+                transition: opacity 0.6s ease, transform 0.6s ease;
+            }
+
+            .fade-in.visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .fade-in {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        /* ============================================
+           UTILITY
+        ============================================ */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header id="header">
+        <div class="container header-inner">
+            <a href="/" class="logo">SheCounts</a>
+            <a href="#contact" class="header-cta">
+                Let's talk
+            </a>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content fade-in">
+                <h1>Accounting that pays attention, so you don't have to worry.</h1>
+                <p class="hero-sub">
+                    Proactive bookkeeping and tax guidance for Canadian small businesses.
+                    One point of contact. No surprises. No chasing you down at deadline.
+                </p>
+                <a href="#contact" class="hero-cta">
+                    Book a conversation
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Approach -->
+    <section class="approach">
+        <div class="container">
+            <div class="approach-header fade-in">
+                <h2>A different kind of accountant</h2>
+                <p>Most accountants call when something's wrong. We call before it becomes a problem.</p>
+            </div>
+            <div class="approach-grid">
+                <div class="approach-item fade-in">
+                    <h3>Proactive</h3>
+                    <p>We reach out before deadlines. We flag issues before they escalate. We look for grants you might qualify for. You shouldn't have to wonder what's coming next.</p>
+                </div>
+                <div class="approach-item fade-in">
+                    <h3>Personal</h3>
+                    <p>One person who knows your business. Direct phone number. No call centers, no chatbots, no explaining your situation to someone new every time.</p>
+                </div>
+                <div class="approach-item fade-in">
+                    <h3>Practical</h3>
+                    <p>Plain English, not jargon. Actionable advice, not just reports. We're here to help you make better decisions, not bury you in spreadsheets.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services -->
+    <section class="services">
+        <div class="container">
+            <div class="services-header fade-in">
+                <h2>What we handle</h2>
+                <p>The financial foundation that lets you focus on running your business.</p>
+            </div>
+            <div class="services-grid fade-in">
+                <div class="service-item">
+                    <h3>Bookkeeping</h3>
+                    <p>Monthly reconciliation, organized records, and financial statements that actually make sense. Always current, never scrambling.</p>
+                </div>
+                <div class="service-item">
+                    <h3>Tax Preparation</h3>
+                    <p>Corporate returns, HST filings, and year-end planning. Filed on time, every time, with no last-minute surprises.</p>
+                </div>
+                <div class="service-item">
+                    <h3>Financial Guidance</h3>
+                    <p>Quarterly check-ins to review your numbers, plan for what's ahead, and catch opportunities you might be missing.</p>
+                </div>
+                <div class="service-item">
+                    <h3>Recovery &amp; Cleanup</h3>
+                    <p>If your books are a mess—whether from a failed software provider or neglected records—we can get you back on track.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Founder -->
+    <section class="founder">
+        <div class="container">
+            <div class="founder-content fade-in">
+                <p class="founder-label">About</p>
+                <p class="founder-quote">
+                    "I started SheCounts because I saw too many business owners getting reactive service—accountants who only showed up when there was a problem. I believe you deserve someone paying attention all year, not just at tax time."
+                </p>
+                <p class="founder-bio">
+                    20 years of experience working with Canadian small businesses.
+                    Based in Canada, serving clients across the country.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Situations -->
+    <section class="situations">
+        <div class="container">
+            <div class="situations-header fade-in">
+                <h2>You might be a good fit if...</h2>
+                <p>SheCounts works best for business owners who value peace of mind.</p>
+            </div>
+            <div class="situations-list fade-in">
+                <div class="situation-item">
+                    <div class="situation-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                        </svg>
+                    </div>
+                    <p>You're tired of only hearing from your accountant when something's wrong</p>
+                </div>
+                <div class="situation-item">
+                    <div class="situation-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                        </svg>
+                    </div>
+                    <p>Your bookkeeping software failed or you've outgrown DIY solutions</p>
+                </div>
+                <div class="situation-item">
+                    <div class="situation-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                        </svg>
+                    </div>
+                    <p>You want one person who actually knows your business</p>
+                </div>
+                <div class="situation-item">
+                    <div class="situation-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                        </svg>
+                    </div>
+                    <p>You suspect you're leaving money on the table—grants, credits, deductions</p>
+                </div>
+                <div class="situation-item">
+                    <div class="situation-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                        </svg>
+                    </div>
+                    <p>You'd rather have a conversation than fill out a contact form</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section" id="contact">
+        <div class="container">
+            <div class="cta-content fade-in">
+                <h2>Let's see if we're a fit</h2>
+                <p>A 20-minute conversation to understand your situation and see if SheCounts is the right solution. No pressure, no sales pitch.</p>
+                <a href="mailto:hello@shecounts.ca" class="cta-button">
+                    Book a conversation
+                </a>
+                <p class="cta-note">Or email directly: hello@shecounts.ca</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-inner">
+            <div>
+                <p class="footer-logo">SheCounts</p>
+                <p class="footer-text">Accounting for Canadian small businesses</p>
+            </div>
+            <div class="footer-contact">
+                <p><a href="mailto:hello@shecounts.ca">hello@shecounts.ca</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Header scroll state
+        const header = document.getElementById('header');
+        const onScroll = () => {
+            if (window.scrollY > 20) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        };
+        window.addEventListener('scroll', onScroll, { passive: true });
+
+        // Fade-in on scroll
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px 0px -60px 0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+
+</body>
+</html>
