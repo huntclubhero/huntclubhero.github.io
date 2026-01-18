@@ -1,0 +1,2307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto-Pilot | Week 1 Execution Plan — The Rug Killer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --bg-card-hover: #1a1a25;
+            --accent-red: #ff3b3b;
+            --accent-red-glow: rgba(255, 59, 59, 0.3);
+            --accent-green: #00ff88;
+            --accent-green-glow: rgba(0, 255, 136, 0.3);
+            --accent-purple: #a855f7;
+            --accent-blue: #3b82f6;
+            --accent-orange: #f97316;
+            --accent-yellow: #fbbf24;
+            --accent-cyan: #06b6d4;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border-color: #2a2a3a;
+            --gradient-red: linear-gradient(135deg, #ff3b3b 0%, #ff6b6b 100%);
+            --gradient-green: linear-gradient(135deg, #00ff88 0%, #00cc6a 100%);
+            --gradient-purple: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 700;
+            font-size: 1.125rem;
+        }
+
+        .nav-logo-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--gradient-red);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.125rem;
+        }
+
+        .nav-badge {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            color: var(--accent-green);
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* Hero */
+        .hero {
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 50%, var(--accent-red-glow) 0%, transparent 40%);
+            opacity: 0.2;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 59, 59, 0.1);
+            border: 1px solid rgba(255, 59, 59, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8125rem;
+            color: var(--accent-red);
+            margin-bottom: 1.5rem;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .hero h1 span {
+            background: var(--gradient-red);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+            padding: 2rem;
+            background: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-red);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* Section */
+        .section {
+            padding: 4rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            margin-bottom: 3rem;
+        }
+
+        .section-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent-red);
+            margin-bottom: 0.5rem;
+        }
+
+        .section-title {
+            font-size: clamp(1.75rem, 4vw, 2.5rem);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+        }
+
+        /* Week Overview */
+        .week-overview {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 4rem;
+        }
+
+        @media (max-width: 900px) {
+            .week-overview {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (max-width: 500px) {
+            .week-overview {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .week-day-mini {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s;
+        }
+
+        .week-day-mini:hover {
+            border-color: var(--accent-red);
+            transform: translateY(-2px);
+        }
+
+        .week-day-mini.highlight {
+            border-color: var(--accent-red);
+            background: rgba(255, 59, 59, 0.05);
+        }
+
+        .day-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-red);
+        }
+
+        .day-theme {
+            font-size: 0.6875rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        /* Day Card Full */
+        .day-full {
+            margin-bottom: 4rem;
+            scroll-margin-top: 100px;
+        }
+
+        .day-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .day-badge {
+            background: var(--gradient-red);
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .day-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+        }
+
+        .day-account {
+            margin-left: auto;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.8125rem;
+            color: var(--text-muted);
+        }
+
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 1000px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Tweet Cards */
+        .tweets-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .tweets-header {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .tweets-header-icon {
+            font-size: 1.25rem;
+        }
+
+        .tweets-header h4 {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .tweets-header span {
+            margin-left: auto;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .tweet-item {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .tweet-item:last-child {
+            border-bottom: none;
+        }
+
+        .tweet-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .tweet-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6875rem;
+            color: var(--accent-red);
+            background: rgba(255, 59, 59, 0.1);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+        }
+
+        .tweet-time {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .tweet-account {
+            font-size: 0.75rem;
+            color: var(--accent-purple);
+        }
+
+        .tweet-content {
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8125rem;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            white-space: pre-wrap;
+        }
+
+        .tweet-note {
+            margin-top: 0.75rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        /* Reply Section */
+        .replies-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .replies-header {
+            background: rgba(0, 255, 136, 0.05);
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .replies-header h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--accent-green);
+        }
+
+        .replies-count {
+            margin-left: auto;
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--accent-green);
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .reply-category {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .reply-category:last-child {
+            border-bottom: none;
+        }
+
+        .reply-category-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .reply-category-badge {
+            font-size: 0.6875rem;
+            font-weight: 600;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .reply-category-badge.cat-a {
+            background: rgba(255, 59, 59, 0.1);
+            color: var(--accent-red);
+        }
+
+        .reply-category-badge.cat-b {
+            background: rgba(168, 85, 247, 0.1);
+            color: var(--accent-purple);
+        }
+
+        .reply-category-badge.cat-c {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--accent-blue);
+        }
+
+        .reply-category-badge.cat-d {
+            background: rgba(249, 115, 22, 0.1);
+            color: var(--accent-orange);
+        }
+
+        .reply-category-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .reply-category-count {
+            margin-left: auto;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .reply-list {
+            display: grid;
+            gap: 0.5rem;
+        }
+
+        .reply-item {
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 0.75rem 1rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        .reply-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6875rem;
+            color: var(--text-muted);
+            min-width: 1.5rem;
+        }
+
+        /* To-Do Section */
+        .todo-section {
+            margin-top: 2rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .todo-header {
+            background: rgba(251, 191, 36, 0.05);
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .todo-header h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--accent-yellow);
+        }
+
+        .todo-phase {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .todo-phase:last-child {
+            border-bottom: none;
+        }
+
+        .todo-phase-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.75rem;
+        }
+
+        .todo-list {
+            display: grid;
+            gap: 0.5rem;
+        }
+
+        .todo-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 0;
+        }
+
+        .todo-checkbox {
+            width: 18px;
+            height: 18px;
+            border: 2px solid var(--border-color);
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+
+        .todo-text {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        /* Thread Format */
+        .thread-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .thread-header {
+            background: rgba(255, 59, 59, 0.05);
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .thread-header h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--accent-red);
+        }
+
+        .thread-tweets {
+            padding: 1.5rem;
+        }
+
+        .thread-tweet {
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .thread-tweet:last-child {
+            margin-bottom: 0;
+        }
+
+        .thread-tweet::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: -1rem;
+            width: 2px;
+            height: 1rem;
+            background: var(--border-color);
+        }
+
+        .thread-tweet:last-child::before {
+            display: none;
+        }
+
+        .thread-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6875rem;
+            color: var(--accent-red);
+            background: rgba(255, 59, 59, 0.1);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            margin-bottom: 0.75rem;
+            display: inline-block;
+        }
+
+        .thread-content {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8125rem;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            white-space: pre-wrap;
+        }
+
+        /* Army Section */
+        .army-section {
+            background: linear-gradient(180deg, var(--bg-dark) 0%, rgba(0, 255, 136, 0.03) 100%);
+            padding: 4rem 2rem;
+        }
+
+        .army-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .army-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .army-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--accent-green);
+        }
+
+        .army-count {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent-green);
+        }
+
+        .army-role {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .army-mission {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .army-schedule {
+            margin-top: 1.5rem;
+        }
+
+        .army-schedule-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+        }
+
+        .army-schedule-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8125rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .army-schedule-item:last-child {
+            border-bottom: none;
+        }
+
+        .army-schedule-day {
+            color: var(--text-muted);
+        }
+
+        .army-schedule-task {
+            color: var(--text-secondary);
+        }
+
+        /* Metrics Section */
+        .metrics-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .metrics-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+        }
+
+        @media (max-width: 800px) {
+            .metrics-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        .metrics-cell {
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .metrics-cell.header {
+            background: rgba(255, 59, 59, 0.05);
+            border-color: rgba(255, 59, 59, 0.2);
+        }
+
+        .metrics-day {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--accent-red);
+            margin-bottom: 0.25rem;
+        }
+
+        .metrics-value {
+            font-size: 0.6875rem;
+            color: var(--text-muted);
+        }
+
+        /* Content Bank */
+        .bank-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+        }
+
+        .bank-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .bank-category {
+            margin-bottom: 1.5rem;
+        }
+
+        .bank-category:last-child {
+            margin-bottom: 0;
+        }
+
+        .bank-category-title {
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--accent-purple);
+            margin-bottom: 0.75rem;
+        }
+
+        .bank-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .bank-item {
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Graphics Needed */
+        .graphics-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-top: 2rem;
+        }
+
+        .graphics-header {
+            background: rgba(168, 85, 247, 0.05);
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .graphics-header h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--accent-purple);
+        }
+
+        .graphics-list {
+            padding: 1rem 1.5rem;
+        }
+
+        .graphics-item {
+            display: grid;
+            grid-template-columns: 60px 1fr 1fr;
+            gap: 1rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.875rem;
+        }
+
+        .graphics-item:last-child {
+            border-bottom: none;
+        }
+
+        .graphics-day {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-red);
+            font-weight: 600;
+        }
+
+        .graphics-name {
+            color: var(--text-primary);
+        }
+
+        .graphics-desc {
+            color: var(--text-muted);
+        }
+
+        /* Divider */
+        .divider {
+            height: 1px;
+            background: var(--border-color);
+            margin: 4rem 0;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-quote {
+            font-size: 1.5rem;
+            font-weight: 600;
+            font-style: italic;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .footer-quote span {
+            color: var(--accent-red);
+        }
+
+        .footer-brand {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .day-header {
+                flex-wrap: wrap;
+            }
+
+            .day-account {
+                margin-left: 0;
+                margin-top: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-content">
+            <div class="nav-logo">
+                <div class="nav-logo-icon">💀</div>
+                <span>The Rug Killer</span>
+            </div>
+            <span class="nav-badge">WEEK 1 EXECUTION</span>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">Detailed Execution Plan</div>
+            <h1>Week 1: <span>The Killer Emerges</span></h1>
+            <p class="hero-subtitle">7 days of content, 20 replies per day, complete to-do lists, and community deployment instructions.</p>
+
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <div class="stat-value">7</div>
+                    <div class="stat-label">Days</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">3-4</div>
+                    <div class="stat-label">Tweets/Day</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">20</div>
+                    <div class="stat-label">Replies/Day</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">50</div>
+                    <div class="stat-label">Army Members</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Week Overview -->
+    <section class="section">
+        <div class="section-header">
+            <div class="section-number">OVERVIEW</div>
+            <h2 class="section-title">Week at a Glance</h2>
+        </div>
+
+        <div class="week-overview">
+            <a href="#day1" class="week-day-mini highlight">
+                <div class="day-num">1</div>
+                <div class="day-theme">Launch</div>
+            </a>
+            <a href="#day2" class="week-day-mini highlight">
+                <div class="day-num">2</div>
+                <div class="day-theme">Kill #1</div>
+            </a>
+            <a href="#day3" class="week-day-mini">
+                <div class="day-num">3</div>
+                <div class="day-theme">Education</div>
+            </a>
+            <a href="#day4" class="week-day-mini">
+                <div class="day-num">4</div>
+                <div class="day-theme">Kill #2 Setup</div>
+            </a>
+            <a href="#day5" class="week-day-mini highlight">
+                <div class="day-num">5</div>
+                <div class="day-theme">Kill #2</div>
+            </a>
+            <a href="#day6" class="week-day-mini">
+                <div class="day-num">6</div>
+                <div class="day-theme">Pattern</div>
+            </a>
+            <a href="#day7" class="week-day-mini">
+                <div class="day-num">7</div>
+                <div class="day-theme">Community</div>
+            </a>
+        </div>
+    </section>
+
+    <!-- DAY 1 -->
+    <section class="section" id="day1">
+        <div class="day-full">
+            <div class="day-header">
+                <span class="day-badge">DAY 1</span>
+                <h2 class="day-title">The Killer Emerges</h2>
+                <span class="day-account">Primary: @jo5htheboss</span>
+            </div>
+
+            <div class="content-grid">
+                <!-- Tweets -->
+                <div class="tweets-section">
+                    <div class="tweets-header">
+                        <span class="tweets-header-icon">📝</span>
+                        <h4>Content Calendar</h4>
+                        <span>4 Tweets</span>
+                    </div>
+
+                    <div class="tweet-item">
+                        <div class="tweet-meta">
+                            <span class="tweet-number">TWEET 1</span>
+                            <span class="tweet-time">10:00 AM EST</span>
+                            <span class="tweet-account">Josh</span>
+                        </div>
+                        <div class="tweet-content">I've been watching Solana rugs for months. Documenting them. Tracing the wallets.
+
+98% of Pump.fun tokens rug. $500M stolen last year.
+
+Starting today, I'm doing something about it.
+
+Introducing: The Rug Killer.
+
+First kill report drops tomorrow.</div>
+                        <p class="tweet-note">Creates anticipation. Positions Josh as someone who's been doing the work. Doesn't mention Auto-Pilot yet.</p>
+                    </div>
+
+                    <div class="tweet-item">
+                        <div class="tweet-meta">
+                            <span class="tweet-number">TWEET 2</span>
+                            <span class="tweet-time">2:00 PM EST</span>
+                            <span class="tweet-account">Josh</span>
+                        </div>
+                        <div class="tweet-content">Tomorrow's target:
+
+- Peak market cap: $2.4M
+- Money lost: ~$890K
+- Time from launch to drain: 11 days
+- Dev excuse: "Wallet got hacked"
+
+Spoiler: It wasn't hacked. I have the receipts.</div>
+                    </div>
+
+                    <div class="tweet-item">
+                        <div class="tweet-meta">
+                            <span class="tweet-number">TWEET 3</span>
+                            <span class="tweet-time">6:00 PM EST</span>
+                            <span class="tweet-account">Auto-Pilot</span>
+                        </div>
+                        <div class="tweet-content">Every rug has the same root cause:
+
+Someone had to be trusted.
+
+We're building a future where trust isn't required.
+
+The Rug Killer launches tomorrow. The hunt begins.</div>
+                    </div>
+
+                    <div class="tweet-item">
+                        <div class="tweet-meta">
+                            <span class="tweet-number">TWEET 4</span>
+                            <span class="tweet-time">10:00 PM EST</span>
+                            <span class="tweet-account">Josh</span>
+                        </div>
+                        <div class="tweet-content">Quick question for CT:
+
+What's the worst rug you've ever been in?
+
+- Token name
+- What they promised
+- What actually happened
+
+No judgment. Collecting data for something.</div>
+                    </div>
+                </div>
+
+                <!-- Replies -->
+                <div class="replies-section">
+                    <div class="replies-header">
+                        <span>💬</span>
+                        <h4>Reply Strategy</h4>
+                        <span class="replies-count">20 Replies</span>
+                    </div>
+
+                    <div class="reply-category">
+                        <div class="reply-category-header">
+                            <span class="reply-category-badge cat-a">CAT A</span>
+                            <span class="reply-category-title">Rug Discussions</span>
+                            <span class="reply-category-count">8 replies</span>
+                        </div>
+                        <div class="reply-list">
+                            <div class="reply-item">
+                                <span class="reply-num">1</span>
+                                <span>"This is exactly why I started documenting these. The pattern is always the same. Kill report incoming."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">2</span>
+                                <span>"I've been tracking this one. The wallet movements are... interesting. Stay tuned."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">3</span>
+                                <span>"Another one. Same playbook every time. Dev controls wallet → dev abuses wallet."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">4</span>
+                                <span>"The on-chain receipts tell a different story than their Discord did. Shocking."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">5</span>
+                                <span>"Add this to the list. We're building something to make sure people see the patterns."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">6</span>
+                                <span>"This is preventable. That's the frustrating part. Completely preventable."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">7</span>
+                                <span>"Saving this for the files. The Rug Killer sees all."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">8</span>
+                                <span>"Cause of death: trust without verification. Tale as old as Solana."</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="reply-category">
+                        <div class="reply-category-header">
+                            <span class="reply-category-badge cat-b">CAT B</span>
+                            <span class="reply-category-title">Solana/Crypto General</span>
+                            <span class="reply-category-count">6 replies</span>
+                        </div>
+                        <div class="reply-list">
+                            <div class="reply-item">
+                                <span class="reply-num">9</span>
+                                <span>"Solana's biggest problem isn't speed or fees. It's trust infrastructure. Working on it."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">10</span>
+                                <span>"The tech is there. The accountability isn't. Yet."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">11</span>
+                                <span>"Bullish on Solana. Bearish on the 98% of tokens that rug."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">12</span>
+                                <span>"This is why we need better systems, not just better promises."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">13</span>
+                                <span>"The builders who stick around are the ones who don't need to be trusted. They prove it on-chain."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">14</span>
+                                <span>"Transparency > trust. Every time."</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="reply-category">
+                        <div class="reply-category-header">
+                            <span class="reply-category-badge cat-c">CAT C</span>
+                            <span class="reply-category-title">Influencer Engagement</span>
+                            <span class="reply-category-count">4 replies</span>
+                        </div>
+                        <div class="reply-list">
+                            <div class="reply-item">
+                                <span class="reply-num">15</span>
+                                <span>"This. The meta is shifting from 'trust me bro' to 'verify it yourself.' Finally."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">16</span>
+                                <span>"Exactly right. The projects that survive are the ones that remove themselves from the trust equation."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">17</span>
+                                <span>"The next wave of Solana projects will be defined by transparency, not promises."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">18</span>
+                                <span>"We're building the infrastructure for this. Launches soon."</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="reply-category">
+                        <div class="reply-category-header">
+                            <span class="reply-category-badge cat-d">CAT D</span>
+                            <span class="reply-category-title">Direct Questions</span>
+                            <span class="reply-category-count">2 replies</span>
+                        </div>
+                        <div class="reply-list">
+                            <div class="reply-item">
+                                <span class="reply-num">19</span>
+                                <span>"Tomorrow. First kill report. You'll see exactly what I mean."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">20</span>
+                                <span>"Been building this for months. Time to show receipts."</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- To-Do List -->
+            <div class="todo-section">
+                <div class="todo-header">
+                    <span>✓</span>
+                    <h4>Day 1 Checklist</h4>
+                </div>
+
+                <div class="todo-phase">
+                    <div class="todo-phase-title">Pre-Launch (Before 10 AM)</div>
+                    <div class="todo-list">
+                        <div class="todo-item">
+                            <div class="todo-checkbox"></div>
+                            <span class="todo-text">Confirm kill target for Day 2 is fully researched</span>
+                        </div>
+                        <div class="todo-item">
+                            <div class="todo-checkbox"></div>
+                            <span class="todo-text">Have all Solscan links ready and verified</span>
+                        </div>
+                        <div class="todo-item">
+                            <div class="todo-checkbox"></div>
+                            <span class="todo-text">Brief 50-person community on Day 1 plan</span>
+                        </div>
+                        <div class="todo-item">
+                            <div class="todo-checkbox"></div>
+                            <span class="todo-text">Assign Rug Scouts to monitor reactions</span>
+                        </div>
+                        <div class="todo-item">
+                            <div class="todo-checkbox"></div>
+                            <span class="todo-text">Schedule all 4 tweets</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="todo-phase">
+                    <div class="todo-phase-title">During Day</div>
+                    <div class="todo-list">
+                        <div class="todo-item">
+                            <div class="todo-checkbox"></div>
+                            <span class="todo-text">Post Tweet 1 at 10:00 AM EST</span>
+                        </div>
+                        <div class="todo-item">
+                            <div class="todo-checkbox"></div>
+                            <span class="todo-text">Community engages within first 15 minutes</span>
+                        </div>
+                        <div class="todo-item">
+                            <div class="todo-checkbox"></div>
+                            <span class="todo-text">Post Tweet 2 at 2:00 PM EST</span>
+                        </div>
+                        <div class="todo-item">
+                            <div class="todo-checkbox"></div>
+                            <span class="todo-text">Complete 10 replies by 3:00 PM EST</span>
+                        </div>
+                        <div class="todo-item">
+                            <div class="todo-checkbox"></div>
+                            <span class="todo-text">Post Tweet 3 at 6:00 PM EST</span>
+                        </div>
+                        <div class="todo-item">
+                            <div class="todo-checkbox"></div>
+                            <span class="todo-text">Complete remaining 10 replies by 9:00 PM EST</span>
+                        </div>
+                        <div class="todo-item">
+                            <div class="todo-checkbox"></div>
+                            <span class="todo-text">Post Tweet 4 at 10:00 PM EST</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="todo-phase">
+                    <div class="todo-phase-title">End of Day</div>
+                    <div class="todo-list">
+                        <div class="todo-item">
+                            <div class="todo-checkbox"></div>
+                            <span class="todo-text">Screenshot engagement metrics</span>
+                        </div>
+                        <div class="todo-item">
+                            <div class="todo-checkbox"></div>
+                            <span class="todo-text">Note which rug stories from Tweet 4 are kill candidates</span>
+                        </div>
+                        <div class="todo-item">
+                            <div class="todo-checkbox"></div>
+                            <span class="todo-text">Brief community on Day 2 plan</span>
+                        </div>
+                        <div class="todo-item">
+                            <div class="todo-checkbox"></div>
+                            <span class="todo-text">Confirm all kill report graphics are ready</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider" style="max-width: 1400px; margin: 0 auto;"></div>
+
+    <!-- DAY 2 -->
+    <section class="section" id="day2">
+        <div class="day-full">
+            <div class="day-header">
+                <span class="day-badge">DAY 2</span>
+                <h2 class="day-title">First Kill</h2>
+                <span class="day-account">Primary: @jo5htheboss</span>
+            </div>
+
+            <!-- Kill Thread -->
+            <div class="thread-section">
+                <div class="thread-header">
+                    <h4>💀 Kill Report Thread (6 Tweets) — 11:00 AM EST</h4>
+                </div>
+                <div class="thread-tweets">
+                    <div class="thread-tweet">
+                        <span class="thread-num">1/6</span>
+                        <div class="thread-content">💀 RUG KILL #1: [TOKEN NAME]
+
+Date of death: [Date]
+Market cap at peak: $2.4M
+Money lost: ~$890K
+
+Let's trace exactly what happened. 🧵</div>
+                    </div>
+                    <div class="thread-tweet">
+                        <span class="thread-num">2/6</span>
+                        <div class="thread-content">The promise:
+
+"100% of listing fund goes to [exchange] listing. We're talking to 3 CEXs right now."
+
+[Screenshot of their Discord/Twitter announcement]
+
+Community was hyped. They were finally getting a "real" listing.</div>
+                    </div>
+                    <div class="thread-tweet">
+                        <span class="thread-num">3/6</span>
+                        <div class="thread-content">The reality:
+
+[Solscan link]
+
+- Day 3: 45 SOL moved from treasury to Wallet A
+- Day 5: Wallet A sends to Wallet B (new wallet, no history)
+- Day 7: Wallet B sends to [exchange] — but to SELL, not to list
+- Day 11: Dev announces "listing fell through, funds are gone"
+
+Total extracted: 312 SOL (~$58K at the time)</div>
+                    </div>
+                    <div class="thread-tweet">
+                        <span class="thread-num">4/6</span>
+                        <div class="thread-content">The failure mode: LISTING FUND MISAPPROPRIATION
+
+Dev had direct access to the listing fund.
+No automation. No locks. No accountability.
+
+"Trust me, I'll use it for the listing."
+
+He used it for his rent.</div>
+                    </div>
+                    <div class="thread-tweet">
+                        <span class="thread-num">5/6</span>
+                        <div class="thread-content">How Auto-Pilot would have killed this rug before it happened:
+
+With Auto-Pilot's Listing Fund automation:
+- Funds are held in a custodial wallet
+- Release is automated based on preset conditions
+- Dev literally cannot move the funds manually
+
+The listing either happens, or the funds return to treasury. No third option.
+
+[Link to Auto-Pilot listing fund feature]</div>
+                    </div>
+                    <div class="thread-tweet">
+                        <span class="thread-num">6/6</span>
+                        <div class="thread-content">Cause of death: Trust without verification.
+
+The community trusted. The dev lied. The chain recorded everything.
+
+This didn't have to happen.
+
+If you're launching a token, don't ask your community to trust you.
+
+Let them verify: auto-pilot.tech</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-grid">
+                <!-- Additional Tweets -->
+                <div class="tweets-section">
+                    <div class="tweets-header">
+                        <span class="tweets-header-icon">📝</span>
+                        <h4>Additional Tweets</h4>
+                        <span>3 More</span>
+                    </div>
+
+                    <div class="tweet-item">
+                        <div class="tweet-meta">
+                            <span class="tweet-number">TWEET 2</span>
+                            <span class="tweet-time">3:00 PM EST</span>
+                            <span class="tweet-account">Josh</span>
+                        </div>
+                        <div class="tweet-content">The DMs after that kill report...
+
+"This happened to me too"
+"Can you look into [token]?"
+"I lost 12 SOL to the same thing"
+"How did you trace the wallets?"
+
+This is why I'm doing this.
+
+More kills coming. Send me your rugs.</div>
+                    </div>
+
+                    <div class="tweet-item">
+                        <div class="tweet-meta">
+                            <span class="tweet-number">TWEET 3</span>
+                            <span class="tweet-time">6:00 PM EST</span>
+                            <span class="tweet-account">Auto-Pilot</span>
+                        </div>
+                        <div class="tweet-content">Rug Kill #1 findings:
+
+⏱️ Time from promise to drain: 11 days
+💰 Amount extracted: 312 SOL
+🎭 Excuse used: "Wallet compromised"
+📍 Where it went: Sold on exchange
+
+The listing fund was never going to a listing.
+
+Auto-Pilot makes this mechanically impossible.</div>
+                    </div>
+
+                    <div class="tweet-item">
+                        <div class="tweet-meta">
+                            <span class="tweet-number">TWEET 4</span>
+                            <span class="tweet-time">9:30 PM EST</span>
+                            <span class="tweet-account">Josh</span>
+                        </div>
+                        <div class="tweet-content">After today's kill report, I'm curious:
+
+How many of you have been in a token where the "listing fund" never actually went to a listing?
+
+Reply or QRT with the token. Building a database.</div>
+                    </div>
+                </div>
+
+                <!-- Replies -->
+                <div class="replies-section">
+                    <div class="replies-header">
+                        <span>💬</span>
+                        <h4>Reply Strategy</h4>
+                        <span class="replies-count">20 Replies</span>
+                    </div>
+
+                    <div class="reply-category">
+                        <div class="reply-category-header">
+                            <span class="reply-category-badge cat-a">CAT A</span>
+                            <span class="reply-category-title">Kill Thread Engagement</span>
+                            <span class="reply-category-count">10 replies</span>
+                        </div>
+                        <div class="reply-list">
+                            <div class="reply-item">
+                                <span class="reply-num">1</span>
+                                <span>"The receipts don't lie. Solscan sees all."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">2</span>
+                                <span>"This is just kill #1. The patterns get worse."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">3</span>
+                                <span>"Send me the details in DM. Might be kill #3."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">4</span>
+                                <span>"Exactly. The trust model is broken. Time to fix it."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">5</span>
+                                <span>"The 'wallet got hacked' excuse is the rug equivalent of 'my dog ate my homework.'"</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">6</span>
+                                <span>"Every single one of these is preventable. That's what kills me."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">7</span>
+                                <span>"The tech exists to stop this. People just don't use it yet."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">8</span>
+                                <span>"Appreciate you sharing this. The more data, the better the kills."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">9</span>
+                                <span>"On-chain is forever. Devs forget that."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">10</span>
+                                <span>"Next kill is even worse. Stay tuned."</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="reply-category">
+                        <div class="reply-category-header">
+                            <span class="reply-category-badge cat-b">CAT B</span>
+                            <span class="reply-category-title">Rug Discussions Elsewhere</span>
+                            <span class="reply-category-count">6 replies</span>
+                        </div>
+                        <div class="reply-list">
+                            <div class="reply-item">
+                                <span class="reply-num">11</span>
+                                <span>"Just did a kill report on a similar one. The playbook is identical every time."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">12</span>
+                                <span>"Add it to the list. The Rug Killer's backlog is growing."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">13</span>
+                                <span>"Did you track where the funds went? I can help trace it."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">14</span>
+                                <span>"Another case study for the files. This is an epidemic."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">15</span>
+                                <span>"The pattern: promise → control → abuse → excuse. Rinse. Repeat."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">16</span>
+                                <span>"The only solution is removing the trust requirement entirely."</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="reply-category">
+                        <div class="reply-category-header">
+                            <span class="reply-category-badge cat-c">CAT C</span>
+                            <span class="reply-category-title">Broader Engagement</span>
+                            <span class="reply-category-count">4 replies</span>
+                        </div>
+                        <div class="reply-list">
+                            <div class="reply-item">
+                                <span class="reply-num">17</span>
+                                <span>"Accountability infrastructure is the next frontier. Building it."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">18</span>
+                                <span>"This is why transparency tools matter. Not optional anymore."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">19</span>
+                                <span>"The projects that survive 2024 will be the ones that can prove their treasury is clean."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">20</span>
+                                <span>"Verification > vibes. The market is learning."</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- To-Do -->
+            <div class="todo-section">
+                <div class="todo-header">
+                    <span>✓</span>
+                    <h4>Day 2 Checklist</h4>
+                </div>
+
+                <div class="todo-phase">
+                    <div class="todo-phase-title">Pre-Launch (Before 11 AM)</div>
+                    <div class="todo-list">
+                        <div class="todo-item">
+                            <div class="todo-checkbox"></div>
+                            <span class="todo-text">Final review of kill thread — verify all Solscan links work</span>
+                        </div>
+                        <div class="todo-item">
+                            <div class="todo-checkbox"></div>
+                            <span class="todo-text">Kill graphics ready (if using visuals)</span>
+                        </div>
+                        <div class="todo-item">
+                            <div class="todo-checkbox"></div>
+                            <span class="todo-text">Brief community: "Thread drops at 11 AM, engage immediately"</span>
+                        </div>
+                        <div class="todo-item">
+                            <div class="todo-checkbox"></div>
+                            <span class="todo-text">Assign Reply Guys to specific talking points</span>
+                        </div>
+                        <div class="todo-item">
+                            <div class="todo-checkbox"></div>
+                            <span class="todo-text">Have Meme Soldiers ready with derivative content</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="todo-phase">
+                    <div class="todo-phase-title">During Day</div>
+                    <div class="todo-list">
+                        <div class="todo-item">
+                            <div class="todo-checkbox"></div>
+                            <span class="todo-text">Post kill thread at 11:00 AM EST</span>
+                        </div>
+                        <div class="todo-item">
+                            <div class="todo-checkbox"></div>
+                            <span class="todo-text">Community engages within 5 minutes (critical for algorithm)</span>
+                        </div>
+                        <div class="todo-item">
+                            <div class="todo-checkbox"></div>
+                            <span class="todo-text">Monitor for negative reactions or defenders</span>
+                        </div>
+                        <div class="todo-item">
+                            <div class="todo-checkbox"></div>
+                            <span class="todo-text">Post Tweet 2 at 3:00 PM EST</span>
+                        </div>
+                        <div class="todo-item">
+                            <div class="todo-checkbox"></div>
+                            <span class="todo-text">Complete 12 replies by 4:00 PM EST</span>
+                        </div>
+                        <div class="todo-item">
+                            <div class="todo-checkbox"></div>
+                            <span class="todo-text">Post Tweet 3 at 6:00 PM EST</span>
+                        </div>
+                        <div class="todo-item">
+                            <div class="todo-checkbox"></div>
+                            <span class="todo-text">Complete remaining 8 replies by 8:00 PM EST</span>
+                        </div>
+                        <div class="todo-item">
+                            <div class="todo-checkbox"></div>
+                            <span class="todo-text">Post Tweet 4 at 9:30 PM EST</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="todo-phase">
+                    <div class="todo-phase-title">End of Day</div>
+                    <div class="todo-list">
+                        <div class="todo-item">
+                            <div class="todo-checkbox"></div>
+                            <span class="todo-text">Screenshot engagement metrics for kill thread</span>
+                        </div>
+                        <div class="todo-item">
+                            <div class="todo-checkbox"></div>
+                            <span class="todo-text">Document all rug submissions received</span>
+                        </div>
+                        <div class="todo-item">
+                            <div class="todo-checkbox"></div>
+                            <span class="todo-text">Select candidate for Kill #2 (different failure mode)</span>
+                        </div>
+                        <div class="todo-item">
+                            <div class="todo-checkbox"></div>
+                            <span class="todo-text">Brief community on Day 3 plan</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider" style="max-width: 1400px; margin: 0 auto;"></div>
+
+    <!-- DAY 3 -->
+    <section class="section" id="day3">
+        <div class="day-full">
+            <div class="day-header">
+                <span class="day-badge">DAY 3</span>
+                <h2 class="day-title">Product Education</h2>
+                <span class="day-account">Primary: @AutoPilotSol</span>
+            </div>
+
+            <div class="content-grid">
+                <div class="tweets-section">
+                    <div class="tweets-header">
+                        <span class="tweets-header-icon">📝</span>
+                        <h4>Content Calendar</h4>
+                        <span>4 Tweets</span>
+                    </div>
+
+                    <div class="tweet-item">
+                        <div class="tweet-meta">
+                            <span class="tweet-number">TWEET 1</span>
+                            <span class="tweet-time">10:00 AM EST</span>
+                            <span class="tweet-account">Auto-Pilot</span>
+                        </div>
+                        <div class="tweet-content">People keep asking what Auto-Pilot actually does.
+
+Simple: It makes rugs mechanically impossible.
+
+• Listing fund? Automated and locked.
+• Buybacks? Scheduled and on-chain.
+• Burns? Executed automatically.
+• Team payments? Split and distributed.
+
+The dev can't rug because the dev doesn't control the treasury.
+
+[Link]</div>
+                        <p class="tweet-note">PIN THIS TWEET. Reference it in every kill report.</p>
+                    </div>
+
+                    <div class="tweet-item">
+                        <div class="tweet-meta">
+                            <span class="tweet-number">TWEET 2</span>
+                            <span class="tweet-time">1:00 PM EST</span>
+                            <span class="tweet-account">Auto-Pilot</span>
+                        </div>
+                        <div class="tweet-content">How most Solana tokens work:
+
+"Trust me, I'll do the buybacks"
+→ Dev forgets / lies / disappears
+
+How Auto-Pilot works:
+
+Buybacks scheduled → Bot executes → On-chain proof
+→ Dev can't forget because dev isn't involved
+
+One requires trust. One requires code.</div>
+                    </div>
+
+                    <div class="tweet-item">
+                        <div class="tweet-meta">
+                            <span class="tweet-number">TWEET 3</span>
+                            <span class="tweet-time">5:00 PM EST</span>
+                            <span class="tweet-account">Auto-Pilot</span>
+                        </div>
+                        <div class="tweet-content">Yesterday's kill: Listing fund stolen.
+
+Auto-Pilot's Listing Fund feature:
+
+✓ Funds held in custodial wallet
+✓ Release conditions set at launch
+✓ Dev cannot manually withdraw
+✓ Either the listing happens, or funds return to treasury
+
+No trust required. Just code.
+
+[Link to feature]</div>
+                    </div>
+
+                    <div class="tweet-item">
+                        <div class="tweet-meta">
+                            <span class="tweet-number">TWEET 4</span>
+                            <span class="tweet-time">8:00 PM EST</span>
+                            <span class="tweet-account">Josh</span>
+                        </div>
+                        <div class="tweet-content">Been getting DMs asking if Auto-Pilot actually works.
+
+Current stats:
+• 3 live treasuries
+• 1 test treasury
+• 0 rugs
+• 0 missed buybacks
+• 0 "forgot to burn" situations
+
+It works because it removes the human element.
+
+Humans forget. Humans lie. Code doesn't.</div>
+                    </div>
+                </div>
+
+                <div class="replies-section">
+                    <div class="replies-header">
+                        <span>💬</span>
+                        <h4>Reply Strategy</h4>
+                        <span class="replies-count">20 Replies</span>
+                    </div>
+
+                    <div class="reply-category">
+                        <div class="reply-category-header">
+                            <span class="reply-category-badge cat-a">CAT A</span>
+                            <span class="reply-category-title">Product Questions</span>
+                            <span class="reply-category-count">8 replies</span>
+                        </div>
+                        <div class="reply-list">
+                            <div class="reply-item">
+                                <span class="reply-num">1</span>
+                                <span>"It's a custodial bot wallet. You set the rules, it executes them. You can't change them after."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">2</span>
+                                <span>"Think of it like a smart contract for your treasury, but actually works on Solana."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">3</span>
+                                <span>"The key difference: YOU don't control the treasury. The bot does. And the bot only does what was programmed."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">4</span>
+                                <span>"Works with any Solana token from any launchpad. Not just Pump.fun."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">5</span>
+                                <span>"DM me, happy to walk through how it would work for your project."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">6</span>
+                                <span>"The setup takes about 10 minutes. The trust it builds lasts forever."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">7</span>
+                                <span>"Verification link included — your community can see every transaction the bot makes."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">8</span>
+                                <span>"No more 'trust me bro.' Just 'check the chain.'"</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="reply-category">
+                        <div class="reply-category-header">
+                            <span class="reply-category-badge cat-b">CAT B</span>
+                            <span class="reply-category-title">Kill Follow-ups</span>
+                            <span class="reply-category-count">6 replies</span>
+                        </div>
+                        <div class="reply-list">
+                            <div class="reply-item">
+                                <span class="reply-num">9</span>
+                                <span>"Kill #2 coming soon. Different failure mode. Same root cause: trust."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">10</span>
+                                <span>"Still collecting submissions. The backlog is... depressing."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">11</span>
+                                <span>"The patterns are so consistent it's almost boring. Dev has access → dev abuses access."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">12</span>
+                                <span>"Every kill I do makes me more convinced: the system is broken, not just the devs."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">13</span>
+                                <span>"Appreciate the shares. The more people see these, the harder it is to rug."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">14</span>
+                                <span>"Next kill is a buyback failure. Even more common than listing fund theft."</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="reply-category">
+                        <div class="reply-category-header">
+                            <span class="reply-category-badge cat-c">CAT C</span>
+                            <span class="reply-category-title">Builder/Dev Engagement</span>
+                            <span class="reply-category-count">4 replies</span>
+                        </div>
+                        <div class="reply-list">
+                            <div class="reply-item">
+                                <span class="reply-num">15</span>
+                                <span>"If you're launching, DM me. Happy to show you how to make your treasury verifiable from day 1."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">16</span>
+                                <span>"The meta is shifting. Communities are going to start demanding transparency infrastructure."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">17</span>
+                                <span>"The best time to set up treasury automation is before launch. Second best time is now."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">18</span>
+                                <span>"This is the differentiator now. 'We're transparent' means nothing. 'Verify it yourself' means everything."</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="reply-category">
+                        <div class="reply-category-header">
+                            <span class="reply-category-badge cat-d">CAT D</span>
+                            <span class="reply-category-title">General Ecosystem</span>
+                            <span class="reply-category-count">2 replies</span>
+                        </div>
+                        <div class="reply-list">
+                            <div class="reply-item">
+                                <span class="reply-num">19</span>
+                                <span>"Solana's biggest unlock isn't TPS. It's trust infrastructure."</span>
+                            </div>
+                            <div class="reply-item">
+                                <span class="reply-num">20</span>
+                                <span>"The chains that win are the ones where you don't have to trust. You verify."</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="todo-section">
+                <div class="todo-header">
+                    <span>✓</span>
+                    <h4>Day 3 Checklist</h4>
+                </div>
+                <div class="todo-phase">
+                    <div class="todo-phase-title">Key Actions</div>
+                    <div class="todo-list">
+                        <div class="todo-item">
+                            <div class="todo-checkbox"></div>
+                            <span class="todo-text">Pin the explainer tweet to Auto-Pilot profile after posting</span>
+                        </div>
+                        <div class="todo-item">
+                            <div class="todo-checkbox"></div>
+                            <span class="todo-text">Prepare FAQ responses for common questions</span>
+                        </div>
+                        <div class="todo-item">
+                            <div class="todo-checkbox"></div>
+                            <span class="todo-text">Research candidate for Kill #2 (buyback failure)</span>
+                        </div>
+                        <div class="todo-item">
+                            <div class="todo-checkbox"></div>
+                            <span class="todo-text">Brief community: "Today is education day, answer questions helpfully"</span>
+                        </div>
+                        <div class="todo-item">
+                            <div class="todo-checkbox"></div>
+                            <span class="todo-text">Track DM inquiries — note serious prospects</span>
+                        </div>
+                        <div class="todo-item">
+                            <div class="todo-checkbox"></div>
+                            <span class="todo-text">Begin researching on-chain evidence for Kill #2</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider" style="max-width: 1400px; margin: 0 auto;"></div>
+
+    <!-- DAY 4-7 Summary Cards -->
+    <section class="section" id="day4">
+        <div class="section-header">
+            <div class="section-number">DAYS 4-7</div>
+            <h2 class="section-title">Remaining Week Summary</h2>
+        </div>
+
+        <!-- Day 4 -->
+        <div class="day-full">
+            <div class="day-header">
+                <span class="day-badge">DAY 4</span>
+                <h2 class="day-title">Kill #2 Setup</h2>
+            </div>
+            <div class="tweets-section">
+                <div class="tweets-header">
+                    <span class="tweets-header-icon">📝</span>
+                    <h4>Key Content</h4>
+                </div>
+                <div class="tweet-item">
+                    <div class="tweet-content">Kill #2 drops tomorrow.
+
+This one's different. Not a listing fund theft. Something more insidious.
+
+A project that promised weekly buybacks.
+
+Here's what they actually did:
+
+Week 1: Nothing
+Week 2: Nothing
+Week 3: Nothing
+Week 4: "Market conditions"
+Week 5: Deleted Twitter
+
+The receipts are ready.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Day 5 -->
+        <div class="day-full" id="day5">
+            <div class="day-header">
+                <span class="day-badge">DAY 5</span>
+                <h2 class="day-title">Kill #2 — The Buyback Lie</h2>
+            </div>
+            <div class="tweets-section">
+                <div class="tweets-header">
+                    <span class="tweets-header-icon">💀</span>
+                    <h4>Kill Thread Summary</h4>
+                </div>
+                <div class="tweet-item">
+                    <div class="tweet-content">💀 RUG KILL #2: The Buyback Lie
+
+PROMISED:
+• Weekly buybacks
+• 1% of volume
+• "No exceptions"
+
+DELIVERED:
+• 0 buybacks
+• 0% of volume
+• All exceptions
+
+Cause of death: A promise nobody verified.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Day 6 -->
+        <div class="day-full" id="day6">
+            <div class="day-header">
+                <span class="day-badge">DAY 6</span>
+                <h2 class="day-title">The Pattern Emerges</h2>
+            </div>
+            <div class="tweets-section">
+                <div class="tweets-header">
+                    <span class="tweets-header-icon">📝</span>
+                    <h4>Key Content</h4>
+                </div>
+                <div class="tweet-item">
+                    <div class="tweet-content">Two kills in. Same pattern every time:
+
+1. Dev promises something
+2. Community trusts them
+3. Dev controls the wallet
+4. Dev doesn't deliver (or steals)
+5. Community gets wrecked
+
+The problem isn't bad devs.
+
+The problem is a system that requires trust.
+
+Remove the trust. Remove the rug.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Day 7 -->
+        <div class="day-full" id="day7">
+            <div class="day-header">
+                <span class="day-badge">DAY 7</span>
+                <h2 class="day-title">Community Activation</h2>
+            </div>
+            <div class="tweets-section">
+                <div class="tweets-header">
+                    <span class="tweets-header-icon">📝</span>
+                    <h4>Key Content</h4>
+                </div>
+                <div class="tweet-item">
+                    <div class="tweet-content">I can't kill every rug. There are too many.
+
+So I'm opening applications for Assistant Killers.
+
+If you've been rugged and want to help document it, DM me:
+
+• Token name
+• What was promised
+• What actually happened
+• Any on-chain receipts you have
+
+Best submissions get featured. Some of you are about to become rug hunters.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Army Deployment -->
+    <section class="army-section">
+        <div class="section" style="padding-top: 0;">
+            <div class="section-header">
+                <div class="section-number">ARMY DEPLOYMENT</div>
+                <h2 class="section-title">50-Person Community Roles</h2>
+                <p class="section-subtitle">Specific assignments and schedules for Week 1</p>
+            </div>
+
+            <div class="army-grid">
+                <div class="army-card">
+                    <div class="army-count">20</div>
+                    <h4 class="army-role">Rug Scouts</h4>
+                    <p class="army-mission">Find kill candidates, submit evidence</p>
+                    <div class="army-schedule">
+                        <div class="army-schedule-title">Week 1 Deliverables</div>
+                        <div class="army-schedule-item">
+                            <span class="army-schedule-day">Minimum</span>
+                            <span class="army-schedule-task">30 rug submissions total</span>
+                        </div>
+                        <div class="army-schedule-item">
+                            <span class="army-schedule-day">Target</span>
+                            <span class="army-schedule-task">5 "pre-rug" watchlist projects</span>
+                        </div>
+                        <div class="army-schedule-item">
+                            <span class="army-schedule-day">Daily</span>
+                            <span class="army-schedule-task">3 hours CT monitoring</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="army-card">
+                    <div class="army-count">15</div>
+                    <h4 class="army-role">Reply Guys</h4>
+                    <p class="army-mission">Own the replies, sustain engagement</p>
+                    <div class="army-schedule">
+                        <div class="army-schedule-title">Engagement Schedule</div>
+                        <div class="army-schedule-item">
+                            <span class="army-schedule-day">Day 1</span>
+                            <span class="army-schedule-task">First 10 replies on announcement</span>
+                        </div>
+                        <div class="army-schedule-item">
+                            <span class="army-schedule-day">Day 2</span>
+                            <span class="army-schedule-task">Sustain kill thread for 3 hours</span>
+                        </div>
+                        <div class="army-schedule-item">
+                            <span class="army-schedule-day">Day 5</span>
+                            <span class="army-schedule-task">Same as Day 2</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="army-card">
+                    <div class="army-count">10</div>
+                    <h4 class="army-role">Meme Soldiers</h4>
+                    <p class="army-mission">Create derivative content</p>
+                    <div class="army-schedule">
+                        <div class="army-schedule-title">Week 1 Deliverables</div>
+                        <div class="army-schedule-item">
+                            <span class="army-schedule-day">Per kill</span>
+                            <span class="army-schedule-task">5+ memes minimum</span>
+                        </div>
+                        <div class="army-schedule-item">
+                            <span class="army-schedule-day">Target</span>
+                            <span class="army-schedule-task">2 memes with 50+ engagement</span>
+                        </div>
+                        <div class="army-schedule-item">
+                            <span class="army-schedule-day">Format</span>
+                            <span class="army-schedule-task">"Cause of Death" graphics</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="army-card">
+                    <div class="army-count">5</div>
+                    <h4 class="army-role">Sleeper Agents</h4>
+                    <p class="army-mission">Outside infiltration</p>
+                    <div class="army-schedule">
+                        <div class="army-schedule-title">Week 1 Deliverables</div>
+                        <div class="army-schedule-item">
+                            <span class="army-schedule-day">Infiltrate</span>
+                            <span class="army-schedule-task">10-15 project Discords</span>
+                        </div>
+                        <div class="army-schedule-item">
+                            <span class="army-schedule-day">Intel</span>
+                            <span class="army-schedule-task">3 pre-rug situations</span>
+                        </div>
+                        <div class="army-schedule-item">
+                            <span class="army-schedule-day">Rule</span>
+                            <span class="army-schedule-task">Never coordinate publicly</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Metrics & Resources -->
+    <section class="section">
+        <div class="metrics-section">
+            <h4 class="metrics-title">📊 Week 1 Metrics Tracker</h4>
+            <div class="metrics-grid">
+                <div class="metrics-cell header">
+                    <div class="metrics-day">Day 1</div>
+                    <div class="metrics-value">___</div>
+                </div>
+                <div class="metrics-cell header">
+                    <div class="metrics-day">Day 2</div>
+                    <div class="metrics-value">___</div>
+                </div>
+                <div class="metrics-cell header">
+                    <div class="metrics-day">Day 3</div>
+                    <div class="metrics-value">___</div>
+                </div>
+                <div class="metrics-cell header">
+                    <div class="metrics-day">Day 4</div>
+                    <div class="metrics-value">___</div>
+                </div>
+                <div class="metrics-cell header">
+                    <div class="metrics-day">Day 5</div>
+                    <div class="metrics-value">___</div>
+                </div>
+                <div class="metrics-cell header">
+                    <div class="metrics-day">Day 6</div>
+                    <div class="metrics-value">___</div>
+                </div>
+                <div class="metrics-cell header">
+                    <div class="metrics-day">Day 7</div>
+                    <div class="metrics-value">___</div>
+                </div>
+            </div>
+            <p style="text-align: center; color: var(--text-muted); margin-top: 1rem; font-size: 0.8125rem;">Track: Impressions, Engagements, New Followers, DM Submissions</p>
+        </div>
+
+        <!-- Graphics Needed -->
+        <div class="graphics-section">
+            <div class="graphics-header">
+                <h4>🎨 Graphics Needed</h4>
+            </div>
+            <div class="graphics-list">
+                <div class="graphics-item">
+                    <span class="graphics-day">Day 2</span>
+                    <span class="graphics-name">Kill header</span>
+                    <span class="graphics-desc">"RUG KILL #1" branded template</span>
+                </div>
+                <div class="graphics-item">
+                    <span class="graphics-day">Day 2</span>
+                    <span class="graphics-name">Wallet flow diagram</span>
+                    <span class="graphics-desc">Show the fund movement</span>
+                </div>
+                <div class="graphics-item">
+                    <span class="graphics-day">Day 3</span>
+                    <span class="graphics-name">Feature comparison</span>
+                    <span class="graphics-desc">Auto-Pilot vs manual treasury</span>
+                </div>
+                <div class="graphics-item">
+                    <span class="graphics-day">Day 5</span>
+                    <span class="graphics-name">Kill header</span>
+                    <span class="graphics-desc">"RUG KILL #2" branded template</span>
+                </div>
+                <div class="graphics-item">
+                    <span class="graphics-day">Day 5</span>
+                    <span class="graphics-name">Promise vs Reality</span>
+                    <span class="graphics-desc">Side-by-side split image</span>
+                </div>
+                <div class="graphics-item">
+                    <span class="graphics-day">Day 6</span>
+                    <span class="graphics-name">Rug Taxonomy</span>
+                    <span class="graphics-desc">Visual categorization</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Bank -->
+        <div class="bank-section" style="margin-top: 2rem;">
+            <h4 class="bank-title">💾 Evergreen Reply Templates</h4>
+
+            <div class="bank-category">
+                <div class="bank-category-title">For Rug Discussions</div>
+                <div class="bank-items">
+                    <span class="bank-item">"The chain remembers."</span>
+                    <span class="bank-item">"Cause of death: trust."</span>
+                    <span class="bank-item">"Same playbook. Different token."</span>
+                    <span class="bank-item">"Adding to the kill list."</span>
+                    <span class="bank-item">"Receipts or it didn't happen."</span>
+                </div>
+            </div>
+
+            <div class="bank-category">
+                <div class="bank-category-title">For Auto-Pilot Questions</div>
+                <div class="bank-items">
+                    <span class="bank-item">"Bots don't forget. Bots don't lie."</span>
+                    <span class="bank-item">"Verification > trust. Every time."</span>
+                    <span class="bank-item">"The dev can't rug if the dev doesn't control the wallet."</span>
+                    <span class="bank-item">"Code executes. Promises don't."</span>
+                    <span class="bank-item">"Check the chain. That's the whole point."</span>
+                </div>
+            </div>
+
+            <div class="bank-category">
+                <div class="bank-category-title">For Skeptics</div>
+                <div class="bank-items">
+                    <span class="bank-item">"Happy to walk through the evidence."</span>
+                    <span class="bank-item">"Here's the Solscan link: [link]"</span>
+                    <span class="bank-item">"The receipts are on-chain. Verify yourself."</span>
+                    <span class="bank-item">"Not asking you to trust me. Asking you to check."</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p class="footer-quote">"Cause of death: <span>Trust without verification.</span><br>This didn't have to happen."</p>
+        <p class="footer-brand">AUTO-PILOT × THE RUG KILLER — WEEK 1</p>
+    </footer>
+</body>
+</html>
