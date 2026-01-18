@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SheCounts — Your CFO. Without the Salary.</title>
+    <meta name="description" content="Proactive accounting for Canadian businesses earning $150K-$5M. I text you before deadlines, not after. One person. I pick up.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --color-bg: #FFFDFB;
+            --color-bg-warm: #FAF7F2;
+            --color-bg-dark: #1C1917;
+            --color-text: #1C1917;
+            --color-text-secondary: #57534E;
+            --color-text-muted: #A8A29E;
+            --color-accent: #B45309;
+            --color-accent-light: #F59E0B;
+            --color-border: #E7E5E4;
+
+            --font-serif: 'Instrument Serif', Georgia, serif;
+            --font-sans: 'Inter', -apple-system, system-ui, sans-serif;
+
+            --space-4: 1rem;
+            --space-6: 1.5rem;
+            --space-8: 2rem;
+            --space-12: 3rem;
+            --space-16: 4rem;
+            --space-20: 5rem;
+            --space-24: 6rem;
+
+            --max-width: 1200px;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            font-size: 17px;
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            color: var(--color-text);
+            background: var(--color-bg);
+            line-height: 1.6;
+        }
+
+        ::selection {
+            background: var(--color-accent);
+            color: white;
+        }
+
+        h1, h2, h3 {
+            font-family: var(--font-serif);
+            font-weight: 400;
+            line-height: 1.15;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 var(--space-6);
+        }
+
+        /* ============================================
+           HEADER — Minimal with CTA
+        ============================================ */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(255, 253, 251, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 60px;
+        }
+
+        .logo {
+            font-family: var(--font-serif);
+            font-size: 1.25rem;
+            letter-spacing: -0.02em;
+        }
+
+        .header-cta {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: white;
+            background: var(--color-text);
+            padding: 0.625rem 1.25rem;
+            border-radius: 6px;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+
+        .header-cta:hover {
+            transform: translateY(-1px);
+            opacity: 0.9;
+        }
+
+        /* ============================================
+           HERO — Split Layout
+        ============================================ */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 60px;
+            background: linear-gradient(135deg, var(--color-bg) 0%, var(--color-bg-warm) 100%);
+        }
+
+        .hero-grid {
+            display: grid;
+            gap: var(--space-12);
+            align-items: center;
+        }
+
+        @media (min-width: 900px) {
+            .hero-grid {
+                grid-template-columns: 1.1fr 0.9fr;
+                gap: var(--space-16);
+            }
+        }
+
+        .hero-content {
+            max-width: 560px;
+        }
+
+        .hero-tagline {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--color-accent);
+            margin-bottom: var(--space-4);
+        }
+
+        .hero h1 {
+            font-size: clamp(2.75rem, 5vw, 3.75rem);
+            letter-spacing: -0.03em;
+            margin-bottom: var(--space-6);
+        }
+
+        .hero h1 .highlight {
+            position: relative;
+            white-space: nowrap;
+        }
+
+        .hero h1 .highlight::after {
+            content: '';
+            position: absolute;
+            left: -4px;
+            right: -4px;
+            bottom: 4px;
+            height: 12px;
+            background: var(--color-accent-light);
+            opacity: 0.35;
+            z-index: -1;
+            transform: rotate(-1deg);
+        }
+
+        .hero-sub {
+            font-size: 1.15rem;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-8);
+            line-height: 1.7;
+        }
+
+        .hero-cta-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-4);
+            align-items: center;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            color: white;
+            background: var(--color-text);
+            padding: 1rem 1.75rem;
+            border-radius: 6px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+
+        .btn-primary svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .hero-cta-note {
+            font-size: 0.875rem;
+            color: var(--color-text-muted);
+        }
+
+        /* Founder Image Area */
+        .hero-visual {
+            position: relative;
+        }
+
+        .founder-image-placeholder {
+            aspect-ratio: 4/5;
+            background: var(--color-bg-warm);
+            border: 2px dashed var(--color-border);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: var(--space-8);
+            color: var(--color-text-muted);
+        }
+
+        .founder-image-placeholder span {
+            font-size: 0.875rem;
+            margin-top: var(--space-4);
+        }
+
+        .founder-image-placeholder svg {
+            width: 64px;
+            height: 64px;
+            opacity: 0.4;
+        }
+
+        /* Stats overlay on image */
+        .hero-stats {
+            display: flex;
+            gap: var(--space-8);
+            margin-top: var(--space-6);
+        }
+
+        @media (min-width: 900px) {
+            .hero-stats {
+                position: absolute;
+                bottom: -20px;
+                left: -40px;
+                background: white;
+                padding: var(--space-6);
+                border-radius: 8px;
+                box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+                margin-top: 0;
+            }
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-family: var(--font-serif);
+            font-size: 2rem;
+            color: var(--color-accent);
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--color-text-muted);
+            margin-top: 4px;
+        }
+
+        /* ============================================
+           SECTION 2: THE DIFFERENCE — Horizontal Cards
+        ============================================ */
+        .difference {
+            padding: var(--space-24) 0;
+            background: var(--color-bg);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .difference-header {
+            max-width: 600px;
+            margin-bottom: var(--space-12);
+        }
+
+        .difference-header h2 {
+            font-size: clamp(2rem, 4vw, 2.5rem);
+            margin-bottom: var(--space-4);
+        }
+
+        .difference-header p {
+            font-size: 1.1rem;
+            color: var(--color-text-secondary);
+        }
+
+        .difference-cards {
+            display: grid;
+            gap: var(--space-6);
+        }
+
+        @media (min-width: 768px) {
+            .difference-cards {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .diff-card {
+            background: var(--color-bg-warm);
+            border-radius: 12px;
+            padding: var(--space-8);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .diff-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--color-accent);
+        }
+
+        .diff-card h3 {
+            font-family: var(--font-sans);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: var(--space-4);
+            color: var(--color-text);
+        }
+
+        .diff-card p {
+            font-size: 0.95rem;
+            color: var(--color-text-secondary);
+            line-height: 1.65;
+        }
+
+        .diff-card .diff-specific {
+            display: inline-block;
+            margin-top: var(--space-4);
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--color-accent);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Mid-page CTA */
+        .mid-cta {
+            text-align: center;
+            margin-top: var(--space-12);
+            padding-top: var(--space-8);
+            border-top: 1px solid var(--color-border);
+        }
+
+        .mid-cta p {
+            font-size: 1rem;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-4);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--color-accent);
+            padding: 0.75rem 1.5rem;
+            border: 2px solid var(--color-accent);
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            background: var(--color-accent);
+            color: white;
+        }
+
+        /* ============================================
+           SECTION 3: MANIFESTO BLOCK — Dark, Bold
+        ============================================ */
+        .manifesto {
+            background: var(--color-bg-dark);
+            padding: var(--space-20) 0;
+        }
+
+        .manifesto-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .manifesto h2 {
+            font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+            color: white;
+            line-height: 1.4;
+            margin-bottom: var(--space-6);
+        }
+
+        .manifesto h2 em {
+            font-style: italic;
+            color: var(--color-accent-light);
+        }
+
+        .manifesto p {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.7);
+            max-width: 560px;
+            margin: 0 auto;
+        }
+
+        /* ============================================
+           SECTION 4: SERVICES — Compact
+        ============================================ */
+        .services {
+            padding: var(--space-24) 0;
+            background: var(--color-bg-warm);
+        }
+
+        .services-grid {
+            display: grid;
+            gap: var(--space-12);
+            align-items: start;
+        }
+
+        @media (min-width: 900px) {
+            .services-grid {
+                grid-template-columns: 1fr 1.5fr;
+            }
+        }
+
+        .services-intro h2 {
+            font-size: clamp(1.75rem, 3vw, 2.25rem);
+            margin-bottom: var(--space-4);
+        }
+
+        .services-intro p {
+            font-size: 1.05rem;
+            color: var(--color-text-secondary);
+        }
+
+        .services-list {
+            display: grid;
+            gap: 1px;
+            background: var(--color-border);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        @media (min-width: 600px) {
+            .services-list {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .service-item {
+            background: white;
+            padding: var(--space-6);
+        }
+
+        .service-item h3 {
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .service-item p {
+            font-size: 0.9rem;
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+        }
+
+        /* ============================================
+           SECTION 5: TRUST — Founder + Credentials
+        ============================================ */
+        .trust {
+            padding: var(--space-24) 0;
+            background: var(--color-bg);
+            border-top: 1px solid var(--color-border);
+        }
+
+        .trust-grid {
+            display: grid;
+            gap: var(--space-12);
+        }
+
+        @media (min-width: 900px) {
+            .trust-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: var(--space-16);
+            }
+        }
+
+        .trust-story {
+            max-width: 520px;
+        }
+
+        .trust-story h2 {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            margin-bottom: var(--space-6);
+            line-height: 1.35;
+        }
+
+        .trust-story p {
+            font-size: 1rem;
+            color: var(--color-text-secondary);
+            line-height: 1.75;
+            margin-bottom: var(--space-4);
+        }
+
+        .trust-story .origin-quote {
+            font-family: var(--font-serif);
+            font-size: 1.15rem;
+            font-style: italic;
+            color: var(--color-text);
+            border-left: 3px solid var(--color-accent);
+            padding-left: var(--space-6);
+            margin: var(--space-6) 0;
+        }
+
+        .trust-story .sig {
+            font-family: var(--font-serif);
+            font-size: 1.25rem;
+            font-style: italic;
+            margin-top: var(--space-6);
+        }
+
+        .trust-credentials {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .credential-list {
+            display: grid;
+            gap: var(--space-6);
+        }
+
+        .credential {
+            display: flex;
+            gap: var(--space-4);
+            align-items: flex-start;
+        }
+
+        .credential-icon {
+            flex-shrink: 0;
+            width: 48px;
+            height: 48px;
+            background: var(--color-bg-warm);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .credential-icon svg {
+            width: 24px;
+            height: 24px;
+            color: var(--color-accent);
+        }
+
+        .credential-text h3 {
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .credential-text p {
+            font-size: 0.875rem;
+            color: var(--color-text-muted);
+        }
+
+        /* Is This You? Quick Qualifier */
+        .qualifier {
+            margin-top: var(--space-12);
+            padding-top: var(--space-8);
+            border-top: 1px solid var(--color-border);
+        }
+
+        .qualifier h3 {
+            font-size: 1.15rem;
+            margin-bottom: var(--space-4);
+        }
+
+        .qualifier-list {
+            display: grid;
+            gap: var(--space-4);
+        }
+
+        .qualifier-item {
+            display: flex;
+            gap: 0.75rem;
+            align-items: flex-start;
+            font-size: 0.95rem;
+            color: var(--color-text-secondary);
+        }
+
+        .qualifier-item svg {
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+            color: var(--color-accent);
+            margin-top: 2px;
+        }
+
+        /* ============================================
+           SECTION 6: FINAL CTA
+        ============================================ */
+        .cta-final {
+            padding: var(--space-24) 0;
+            background: var(--color-bg-dark);
+        }
+
+        .cta-final-content {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .cta-final h2 {
+            font-size: clamp(2rem, 4vw, 2.75rem);
+            color: white;
+            margin-bottom: var(--space-4);
+        }
+
+        .cta-final > p {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.65);
+            margin-bottom: var(--space-8);
+        }
+
+        .cta-options {
+            display: grid;
+            gap: var(--space-4);
+        }
+
+        @media (min-width: 500px) {
+            .cta-options {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .cta-option {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: var(--space-6);
+            text-align: left;
+            transition: background 0.2s ease;
+        }
+
+        .cta-option:hover {
+            background: rgba(255,255,255,0.08);
+        }
+
+        .cta-option-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--color-accent-light);
+            margin-bottom: 0.25rem;
+        }
+
+        .cta-option h3 {
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 0.25rem;
+        }
+
+        .cta-option p {
+            font-size: 0.875rem;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .cta-option a {
+            color: var(--color-accent-light);
+        }
+
+        /* ============================================
+           FOOTER — Minimal
+        ============================================ */
+        footer {
+            padding: var(--space-12) 0;
+            background: var(--color-bg);
+            border-top: 1px solid var(--color-border);
+        }
+
+        .footer-inner {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: var(--space-4);
+        }
+
+        .footer-brand {
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
+        }
+
+        .footer-tagline {
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+        }
+
+        .footer-contact {
+            display: flex;
+            gap: var(--space-6);
+            font-size: 0.875rem;
+        }
+
+        .footer-contact a {
+            color: var(--color-accent);
+        }
+
+        /* ============================================
+           STICKY MOBILE CTA
+        ============================================ */
+        .sticky-cta {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 99;
+            background: white;
+            border-top: 1px solid var(--color-border);
+            padding: var(--space-4) var(--space-6);
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.08);
+        }
+
+        @media (max-width: 768px) {
+            .sticky-cta {
+                display: block;
+            }
+
+            .sticky-cta .btn-primary {
+                width: 100%;
+                justify-content: center;
+            }
+
+            body {
+                padding-bottom: 80px;
+            }
+        }
+
+        /* ============================================
+           ANIMATIONS
+        ============================================ */
+        @media (prefers-reduced-motion: no-preference) {
+            .fade-in {
+                opacity: 0;
+                transform: translateY(20px);
+                transition: opacity 0.6s ease, transform 0.6s ease;
+            }
+
+            .fade-in.visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .fade-in {
+                opacity: 1;
+                transform: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="container header-inner">
+            <a href="/" class="logo">SheCounts</a>
+            <a href="#contact" class="header-cta">Book a Call</a>
+        </div>
+    </header>
+
+    <!-- SECTION 1: Hero — Split Layout -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-grid">
+                <div class="hero-content fade-in">
+                    <p class="hero-tagline">Your CFO. Without the salary.</p>
+                    <h1>I'll text you <span class="highlight">before</span> every deadline.</h1>
+                    <p class="hero-sub">
+                        Proactive accounting for Canadian businesses earning $150K–$5M. One person. I pick up.
+                    </p>
+                    <div class="hero-cta-row">
+                        <a href="#contact" class="btn-primary">
+                            Book a Discovery Call
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                            </svg>
+                        </a>
+                        <span class="hero-cta-note">No pitch. Just a conversation.</span>
+                    </div>
+                </div>
+                <div class="hero-visual fade-in">
+                    <div class="founder-image-placeholder">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                        </svg>
+                        <span>Rema's photo here</span>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <div class="stat-number">20</div>
+                            <div class="stat-label">Years Experience</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">14</div>
+                            <div class="stat-label">Days Notice</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 2: The Difference -->
+    <section class="difference">
+        <div class="container">
+            <div class="difference-header fade-in">
+                <h2>How I work differently</h2>
+                <p>Most accountants are reactive. I'm not.</p>
+            </div>
+            <div class="difference-cards">
+                <div class="diff-card fade-in">
+                    <h3>Proactive, not reactive</h3>
+                    <p>I reach out before there's a problem. Deadlines, opportunities, red flags—you hear from me first.</p>
+                    <span class="diff-specific">14-day deadline alerts</span>
+                </div>
+                <div class="diff-card fade-in">
+                    <h3>Just me, directly</h3>
+                    <p>No chatbots. No offshore teams. No "someone will get back to you." When you call, I answer. It's just me.</p>
+                    <span class="diff-specific">My actual phone number</span>
+                </div>
+                <div class="diff-card fade-in">
+                    <h3>Grant hunting included</h3>
+                    <p>I research grants and tax credits you might qualify for—SR&ED, IRAP, CDAP, regional programs.</p>
+                    <span class="diff-specific">I look so you don't have to</span>
+                </div>
+            </div>
+            <div class="mid-cta fade-in">
+                <p>Want to see if we're a fit?</p>
+                <a href="#contact" class="btn-secondary">
+                    Let's talk
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="width:16px;height:16px">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 3: Manifesto Block -->
+    <section class="manifesto">
+        <div class="container">
+            <div class="manifesto-content fade-in">
+                <h2>"I started this because I was tired of watching small business owners get <em>ignored</em>."</h2>
+                <p>File the return, send the invoice, disappear until next year. That's how most accountants work. Not me. I pay attention so you don't have to worry.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4: Services — Compact -->
+    <section class="services">
+        <div class="container">
+            <div class="services-grid fade-in">
+                <div class="services-intro">
+                    <h2>What I handle</h2>
+                    <p>The financial foundation that lets you focus on running your business.</p>
+                </div>
+                <div class="services-list">
+                    <div class="service-item">
+                        <h3>Bookkeeping</h3>
+                        <p>Monthly reconciliation. Organized records. Statements you understand.</p>
+                    </div>
+                    <div class="service-item">
+                        <h3>Tax preparation</h3>
+                        <p>Corporate returns, HST, year-end. On time, every time.</p>
+                    </div>
+                    <div class="service-item">
+                        <h3>Financial guidance</h3>
+                        <p>Quarterly reviews. Planning ahead. Catching what you're missing.</p>
+                    </div>
+                    <div class="service-item">
+                        <h3>Recovery & cleanup</h3>
+                        <p>Behind on books? I'll get you back on track.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 5: Trust -->
+    <section class="trust">
+        <div class="container">
+            <div class="trust-grid">
+                <div class="trust-story fade-in">
+                    <h2>Why I started SheCounts</h2>
+                    <p>
+                        For 20 years I watched accountants treat small businesses like an afterthought.
+                        Meanwhile the business owner is wondering if they missed something,
+                        worrying about CRA letters, leaving money on the table.
+                    </p>
+                    <p class="origin-quote">
+                        The moment I decided to start: I watched a business owner get hit with a $14,000 tax bill they never saw coming. Their accountant hadn't mentioned installments once. Not once.
+                    </p>
+                    <p class="sig">— Rema, Founder</p>
+                </div>
+                <div class="trust-credentials fade-in">
+                    <div class="credential-list">
+                        <div class="credential">
+                            <div class="credential-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+                                </svg>
+                            </div>
+                            <div class="credential-text">
+                                <h3>CPA Designation</h3>
+                                <p>Chartered Professional Accountant</p>
+                            </div>
+                        </div>
+                        <div class="credential">
+                            <div class="credential-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                            </div>
+                            <div class="credential-text">
+                                <h3>20 Years</h3>
+                                <p>In Canadian small business accounting</p>
+                            </div>
+                        </div>
+                        <div class="credential">
+                            <div class="credential-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                </svg>
+                            </div>
+                            <div class="credential-text">
+                                <h3>Ottawa-Based</h3>
+                                <p>Serving clients across Canada</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="qualifier">
+                        <h3>You might be a good fit if...</h3>
+                        <div class="qualifier-list">
+                            <div class="qualifier-item">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span>You're earning $150K–$5M and need real guidance, not just filing</span>
+                            </div>
+                            <div class="qualifier-item">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span>You're tired of only hearing from your accountant when something's wrong</span>
+                            </div>
+                            <div class="qualifier-item">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span>You'd rather pick up the phone than send a support ticket</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 6: Final CTA -->
+    <section class="cta-final" id="contact">
+        <div class="container">
+            <div class="cta-final-content fade-in">
+                <h2>Let's talk</h2>
+                <p>No forms. No sales pitch. Just a conversation to see if we're a fit.</p>
+                <div class="cta-options">
+                    <a href="mailto:hello@shecounts.ca?subject=Discovery%20Call%20Request" class="cta-option">
+                        <p class="cta-option-label">Preferred</p>
+                        <h3>Email for a call</h3>
+                        <p>hello@shecounts.ca</p>
+                    </a>
+                    <a href="tel:+16138905636" class="cta-option">
+                        <p class="cta-option-label">Or call directly</p>
+                        <h3>(613) 890-5636</h3>
+                        <p>Mon–Fri, 9am–5pm ET</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-inner">
+            <div>
+                <span class="footer-brand">SheCounts</span>
+                <span class="footer-tagline"> — Your CFO. Without the salary.</span>
+            </div>
+            <div class="footer-contact">
+                <a href="tel:+16138905636">(613) 890-5636</a>
+                <a href="mailto:hello@shecounts.ca">hello@shecounts.ca</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Sticky Mobile CTA -->
+    <div class="sticky-cta">
+        <a href="#contact" class="btn-primary">Book a Discovery Call</a>
+    </div>
+
+    <script>
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px 0px -60px 0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    </script>
+
+</body>
+</html>
