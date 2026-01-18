@@ -1,0 +1,2145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto-Pilot | The Rug Coroner — 30-Day GTM Strategy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --bg-card-hover: #1a1a25;
+            --accent-red: #ff3b3b;
+            --accent-red-glow: rgba(255, 59, 59, 0.3);
+            --accent-green: #00ff88;
+            --accent-green-glow: rgba(0, 255, 136, 0.3);
+            --accent-purple: #a855f7;
+            --accent-blue: #3b82f6;
+            --accent-orange: #f97316;
+            --accent-yellow: #fbbf24;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border-color: #2a2a3a;
+            --gradient-red: linear-gradient(135deg, #ff3b3b 0%, #ff6b6b 100%);
+            --gradient-green: linear-gradient(135deg, #00ff88 0%, #00cc6a 100%);
+            --gradient-purple: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%);
+            --gradient-dark: linear-gradient(180deg, #0a0a0f 0%, #12121a 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 10, 15, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+
+        .nav-logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-red);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 30%, var(--accent-red-glow) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 70%, var(--accent-purple) 0%, transparent 30%);
+            opacity: 0.15;
+            animation: pulse 15s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.15; }
+            50% { transform: scale(1.1); opacity: 0.2; }
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 59, 59, 0.1);
+            border: 1px solid rgba(255, 59, 59, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            color: var(--accent-red);
+            margin-bottom: 2rem;
+        }
+
+        .hero-badge::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--accent-red);
+            border-radius: 50%;
+            animation: blink 2s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero h1 span {
+            background: var(--gradient-red);
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 3rem;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-stat {
+            text-align: center;
+        }
+
+        .hero-stat-value {
+            font-size: 3rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-red);
+        }
+
+        .hero-stat-label {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 6rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            color: var(--accent-red);
+            margin-bottom: 0.5rem;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--text-muted);
+            transform: translateY(-4px);
+        }
+
+        /* Why Previous Failed */
+        .failed-section {
+            background: linear-gradient(180deg, var(--bg-dark) 0%, rgba(255, 59, 59, 0.05) 100%);
+            padding: 6rem 2rem;
+        }
+
+        .failed-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .failed-card {
+            background: rgba(255, 59, 59, 0.05);
+            border: 1px solid rgba(255, 59, 59, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .failed-card::before {
+            content: '✕';
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            color: var(--accent-red);
+            opacity: 0.5;
+        }
+
+        .failed-card h4 {
+            color: var(--accent-red);
+            margin-bottom: 0.5rem;
+            font-size: 1.125rem;
+        }
+
+        .failed-card p {
+            color: var(--text-secondary);
+            font-size: 0.9375rem;
+        }
+
+        /* Core Idea Section */
+        .core-idea {
+            background: var(--bg-card);
+            border: 2px solid var(--accent-red);
+            border-radius: 24px;
+            padding: 4rem;
+            margin: 4rem auto;
+            max-width: 1000px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .core-idea::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-red);
+        }
+
+        .core-idea-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient-red);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .core-idea h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .core-idea-tagline {
+            font-size: 1.5rem;
+            color: var(--accent-red);
+            font-weight: 600;
+            margin-bottom: 2rem;
+        }
+
+        .core-idea p {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Autopsy Format */
+        .autopsy-format {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .autopsy-format h4 {
+            color: var(--accent-red);
+            margin-bottom: 1.5rem;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .autopsy-list {
+            list-style: none;
+        }
+
+        .autopsy-list li {
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .autopsy-list li:last-child {
+            border-bottom: none;
+        }
+
+        .autopsy-failure {
+            background: rgba(255, 59, 59, 0.1);
+            color: var(--accent-red);
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.8125rem;
+            font-weight: 500;
+        }
+
+        .autopsy-feature {
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--accent-green);
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.8125rem;
+            font-weight: 500;
+        }
+
+        /* Why It Works Grid */
+        .why-works-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .why-works-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .why-works-number {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--border-color);
+        }
+
+        .why-works-card h4 {
+            font-size: 1.125rem;
+            margin-bottom: 0.75rem;
+            color: var(--accent-green);
+        }
+
+        .why-works-card p {
+            color: var(--text-secondary);
+            font-size: 0.9375rem;
+        }
+
+        /* Voice Section */
+        .voice-section {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+            border-radius: 24px;
+            padding: 4rem;
+            margin: 4rem 0;
+        }
+
+        .voice-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .voice-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-purple);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+        }
+
+        .voice-examples {
+            display: grid;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .voice-example {
+            background: var(--bg-dark);
+            border-left: 3px solid var(--accent-purple);
+            padding: 1.5rem 2rem;
+            border-radius: 0 12px 12px 0;
+            font-style: italic;
+            color: var(--text-secondary);
+            font-size: 1.0625rem;
+            line-height: 1.7;
+        }
+
+        .tone-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 2rem;
+        }
+
+        .tone-tag {
+            background: rgba(168, 85, 247, 0.1);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            color: var(--accent-purple);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        /* Timeline Section */
+        .timeline-section {
+            padding: 6rem 2rem;
+            background: var(--bg-dark);
+        }
+
+        .timeline-overview {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 4rem;
+        }
+
+        @media (max-width: 900px) {
+            .timeline-overview {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 500px) {
+            .timeline-overview {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .timeline-phase {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .timeline-phase::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+        }
+
+        .timeline-phase.phase-1::before { background: var(--accent-red); }
+        .timeline-phase.phase-2::before { background: var(--accent-orange); }
+        .timeline-phase.phase-3::before { background: var(--accent-yellow); }
+        .timeline-phase.phase-4::before { background: var(--accent-green); }
+
+        .phase-days {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8125rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .phase-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .phase-desc {
+            font-size: 0.9375rem;
+            color: var(--text-secondary);
+        }
+
+        /* Day Detail Cards */
+        .week-section {
+            margin: 4rem 0;
+        }
+
+        .week-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .week-badge {
+            background: var(--gradient-red);
+            padding: 0.5rem 1.25rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .week-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .day-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .day-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .day-header {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .day-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8125rem;
+            color: var(--accent-red);
+            background: rgba(255, 59, 59, 0.1);
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+        }
+
+        .day-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .day-content {
+            padding: 2rem;
+        }
+
+        .tweet-block {
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9375rem;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            white-space: pre-wrap;
+        }
+
+        .tweet-label {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Community Section */
+        .army-section {
+            background: linear-gradient(180deg, var(--bg-dark) 0%, rgba(0, 255, 136, 0.05) 100%);
+            padding: 6rem 2rem;
+        }
+
+        .army-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 3rem auto 0;
+        }
+
+        .army-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .army-count {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--accent-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .army-role {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .army-mission {
+            font-size: 0.9375rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .army-tasks {
+            text-align: left;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .army-tasks li {
+            margin-bottom: 0.5rem;
+            padding-left: 1.25rem;
+            position: relative;
+        }
+
+        .army-tasks li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent-green);
+        }
+
+        /* Budget Section */
+        .budget-section {
+            max-width: 800px;
+            margin: 4rem auto;
+        }
+
+        .budget-table {
+            width: 100%;
+            background: var(--bg-card);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .budget-row {
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            padding: 1.25rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+            align-items: center;
+        }
+
+        .budget-row:last-child {
+            border-bottom: none;
+        }
+
+        .budget-row.header {
+            background: rgba(255, 255, 255, 0.02);
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .budget-row.total {
+            background: rgba(0, 255, 136, 0.05);
+            font-weight: 700;
+        }
+
+        .budget-item {
+            font-weight: 500;
+        }
+
+        .budget-cost {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-green);
+            font-weight: 600;
+        }
+
+        .budget-purpose {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        /* Hunt Effect Checklist */
+        .hunt-section {
+            background: var(--bg-card);
+            border-radius: 24px;
+            padding: 4rem;
+            margin: 4rem 0;
+        }
+
+        .hunt-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .hunt-item {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .hunt-check {
+            width: 32px;
+            height: 32px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 2px solid var(--accent-green);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-green);
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .hunt-item h4 {
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .hunt-item p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        /* Anti-Patterns */
+        .anti-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .anti-item {
+            background: rgba(255, 59, 59, 0.05);
+            border: 1px solid rgba(255, 59, 59, 0.2);
+            border-radius: 12px;
+            padding: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .anti-x {
+            color: var(--accent-red);
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .anti-item span {
+            color: var(--text-secondary);
+            font-size: 0.9375rem;
+        }
+
+        /* Phase 2 Tease */
+        .phase2-section {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(255, 59, 59, 0.1) 100%);
+            border-radius: 24px;
+            padding: 4rem;
+            margin: 4rem 0;
+            text-align: center;
+        }
+
+        .phase2-badge {
+            display: inline-block;
+            background: rgba(168, 85, 247, 0.2);
+            border: 1px solid rgba(168, 85, 247, 0.4);
+            color: var(--accent-purple);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .phase2-section h3 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .phase2-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .phase2-option {
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .phase2-option h4 {
+            font-size: 1rem;
+            color: var(--accent-purple);
+            margin-bottom: 0.5rem;
+        }
+
+        .phase2-option p {
+            font-size: 0.8125rem;
+            color: var(--text-muted);
+        }
+
+        /* Footer Quote */
+        .footer-quote {
+            text-align: center;
+            padding: 6rem 2rem;
+            background: var(--bg-dark);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-quote blockquote {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-weight: 600;
+            font-style: italic;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+
+        .footer-quote blockquote span {
+            color: var(--accent-red);
+        }
+
+        .footer-brand {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        /* Content Calendar */
+        .calendar-section {
+            margin: 4rem 0;
+        }
+
+        .calendar-table {
+            width: 100%;
+            background: var(--bg-card);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .calendar-row {
+            display: grid;
+            grid-template-columns: 60px 1fr 120px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .calendar-row:last-child {
+            border-bottom: none;
+        }
+
+        .calendar-row.header {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .calendar-cell {
+            padding: 1rem 1.5rem;
+            font-size: 0.9375rem;
+        }
+
+        .calendar-cell.day {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-red);
+            font-weight: 600;
+            background: rgba(255, 59, 59, 0.05);
+        }
+
+        .calendar-cell.account {
+            color: var(--text-muted);
+            font-size: 0.8125rem;
+        }
+
+        .calendar-cell.header {
+            font-weight: 600;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Infographic Stats */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 3rem 0;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent-red);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        /* Filter Line */
+        .filter-section {
+            background: var(--bg-card);
+            border: 2px solid var(--accent-green);
+            border-radius: 16px;
+            padding: 3rem;
+            margin: 4rem 0;
+            text-align: center;
+        }
+
+        .filter-section h3 {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-section blockquote {
+            font-size: 1.5rem;
+            font-weight: 600;
+            font-style: italic;
+            color: var(--accent-green);
+        }
+
+        .filter-section p {
+            margin-top: 2rem;
+            color: var(--text-muted);
+        }
+
+        .filter-section p span {
+            color: var(--accent-red);
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero-stats {
+                gap: 2rem;
+            }
+
+            .core-idea {
+                padding: 2rem;
+            }
+
+            .voice-section {
+                padding: 2rem;
+            }
+
+            .hunt-section {
+                padding: 2rem;
+            }
+
+            .calendar-row {
+                grid-template-columns: 50px 1fr 80px;
+            }
+
+            .calendar-cell {
+                padding: 0.75rem 1rem;
+                font-size: 0.8125rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-content">
+            <div class="nav-logo">
+                <div class="nav-logo-icon">🔬</div>
+                <span>The Rug Coroner</span>
+            </div>
+            <div class="nav-links">
+                <a href="#core-idea">Core Idea</a>
+                <a href="#timeline">30-Day Plan</a>
+                <a href="#community">Community</a>
+                <a href="#budget">Budget</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">30-Day GTM Strategy</div>
+            <h1>The <span>Rug Coroner</span></h1>
+            <p class="hero-subtitle">Auto-Pilot doesn't do marketing. Auto-Pilot does autopsies.</p>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="hero-stat-value">98%</div>
+                    <div class="hero-stat-label">Pump.fun Tokens Rug</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-value">$500M</div>
+                    <div class="hero-stat-label">Stolen Last Year</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-value">0</div>
+                    <div class="hero-stat-label">Auto-Pilot Rugs</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Previous Failed -->
+    <section class="failed-section">
+        <div class="section-header">
+            <div class="section-number">00</div>
+            <h2 class="section-title">Why Generic GTM Fails</h2>
+            <p class="section-subtitle">Templates dressed up in marketing language don't work in crypto.</p>
+        </div>
+        <div class="failed-grid">
+            <div class="failed-card">
+                <h4>Testimonials Nobody Knows</h4>
+                <p>"4 users love us" means nothing when nobody knows who they are or what results they got.</p>
+            </div>
+            <div class="failed-card">
+                <h4>"Week 1: Build Awareness"</h4>
+                <p>Vague phase-based thinking that could apply to any product. Zero specificity.</p>
+            </div>
+            <div class="failed-card">
+                <h4>Generic Challenge Hashtags</h4>
+                <p>#AutoPilotChallenge. Nobody cares. It's marketing that smells like marketing.</p>
+            </div>
+            <div class="failed-card">
+                <h4>Safe & Forgettable</h4>
+                <p>Playing it safe in crypto means getting ignored. The timeline moves too fast for boring.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Idea Section -->
+    <section class="section" id="core-idea">
+        <div class="core-idea">
+            <div class="core-idea-icon">🔬</div>
+            <h2>The Core Idea</h2>
+            <p class="core-idea-tagline">Every week, perform a public autopsy on a recent rug pull.</p>
+            <p>Dissect exactly how it happened on-chain. Trace the wallets. Show the receipts. Then reveal which Auto-Pilot feature would have made it impossible.</p>
+            <p>This isn't content. It's a public service that happens to sell the product.</p>
+
+            <div class="autopsy-format">
+                <h4>🔬 The Autopsy Format</h4>
+                <ul class="autopsy-list">
+                    <li>
+                        <span class="autopsy-failure">Dev drained listing fund</span>
+                        <span>→</span>
+                        <span class="autopsy-feature">Listing Fund Automation</span>
+                    </li>
+                    <li>
+                        <span class="autopsy-failure">Promised buybacks never happened</span>
+                        <span>→</span>
+                        <span class="autopsy-feature">Automated Buybacks</span>
+                    </li>
+                    <li>
+                        <span class="autopsy-failure">Burns were "forgotten"</span>
+                        <span>→</span>
+                        <span class="autopsy-feature">Burn Automation</span>
+                    </li>
+                    <li>
+                        <span class="autopsy-failure">Team never got paid</span>
+                        <span>→</span>
+                        <span class="autopsy-feature">Team Wallet Splits</span>
+                    </li>
+                    <li>
+                        <span class="autopsy-failure">LP pulled at 3am</span>
+                        <span>→</span>
+                        <span class="autopsy-feature">Custodial Model</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="why-works-grid">
+                <div class="why-works-card">
+                    <div class="why-works-number">01</div>
+                    <h4>Genuinely Valuable</h4>
+                    <p>People want to understand rugs. This educates while promoting.</p>
+                </div>
+                <div class="why-works-card">
+                    <div class="why-works-number">02</div>
+                    <h4>Confrontational</h4>
+                    <p>Calling out specific projects. Naming names. Showing wallets.</p>
+                </div>
+                <div class="why-works-card">
+                    <div class="why-works-number">03</div>
+                    <h4>Feature Demo in Disguise</h4>
+                    <p>Every autopsy demonstrates a product feature through real failure.</p>
+                </div>
+                <div class="why-works-card">
+                    <div class="why-works-number">04</div>
+                    <h4>Product as Solution</h4>
+                    <p>Auto-Pilot emerges from education, not pitching.</p>
+                </div>
+                <div class="why-works-card">
+                    <div class="why-works-number">05</div>
+                    <h4>Infinitely Repeatable</h4>
+                    <p>New rugs happen daily. Content pipeline never runs dry.</p>
+                </div>
+                <div class="why-works-card">
+                    <div class="why-works-number">06</div>
+                    <h4>Viral by Design</h4>
+                    <p>Rug coverage = engagement. Other accounts will share.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Voice Section -->
+    <section class="section">
+        <div class="voice-section">
+            <div class="voice-header">
+                <div class="voice-icon">🎭</div>
+                <div>
+                    <h3>The Voice: Unhinged Coroner</h3>
+                    <p style="color: var(--text-secondary);">Litecoin intern energy + Wendy's confrontational roasting</p>
+                </div>
+            </div>
+
+            <p style="color: var(--text-secondary); margin-bottom: 1rem;">Auto-Pilot isn't a "professional brand account." It's a forensic investigator who's seen too much and has developed dark humor about it.</p>
+
+            <div class="voice-examples">
+                <div class="voice-example">
+                    "Another day, another dev who 'accidentally' sent the listing fund to their personal wallet. Weird how that keeps happening."
+                </div>
+                <div class="voice-example">
+                    "This project promised weekly buybacks. Here's week 1: nothing. Week 2: nothing. Week 3: they deleted Twitter. Auto-Pilot can't delete Twitter. It can only buy back. Every time. On-chain."
+                </div>
+                <div class="voice-example">
+                    "Dev said the burns would happen 'soon.' It's been 47 days. The only thing burning is their community's trust. And their Discord, which is now just bots arguing with each other."
+                </div>
+                <div class="voice-example">
+                    "Cause of death: Trust. Time of death: Block 284,729,104. Weapon: A dev wallet with no accountability. Auto-Pilot's diagnosis: Entirely preventable."
+                </div>
+            </div>
+
+            <div class="tone-tags">
+                <span class="tone-tag">Dark Humor</span>
+                <span class="tone-tag">Receipts-Based</span>
+                <span class="tone-tag">Self-Aware</span>
+                <span class="tone-tag">Never Punches Down</span>
+                <span class="tone-tag">On-Chain Proof</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section class="timeline-section" id="timeline">
+        <div class="section" style="padding-top: 0;">
+            <div class="section-header">
+                <div class="section-number">01</div>
+                <h2 class="section-title">The 30-Day Structure</h2>
+                <p class="section-subtitle">One campaign that escalates. Not "Week 1: Awareness."</p>
+            </div>
+
+            <div class="timeline-overview">
+                <div class="timeline-phase phase-1">
+                    <div class="phase-days">DAYS 1-7</div>
+                    <h4 class="phase-title">The Coroner Emerges</h4>
+                    <p class="phase-desc">Establish the Coroner. First 2 autopsies. Build the format.</p>
+                </div>
+                <div class="timeline-phase phase-2">
+                    <div class="phase-days">DAYS 8-14</div>
+                    <h4 class="phase-title">Assistant Coroners</h4>
+                    <p class="phase-desc">Community becomes investigators. User-submitted rugs.</p>
+                </div>
+                <div class="timeline-phase phase-3">
+                    <div class="phase-days">DAYS 15-21</div>
+                    <h4 class="phase-title">The Rug Report</h4>
+                    <p class="phase-desc">Weekly roundup goes viral. Feature wars.</p>
+                </div>
+                <div class="timeline-phase phase-4">
+                    <div class="phase-days">DAYS 22-30</div>
+                    <h4 class="phase-title">Impossible Challenge</h4>
+                    <p class="phase-desc">Provocation mode. "Prove us wrong."</p>
+                </div>
+            </div>
+
+            <!-- Week 1 Detail -->
+            <div class="week-section">
+                <div class="week-header">
+                    <span class="week-badge">DAYS 1-7</span>
+                    <h3 class="week-title">The Coroner Emerges</h3>
+                </div>
+
+                <div class="day-grid">
+                    <!-- Day 1 -->
+                    <div class="day-card">
+                        <div class="day-header">
+                            <div>
+                                <span class="day-number">DAY 1</span>
+                                <h4 class="day-title">The Announcement</h4>
+                            </div>
+                        </div>
+                        <div class="day-content">
+                            <p class="tweet-label">Josh tweets:</p>
+                            <div class="tweet-block">I've been watching Solana rugs for months. Documenting them. Tracing the wallets.
+
+98% of Pump.fun tokens rug. $500M stolen last year.
+
+Starting today, I'm doing something about it.
+
+Introducing: The Rug Coroner.
+
+First autopsy drops tomorrow.</div>
+                            <p style="color: var(--text-muted); font-size: 0.875rem; margin-top: 1rem;"><strong>Why it works:</strong> Creates anticipation. Positions Josh as someone who's been doing the work. "Rug Coroner" is memorable. Doesn't mention Auto-Pilot yet.</p>
+                        </div>
+                    </div>
+
+                    <!-- Day 2 -->
+                    <div class="day-card">
+                        <div class="day-header">
+                            <div>
+                                <span class="day-number">DAY 2</span>
+                                <h4 class="day-title">First Autopsy</h4>
+                            </div>
+                        </div>
+                        <div class="day-content">
+                            <p class="tweet-label">Thread Structure (6 tweets):</p>
+                            <div class="tweet-block">1/ 🔬 RUG AUTOPSY #1: [TOKEN NAME]
+Date of death: [Date]
+Market cap at peak: $[X]
+Money lost: ~$[X]
+Let's trace exactly what happened. 🧵
+
+2/ The promise: [What they said]
+[Screenshot of Discord/Twitter promises]
+
+3/ The reality:
+[Solscan links]
+- Wallet A sent [X] SOL to Wallet B at [time]
+- Wallet B sent to [exchange/personal]
+- Total extracted: [amount]
+
+4/ The failure mode: [Category]
+In this case: Listing fund misappropriation
+
+5/ How Auto-Pilot prevents this:
+[Feature explanation]
+[Link to product]
+
+6/ Cause of death: Trust without verification.
+This didn't have to happen.
+Verify: auto-pilot.tech</div>
+                        </div>
+                    </div>
+
+                    <!-- Day 3 -->
+                    <div class="day-card">
+                        <div class="day-header">
+                            <div>
+                                <span class="day-number">DAY 3</span>
+                                <h4 class="day-title">The Explainer</h4>
+                            </div>
+                        </div>
+                        <div class="day-content">
+                            <p class="tweet-label">Auto-Pilot account posts:</p>
+                            <div class="tweet-block">People keep asking what Auto-Pilot actually does.
+
+Simple: It makes rugs mechanically impossible.
+
+• Listing fund? Automated and locked.
+• Buybacks? Scheduled and on-chain.
+• Burns? Executed automatically.
+• Team payments? Split and distributed.
+
+The dev can't rug because the dev doesn't control the treasury.</div>
+                            <p style="color: var(--text-muted); font-size: 0.875rem; margin-top: 1rem;"><strong>Note:</strong> Pin this tweet. Reference it in every autopsy.</p>
+                        </div>
+                    </div>
+
+                    <!-- Day 4-5 -->
+                    <div class="day-card">
+                        <div class="day-header">
+                            <div>
+                                <span class="day-number">DAYS 4-5</span>
+                                <h4 class="day-title">Second Autopsy</h4>
+                            </div>
+                        </div>
+                        <div class="day-content">
+                            <p style="color: var(--text-secondary);">Same format. Different token. <strong>Different failure mode.</strong></p>
+                            <p style="color: var(--text-muted); font-size: 0.875rem; margin-top: 1rem;">If Autopsy #1 was a listing fund rug → Autopsy #2 should be a buyback failure. Each autopsy highlights a different Auto-Pilot feature.</p>
+                        </div>
+                    </div>
+
+                    <!-- Day 6 -->
+                    <div class="day-card">
+                        <div class="day-header">
+                            <div>
+                                <span class="day-number">DAY 6</span>
+                                <h4 class="day-title">The Pattern Post</h4>
+                            </div>
+                        </div>
+                        <div class="day-content">
+                            <p class="tweet-label">Josh tweets:</p>
+                            <div class="tweet-block">Two autopsies in. Same pattern every time:
+
+1. Dev promises something
+2. Community trusts them
+3. Dev controls the wallet
+4. Dev doesn't deliver (or steals)
+5. Community gets wrecked
+
+The problem isn't bad devs. The problem is the system that requires trust.
+
+Remove the trust. Remove the rug.</div>
+                        </div>
+                    </div>
+
+                    <!-- Day 7 -->
+                    <div class="day-card">
+                        <div class="day-header">
+                            <div>
+                                <span class="day-number">DAY 7</span>
+                                <h4 class="day-title">Community Invitation</h4>
+                            </div>
+                        </div>
+                        <div class="day-content">
+                            <p class="tweet-label">Auto-Pilot tweets:</p>
+                            <div class="tweet-block">I can't autopsy every rug. There are too many.
+
+So I'm opening applications for Assistant Coroners.
+
+If you've been rugged and want to help document it, DM me:
+- Token name
+- What was promised
+- What actually happened
+- Any on-chain receipts you have
+
+Best submissions get featured.</div>
+                            <p style="color: var(--text-muted); font-size: 0.875rem; margin-top: 1rem;"><strong>Why it works:</strong> Turns victims into contributors. UGC engine activated. Endless content pipeline.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Week 2 Detail -->
+            <div class="week-section">
+                <div class="week-header">
+                    <span class="week-badge" style="background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);">DAYS 8-14</span>
+                    <h3 class="week-title">The Assistant Coroners</h3>
+                </div>
+
+                <div class="day-grid">
+                    <div class="day-card">
+                        <div class="day-header">
+                            <div>
+                                <span class="day-number">DAYS 8-9</span>
+                                <h4 class="day-title">First Community Autopsy</h4>
+                            </div>
+                        </div>
+                        <div class="day-content">
+                            <p class="tweet-label">Josh posts:</p>
+                            <div class="tweet-block">First community-submitted autopsy.
+
+This one was sent by @[username] who lost [X] SOL on [TokenName].
+
+Let's trace it. 🧵
+
+[Full autopsy format]
+
+Submitted by @[username]. Thanks for the receipts.
+Got a rug you want investigated? DMs are open.</div>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-header">
+                            <div>
+                                <span class="day-number">DAY 10</span>
+                                <h4 class="day-title">The Comparison Post</h4>
+                            </div>
+                        </div>
+                        <div class="day-content">
+                            <p class="tweet-label">Visual content:</p>
+                            <div class="tweet-block">What devs say vs. What the chain says
+
+[Split image]
+
+LEFT: Discord screenshot — 'Buybacks every Friday!'
+RIGHT: Solscan — Last buyback: Never
+
+Auto-Pilot doesn't say. Auto-Pilot does.</div>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-header">
+                            <div>
+                                <span class="day-number">DAY 13</span>
+                                <h4 class="day-title">The Leaderboard of Shame</h4>
+                            </div>
+                        </div>
+                        <div class="day-content">
+                            <p class="tweet-label">Auto-Pilot tweets:</p>
+                            <div class="tweet-block">The Rug Leaderboard (so far)
+
+Most money stolen:
+1. [Token] — $[X]
+2. [Token] — $[X]
+3. [Token] — $[X]
+
+Fastest rug (launch to drain):
+1. [Token] — 4 hours
+2. [Token] — 7 hours
+
+Most audacious lie:
+1. [Token] — 'We're doxxed' (they weren't)
+
+Data from our autopsies. More coming.</div>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-header">
+                            <div>
+                                <span class="day-number">DAY 14</span>
+                                <h4 class="day-title">The "I Was There" Thread</h4>
+                            </div>
+                        </div>
+                        <div class="day-content">
+                            <p class="tweet-label">Josh tweets:</p>
+                            <div class="tweet-block">I want to hear your rug stories.
+
+Reply with:
+- The token
+- What you lost
+- The lie they told
+
+No judgment. We've all been there. I'll feature the best ones in upcoming autopsies.</div>
+                            <p style="color: var(--text-muted); font-size: 0.875rem; margin-top: 1rem;"><strong>Community activation:</strong> All 50 members share stories. Creates massive engagement. User-generated pain = user-generated content.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Week 3 Detail -->
+            <div class="week-section">
+                <div class="week-header">
+                    <span class="week-badge" style="background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); color: #000;">DAYS 15-21</span>
+                    <h3 class="week-title">The Rug Report</h3>
+                </div>
+
+                <div class="day-grid">
+                    <div class="day-card">
+                        <div class="day-header">
+                            <div>
+                                <span class="day-number">DAY 15</span>
+                                <h4 class="day-title">Launch Weekly Rug Report</h4>
+                            </div>
+                        </div>
+                        <div class="day-content">
+                            <p class="tweet-label">New recurring format:</p>
+                            <div class="tweet-block">THE RUG REPORT — Week of [Date]
+
+This week in Solana rugs:
+
+🔴 [X] tokens rugged
+🔴 ~$[X] stolen
+🔴 [X] devs deleted Twitter
+
+Biggest rug: [Token] — $[X]
+Fastest rug: [Token] — [X] hours
+Most creative excuse: '[Quote from dev]'
+
+Featured autopsy: [Link]
+
+Using Auto-Pilot: 0 rugs. Mathematically impossible.
+
+See you next week.</div>
+                            <p style="color: var(--text-muted); font-size: 0.875rem; margin-top: 1rem;"><strong>Why it works:</strong> Appointment content. Shareable format. Compounds over time.</p>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-header">
+                            <div>
+                                <span class="day-number">DAY 18</span>
+                                <h4 class="day-title">The Feature War</h4>
+                            </div>
+                        </div>
+                        <div class="day-content">
+                            <p class="tweet-label">Confrontational content:</p>
+                            <div class="tweet-block">Other 'treasury tools' on Solana:
+
+❌ Trust the dev to use them correctly
+❌ Manual execution required
+❌ No verification link for community
+
+Auto-Pilot:
+
+✓ Custodial — dev can't touch it
+✓ Automated — executes without human input
+✓ Verifiable — share the receipts
+
+One of these is a tool. The other is a rug waiting to happen.</div>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-header">
+                            <div>
+                                <span class="day-number">DAY 21</span>
+                                <h4 class="day-title">The Challenge Setup</h4>
+                            </div>
+                        </div>
+                        <div class="day-content">
+                            <p class="tweet-label">Josh tweets:</p>
+                            <div class="tweet-block">I've done 5 autopsies. The pattern is always the same.
+
+Dev has control. Dev abuses control.
+
+Here's my question: Has anyone EVER seen a token using Auto-Pilot rug?
+
+I'll wait.</div>
+                            <p style="color: var(--text-muted); font-size: 0.875rem; margin-top: 1rem;"><strong>This sets up Week 4.</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Week 4 Detail -->
+            <div class="week-section">
+                <div class="week-header">
+                    <span class="week-badge" style="background: linear-gradient(135deg, #00ff88 0%, #00cc6a 100%); color: #000;">DAYS 22-30</span>
+                    <h3 class="week-title">The Impossible Rug Challenge</h3>
+                </div>
+
+                <div class="day-grid">
+                    <div class="day-card">
+                        <div class="day-header">
+                            <div>
+                                <span class="day-number">DAY 22</span>
+                                <h4 class="day-title">The Provocation</h4>
+                            </div>
+                        </div>
+                        <div class="day-content">
+                            <p class="tweet-label">Auto-Pilot tweets:</p>
+                            <div class="tweet-block">The Impossible Rug Challenge
+
+We'll pay $[X] to anyone who can explain how a token using Auto-Pilot could rug its community.
+
+Rules:
+- Must be mechanically possible (not 'the team is mean')
+- Must involve treasury mismanagement
+- Must be something Auto-Pilot doesn't prevent
+
+We've been live for [X] months. Zero rugs. We don't think it's possible.
+
+Prove us wrong. DMs open.</div>
+                            <p style="color: var(--text-muted); font-size: 0.875rem; margin-top: 1rem;"><strong>Why it works:</strong> Confrontational and confident. Invites scrutiny (builds trust). Anyone who tries to debunk becomes an advertiser. The challenge itself is shareable.</p>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-header">
+                            <div>
+                                <span class="day-number">DAY 25</span>
+                                <h4 class="day-title">Challenge Responses</h4>
+                            </div>
+                        </div>
+                        <div class="day-content">
+                            <p class="tweet-label">Auto-Pilot tweets:</p>
+                            <div class="tweet-block">24 hours into The Impossible Rug Challenge.
+
+Submissions so far:
+
+'What if the Auto-Pilot team rugs?' — We're custodial, not magical. The bot executes the strategy YOU set. We can't change it.
+
+'What if Solana goes down?' — Then all of Solana is down. Not an Auto-Pilot problem.
+
+'What if...' — Keep trying.
+
+Still waiting for a real answer.</div>
+                            <p style="color: var(--text-muted); font-size: 0.875rem; margin-top: 1rem;"><strong>Address objections publicly.</strong> Shows confidence.</p>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-header">
+                            <div>
+                                <span class="day-number">DAY 28</span>
+                                <h4 class="day-title">The Conversion Push</h4>
+                            </div>
+                        </div>
+                        <div class="day-content">
+                            <p class="tweet-label">Josh tweets:</p>
+                            <div class="tweet-block">6 autopsies. 2 Rug Reports. Thousands of replies from people who got wrecked.
+
+The pattern is always the same: Dev had control. Dev abused it.
+
+If you're launching a token, you have two choices:
+
+1. Ask your community to trust you
+2. Let them verify everything on-chain
+
+Auto-Pilot makes #2 the default.</div>
+                        </div>
+                    </div>
+
+                    <div class="day-card">
+                        <div class="day-header">
+                            <div>
+                                <span class="day-number">DAY 30</span>
+                                <h4 class="day-title">The Teaser</h4>
+                            </div>
+                        </div>
+                        <div class="day-content">
+                            <p class="tweet-label">Josh tweets:</p>
+                            <div class="tweet-block">The Rug Coroner was Phase 1.
+
+Phase 2 starts next week.
+
+If you thought the autopsies were interesting, wait until you see what's next.
+
+[No link. No explanation. Just anticipation.]</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content Calendar Overview -->
+    <section class="section">
+        <div class="section-header">
+            <div class="section-number">02</div>
+            <h2 class="section-title">Content Calendar Overview</h2>
+            <p class="section-subtitle">30 days of content mapped by day, type, and account.</p>
+        </div>
+
+        <div class="calendar-table">
+            <div class="calendar-row header">
+                <div class="calendar-cell header">Day</div>
+                <div class="calendar-cell header">Content Type</div>
+                <div class="calendar-cell header">Account</div>
+            </div>
+            <div class="calendar-row">
+                <div class="calendar-cell day">1</div>
+                <div class="calendar-cell">Coroner announcement</div>
+                <div class="calendar-cell account">Josh</div>
+            </div>
+            <div class="calendar-row">
+                <div class="calendar-cell day">2</div>
+                <div class="calendar-cell">Autopsy #1</div>
+                <div class="calendar-cell account">Josh</div>
+            </div>
+            <div class="calendar-row">
+                <div class="calendar-cell day">3</div>
+                <div class="calendar-cell">Product explainer</div>
+                <div class="calendar-cell account">Auto-Pilot</div>
+            </div>
+            <div class="calendar-row">
+                <div class="calendar-cell day">4-5</div>
+                <div class="calendar-cell">Autopsy #2</div>
+                <div class="calendar-cell account">Josh</div>
+            </div>
+            <div class="calendar-row">
+                <div class="calendar-cell day">6</div>
+                <div class="calendar-cell">Pattern post</div>
+                <div class="calendar-cell account">Josh</div>
+            </div>
+            <div class="calendar-row">
+                <div class="calendar-cell day">7</div>
+                <div class="calendar-cell">Assistant Coroner invitation</div>
+                <div class="calendar-cell account">Auto-Pilot</div>
+            </div>
+            <div class="calendar-row">
+                <div class="calendar-cell day">8-9</div>
+                <div class="calendar-cell">Community autopsy #1</div>
+                <div class="calendar-cell account">Josh</div>
+            </div>
+            <div class="calendar-row">
+                <div class="calendar-cell day">10</div>
+                <div class="calendar-cell">Comparison visual</div>
+                <div class="calendar-cell account">Auto-Pilot</div>
+            </div>
+            <div class="calendar-row">
+                <div class="calendar-cell day">11-12</div>
+                <div class="calendar-cell">Autopsy #3</div>
+                <div class="calendar-cell account">Josh</div>
+            </div>
+            <div class="calendar-row">
+                <div class="calendar-cell day">13</div>
+                <div class="calendar-cell">Leaderboard of Shame</div>
+                <div class="calendar-cell account">Auto-Pilot</div>
+            </div>
+            <div class="calendar-row">
+                <div class="calendar-cell day">14</div>
+                <div class="calendar-cell">"I Was There" engagement</div>
+                <div class="calendar-cell account">Josh</div>
+            </div>
+            <div class="calendar-row">
+                <div class="calendar-cell day">15</div>
+                <div class="calendar-cell">Rug Report Week 1</div>
+                <div class="calendar-cell account">Auto-Pilot</div>
+            </div>
+            <div class="calendar-row">
+                <div class="calendar-cell day">16-17</div>
+                <div class="calendar-cell">Autopsy #4</div>
+                <div class="calendar-cell account">Josh</div>
+            </div>
+            <div class="calendar-row">
+                <div class="calendar-cell day">18</div>
+                <div class="calendar-cell">Feature war post</div>
+                <div class="calendar-cell account">Auto-Pilot</div>
+            </div>
+            <div class="calendar-row">
+                <div class="calendar-cell day">19-20</div>
+                <div class="calendar-cell">Autopsy #5</div>
+                <div class="calendar-cell account">Josh</div>
+            </div>
+            <div class="calendar-row">
+                <div class="calendar-cell day">21</div>
+                <div class="calendar-cell">Challenge setup</div>
+                <div class="calendar-cell account">Josh</div>
+            </div>
+            <div class="calendar-row">
+                <div class="calendar-cell day">22</div>
+                <div class="calendar-cell">Impossible Rug Challenge</div>
+                <div class="calendar-cell account">Auto-Pilot</div>
+            </div>
+            <div class="calendar-row">
+                <div class="calendar-cell day">23-24</div>
+                <div class="calendar-cell">Autopsy #6 (special)</div>
+                <div class="calendar-cell account">Josh</div>
+            </div>
+            <div class="calendar-row">
+                <div class="calendar-cell day">25</div>
+                <div class="calendar-cell">Challenge responses</div>
+                <div class="calendar-cell account">Auto-Pilot</div>
+            </div>
+            <div class="calendar-row">
+                <div class="calendar-cell day">26-27</div>
+                <div class="calendar-cell">Rug Report Week 2</div>
+                <div class="calendar-cell account">Auto-Pilot</div>
+            </div>
+            <div class="calendar-row">
+                <div class="calendar-cell day">28</div>
+                <div class="calendar-cell">Conversion push</div>
+                <div class="calendar-cell account">Josh</div>
+            </div>
+            <div class="calendar-row">
+                <div class="calendar-cell day">29</div>
+                <div class="calendar-cell">Numbers recap</div>
+                <div class="calendar-cell account">Auto-Pilot</div>
+            </div>
+            <div class="calendar-row">
+                <div class="calendar-cell day">30</div>
+                <div class="calendar-cell">Phase 2 teaser</div>
+                <div class="calendar-cell account">Josh</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Community Section -->
+    <section class="army-section" id="community">
+        <div class="section">
+            <div class="section-header">
+                <div class="section-number">03</div>
+                <h2 class="section-title">The 50-Person Army</h2>
+                <p class="section-subtitle">Forget "amplifiers" and "engagers." That's bot behavior.</p>
+            </div>
+
+            <div class="army-grid">
+                <div class="army-card">
+                    <div class="army-count">20</div>
+                    <h4 class="army-role">Rug Scouts</h4>
+                    <p class="army-mission">Find rugs to autopsy.</p>
+                    <ul class="army-tasks">
+                        <li>Monitor CT for rug announcements</li>
+                        <li>Track suspicious projects before they rug</li>
+                        <li>Submit evidence with on-chain links</li>
+                        <li>Best submissions get credited</li>
+                    </ul>
+                </div>
+
+                <div class="army-card">
+                    <div class="army-count">15</div>
+                    <h4 class="army-role">Reply Guys</h4>
+                    <p class="army-mission">Own the replies.</p>
+                    <ul class="army-tasks">
+                        <li>Be first with substantive comments</li>
+                        <li>Share personal rug stories</li>
+                        <li>Answer questions from confused normies</li>
+                        <li>Keep threads alive past first hour</li>
+                    </ul>
+                </div>
+
+                <div class="army-card">
+                    <div class="army-count">10</div>
+                    <h4 class="army-role">Meme Soldiers</h4>
+                    <p class="army-mission">Create derivatives.</p>
+                    <ul class="army-tasks">
+                        <li>Turn autopsy findings into memes</li>
+                        <li>Create "Cause of Death" graphics</li>
+                        <li>Make shareable content from each autopsy</li>
+                        <li>Post in their own feeds</li>
+                    </ul>
+                </div>
+
+                <div class="army-card">
+                    <div class="army-count">5</div>
+                    <h4 class="army-role">Sleeper Agents</h4>
+                    <p class="army-mission">Outside infiltration.</p>
+                    <ul class="army-tasks">
+                        <li>Join Discords of sketchy projects</li>
+                        <li>Tip off Coroner before rugs</li>
+                        <li>Post "should have used Auto-Pilot" after rugs</li>
+                        <li>Never coordinate publicly</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Budget Section -->
+    <section class="section" id="budget">
+        <div class="section-header">
+            <div class="section-number">04</div>
+            <h2 class="section-title">Budget Allocation</h2>
+            <p class="section-subtitle">~$2,500 total investment</p>
+        </div>
+
+        <div class="budget-section">
+            <div class="budget-table">
+                <div class="budget-row header">
+                    <div>Item</div>
+                    <div>Cost</div>
+                    <div>Purpose</div>
+                </div>
+                <div class="budget-row">
+                    <div class="budget-item">Impossible Rug Challenge prize</div>
+                    <div class="budget-cost">$500</div>
+                    <div class="budget-purpose">Provocation engine</div>
+                </div>
+                <div class="budget-row">
+                    <div class="budget-item">Top Scout/Meme rewards</div>
+                    <div class="budget-cost">$500</div>
+                    <div class="budget-purpose">Community incentives</div>
+                </div>
+                <div class="budget-row">
+                    <div class="budget-item">Designer for autopsy graphics</div>
+                    <div class="budget-cost">$400</div>
+                    <div class="budget-purpose">Professional visuals</div>
+                </div>
+                <div class="budget-row">
+                    <div class="budget-item">Rug Report template design</div>
+                    <div class="budget-cost">$200</div>
+                    <div class="budget-purpose">Recurring content format</div>
+                </div>
+                <div class="budget-row">
+                    <div class="budget-item">Paid boost on Autopsy #1</div>
+                    <div class="budget-cost">$300</div>
+                    <div class="budget-purpose">Launch visibility</div>
+                </div>
+                <div class="budget-row">
+                    <div class="budget-item">Contingency</div>
+                    <div class="budget-cost">$600</div>
+                    <div class="budget-purpose">Opportunities</div>
+                </div>
+                <div class="budget-row total">
+                    <div class="budget-item">Total</div>
+                    <div class="budget-cost">~$2,500</div>
+                    <div class="budget-purpose"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hunt Effect Checklist -->
+    <section class="section">
+        <div class="hunt-section">
+            <div class="section-header" style="margin-bottom: 2rem;">
+                <h2 class="section-title">What Makes This Hunt Effect</h2>
+            </div>
+
+            <div class="hunt-grid">
+                <div class="hunt-item">
+                    <div class="hunt-check">✓</div>
+                    <div>
+                        <h4>One Big Idea, Not 10 Tactics</h4>
+                        <p>The Rug Coroner is the campaign. Everything else supports it.</p>
+                    </div>
+                </div>
+                <div class="hunt-item">
+                    <div class="hunt-check">✓</div>
+                    <div>
+                        <h4>Genuinely Valuable</h4>
+                        <p>Rug autopsies help people. They'd share even without the product plug.</p>
+                    </div>
+                </div>
+                <div class="hunt-item">
+                    <div class="hunt-check">✓</div>
+                    <div>
+                        <h4>Culturally Native</h4>
+                        <p>This is how Solana CT talks. Receipts. Callouts. On-chain proof.</p>
+                    </div>
+                </div>
+                <div class="hunt-item">
+                    <div class="hunt-check">✓</div>
+                    <div>
+                        <h4>Confrontational</h4>
+                        <p>Naming names. Showing wallets. Saying "this was preventable."</p>
+                    </div>
+                </div>
+                <div class="hunt-item">
+                    <div class="hunt-check">✓</div>
+                    <div>
+                        <h4>Product as Solution, Not Hero</h4>
+                        <p>Auto-Pilot emerges from education, not pitching.</p>
+                    </div>
+                </div>
+                <div class="hunt-item">
+                    <div class="hunt-check">✓</div>
+                    <div>
+                        <h4>UGC Engine</h4>
+                        <p>Community submits rugs. Community becomes investigators. Endless content.</p>
+                    </div>
+                </div>
+                <div class="hunt-item">
+                    <div class="hunt-check">✓</div>
+                    <div>
+                        <h4>Escalating Tension</h4>
+                        <p>Day 1 is an announcement. Day 22 is a public challenge. Stakes increase.</p>
+                    </div>
+                </div>
+                <div class="hunt-item">
+                    <div class="hunt-check">✓</div>
+                    <div>
+                        <h4>Impossible to Ignore</h4>
+                        <p>If you've been rugged, this speaks to you. If you're a dev, this pressures you.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- What This Doesn't Do -->
+    <section class="section">
+        <div class="section-header">
+            <h2 class="section-title">What This Plan Doesn't Do</h2>
+        </div>
+
+        <div class="anti-grid">
+            <div class="anti-item">
+                <span class="anti-x">✕</span>
+                <span>Generic "build awareness" tactics</span>
+            </div>
+            <div class="anti-item">
+                <span class="anti-x">✕</span>
+                <span>Testimonials from users nobody knows</span>
+            </div>
+            <div class="anti-item">
+                <span class="anti-x">✕</span>
+                <span>Challenge hashtags that feel like marketing</span>
+            </div>
+            <div class="anti-item">
+                <span class="anti-x">✕</span>
+                <span>Week 1/Week 2/Week 3 template structure</span>
+            </div>
+            <div class="anti-item">
+                <span class="anti-x">✕</span>
+                <span>Safe, forgettable content</span>
+            </div>
+            <div class="anti-item">
+                <span class="anti-x">✕</span>
+                <span>Asking people to trust you</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Filter -->
+    <section class="section">
+        <div class="filter-section">
+            <h3>THE LINE</h3>
+            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Every piece of content passes through one filter:</p>
+            <blockquote>"Would a rug victim share this because it validates their experience and shows them how to avoid it next time?"</blockquote>
+            <p>If yes, <span>ship it.</span> If no, it's marketing. <span>Kill it.</span></p>
+        </div>
+    </section>
+
+    <!-- Phase 2 Tease -->
+    <section class="section">
+        <div class="phase2-section">
+            <span class="phase2-badge">FOR LATER</span>
+            <h3>Phase 2 Options (After Day 30)</h3>
+            <div class="phase2-options">
+                <div class="phase2-option">
+                    <h4>The Rug Predictor</h4>
+                    <p>Call out projects BEFORE they rug</p>
+                </div>
+                <div class="phase2-option">
+                    <h4>The Transparency Index</h4>
+                    <p>Rate every major Solana token on treasury transparency</p>
+                </div>
+                <div class="phase2-option">
+                    <h4>The Coroner's Office</h4>
+                    <p>Discord where community investigates together</p>
+                </div>
+                <div class="phase2-option">
+                    <h4>The Rug Insurance Pitch</h4>
+                    <p>Partner with actual insurance for Auto-Pilot users</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer-quote">
+        <blockquote>"Cause of death: <span>Trust without verification.</span><br>This didn't have to happen."</blockquote>
+        <p class="footer-brand">AUTO-PILOT × THE RUG CORONER</p>
+    </footer>
+</body>
+</html>
