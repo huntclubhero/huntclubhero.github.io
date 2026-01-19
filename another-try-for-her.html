@@ -1,0 +1,2110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Hunt Hero | Your Digital Sanctuary</title>
+  <meta name="description" content="Reclaim your digital privacy. Discover where your personal data is exposed across 200+ data broker sites.">
+  <meta name="theme-color" content="#030304">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --void-black: #030304;
+      --void-deep: #08080a;
+      --void-surface: #0d0d10;
+      --void-elevated: #131316;
+      --void-card: #1a1a1f;
+
+      --white: #ffffff;
+      --white-90: rgba(255,255,255,0.9);
+      --white-70: rgba(255,255,255,0.7);
+      --white-50: rgba(255,255,255,0.5);
+      --white-30: rgba(255,255,255,0.3);
+      --white-15: rgba(255,255,255,0.15);
+      --white-08: rgba(255,255,255,0.08);
+      --white-04: rgba(255,255,255,0.04);
+
+      --cyan: #00f0ff;
+      --cyan-bright: #5cffff;
+      --cyan-glow: rgba(0, 240, 255, 0.6);
+      --cyan-subtle: rgba(0, 240, 255, 0.15);
+      --cyan-whisper: rgba(0, 240, 255, 0.08);
+
+      --breach: #ff3d5a;
+      --breach-glow: rgba(255, 61, 90, 0.6);
+      --breach-subtle: rgba(255, 61, 90, 0.2);
+
+      --protected: #00e676;
+      --protected-glow: rgba(0, 230, 118, 0.5);
+
+      --font-display: 'Space Grotesk', system-ui, sans-serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      font-family: var(--font-body);
+      font-weight: 400;
+      line-height: 1.6;
+      color: var(--white);
+      background: var(--void-black);
+    }
+
+    ::selection {
+      background: var(--cyan);
+      color: var(--void-black);
+    }
+
+    #ambient-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .floating-data {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 50%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+      overflow: hidden;
+      opacity: 0.6;
+    }
+
+    .data-particle {
+      position: absolute;
+      padding: 0.4rem 0.8rem;
+      background: var(--breach-subtle);
+      border: 1px solid rgba(255, 61, 90, 0.3);
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--breach);
+      white-space: nowrap;
+      animation: float-up 15s linear infinite;
+      opacity: 0;
+    }
+
+    @keyframes float-up {
+      0% { transform: translateY(100vh); opacity: 0; }
+      5% { opacity: 0.8; }
+      95% { opacity: 0.8; }
+      100% { transform: translateY(-50px); opacity: 0; }
+    }
+
+    .grain {
+      position: fixed;
+      top: -200%;
+      left: -200%;
+      width: 400%;
+      height: 400%;
+      z-index: 9997;
+      pointer-events: none;
+      opacity: 0.02;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      animation: grain-shift 8s steps(10) infinite;
+    }
+
+    @keyframes grain-shift {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(-5%, -5%); }
+    }
+
+    .loading-sequence {
+      position: fixed;
+      inset: 0;
+      background: var(--void-black);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    .loading-sequence.exit {
+      animation: loading-exit 1s var(--ease-out-expo) forwards;
+    }
+
+    @keyframes loading-exit {
+      to { clip-path: inset(0 0 100% 0); opacity: 0; visibility: hidden; }
+    }
+
+    .loader-mark {
+      position: relative;
+      width: 60px;
+      height: 60px;
+      margin-bottom: 1.5rem;
+    }
+
+    .loader-ring {
+      position: absolute;
+      inset: 0;
+      border: 2px solid transparent;
+      border-top-color: var(--cyan);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    .loader-ring:nth-child(2) { inset: 6px; border-top-color: var(--white-30); animation-duration: 1.5s; animation-direction: reverse; }
+    .loader-ring:nth-child(3) { inset: 12px; border-top-color: var(--cyan-subtle); animation-duration: 2s; }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loader-text {
+      font-family: var(--font-display);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--white-50);
+    }
+
+    #app {
+      position: relative;
+      z-index: 2;
+      height: 100%;
+    }
+
+    .screen {
+      display: none !important;
+      height: 100%;
+      width: 100%;
+    }
+
+    .screen.active {
+      display: flex !important;
+    }
+
+    /* ==================== LANDING ==================== */
+    .landing.active {
+      display: grid !important;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .landing-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 3rem 4rem;
+      position: relative;
+      z-index: 5;
+    }
+
+    .nav-logo {
+      position: absolute;
+      top: 2rem;
+      left: 4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .nav-logo-mark {
+      width: 32px;
+      height: 32px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-logo-mark::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--cyan) 0%, var(--cyan-bright) 100%);
+      border-radius: 8px;
+      transform: rotate(45deg);
+    }
+
+    .nav-logo-mark svg {
+      position: relative;
+      z-index: 1;
+      width: 16px;
+      height: 16px;
+      color: var(--void-black);
+    }
+
+    .nav-logo-text {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .nav-logo-text span { color: var(--cyan); }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 0.9rem;
+      background: var(--breach-subtle);
+      border: 1px solid rgba(255, 61, 90, 0.3);
+      border-radius: 100px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--breach);
+      width: fit-content;
+      margin-bottom: 1.5rem;
+      animation: fade-up 0.8s var(--ease-out-expo) 0.2s both;
+    }
+
+    .hero-badge::before {
+      content: '';
+      width: 5px;
+      height: 5px;
+      background: var(--breach);
+      border-radius: 50%;
+      animation: pulse 2s ease infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.5); }
+    }
+
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      font-weight: 700;
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-title .line {
+      display: block;
+      overflow: hidden;
+    }
+
+    .hero-title .line-inner {
+      display: block;
+      animation: title-reveal 1s var(--ease-out-expo) both;
+    }
+
+    .hero-title .line:nth-child(1) .line-inner { animation-delay: 0.3s; }
+    .hero-title .line:nth-child(2) .line-inner { animation-delay: 0.4s; }
+    .hero-title .line:nth-child(3) .line-inner { animation-delay: 0.5s; }
+
+    @keyframes title-reveal {
+      from { transform: translateY(120%); }
+      to { transform: translateY(0); }
+    }
+
+    .hero-title .gradient-text {
+      background: linear-gradient(135deg, var(--cyan) 0%, var(--cyan-bright) 50%, var(--white) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-subtitle {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--white-50);
+      max-width: 400px;
+      margin-bottom: 1.75rem;
+      animation: fade-up 0.8s var(--ease-out-expo) 0.7s both;
+    }
+
+    .btn-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 1rem 2rem;
+      background: var(--cyan);
+      color: var(--void-black);
+      font-family: var(--font-display);
+      font-size: 0.875rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 100px;
+      cursor: pointer;
+      transition: all 0.4s var(--ease-out-expo);
+      animation: fade-up 0.8s var(--ease-out-expo) 0.9s both;
+    }
+
+    .btn-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 0 1px var(--cyan), 0 10px 40px -10px var(--cyan-glow);
+    }
+
+    .btn-cta svg { transition: transform 0.3s ease; }
+    .btn-cta:hover svg { transform: translateX(4px); }
+
+    /* Trust badges - subtle inline */
+    .trust-badges {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+      animation: fade-up 0.8s var(--ease-out-expo) 1s both;
+    }
+
+    .trust-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.7rem;
+      color: var(--white-30);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .trust-badge svg {
+      width: 12px;
+      height: 12px;
+      color: var(--cyan);
+      opacity: 0.7;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 2.5rem;
+      margin-top: 2.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--white-08);
+      animation: fade-up 0.8s var(--ease-out-expo) 1.1s both;
+    }
+
+    .stat-value {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--white-50);
+    }
+
+    .landing-visual {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .landing-visual::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 80% at 50% 50%, var(--breach-subtle) 0%, transparent 60%);
+      opacity: 0.4;
+    }
+
+    .exposure-display {
+      text-align: center;
+      animation: fade-up 1s var(--ease-out-expo) 0.5s both;
+    }
+
+    .exposure-label {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--breach);
+      margin-bottom: 0.5rem;
+    }
+
+    .exposure-number {
+      font-family: var(--font-display);
+      font-size: clamp(6rem, 15vw, 12rem);
+      font-weight: 700;
+      line-height: 0.85;
+      letter-spacing: -0.05em;
+      text-shadow: 0 0 80px var(--breach-glow);
+    }
+
+    .exposure-number::after {
+      content: '+';
+      font-size: 0.35em;
+      color: var(--breach);
+      vertical-align: super;
+    }
+
+    .exposure-caption {
+      font-size: 0.875rem;
+      color: var(--white-50);
+      margin-top: 0.5rem;
+    }
+
+    .exposure-caption strong {
+      color: var(--breach);
+    }
+
+    /* ==================== FORM SCREEN ==================== */
+    .form-screen.active {
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .form-container {
+      width: 100%;
+      max-width: 460px;
+      animation: screen-enter 0.6s var(--ease-out-expo);
+    }
+
+    @keyframes screen-enter {
+      from { opacity: 0; transform: translateY(30px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .form-progress {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      margin-bottom: 2rem;
+    }
+
+    .form-progress-step {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--white-15);
+      transition: all 0.4s var(--ease-out-expo);
+    }
+
+    .form-progress-step.active {
+      width: 28px;
+      border-radius: 5px;
+      background: var(--cyan);
+      box-shadow: 0 0 15px var(--cyan-glow);
+    }
+
+    .form-progress-step.completed {
+      background: var(--protected);
+    }
+
+    .form-card {
+      background: var(--void-surface);
+      border: 1px solid var(--white-08);
+      border-radius: 20px;
+      padding: 2.5rem;
+      position: relative;
+    }
+
+    .form-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 1.5rem;
+      right: 1.5rem;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+    }
+
+    .form-step {
+      display: none;
+    }
+
+    .form-step.active {
+      display: block;
+      animation: fade-up 0.4s var(--ease-out-expo);
+    }
+
+    .form-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .form-header h2 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.4rem;
+    }
+
+    .form-header p {
+      font-size: 0.875rem;
+      color: var(--white-50);
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--white-50);
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 1rem 1.25rem;
+      background: var(--void-deep);
+      border: 1px solid var(--white-08);
+      border-radius: 10px;
+      font-family: var(--font-body);
+      font-size: 0.9375rem;
+      color: var(--white);
+      transition: all 0.3s ease;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 3px var(--cyan-whisper);
+    }
+
+    .form-input::placeholder {
+      color: var(--white-30);
+    }
+
+    .tag-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      padding: 0.75rem 1rem;
+      background: var(--void-deep);
+      border: 1px solid var(--white-08);
+      border-radius: 10px;
+      min-height: 54px;
+      cursor: text;
+      transition: all 0.3s ease;
+    }
+
+    .tag-container:focus-within {
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 3px var(--cyan-whisper);
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.35rem 0.7rem;
+      background: var(--cyan-whisper);
+      border: 1px solid var(--cyan-subtle);
+      border-radius: 6px;
+      font-size: 0.8125rem;
+      color: var(--cyan);
+    }
+
+    .tag-remove {
+      cursor: pointer;
+      opacity: 0.7;
+      font-size: 1rem;
+      line-height: 1;
+    }
+
+    .tag-remove:hover { opacity: 1; }
+
+    .tag-input {
+      flex: 1;
+      min-width: 100px;
+      padding: 0.35rem 0;
+      background: transparent;
+      border: none;
+      font-family: var(--font-body);
+      font-size: 0.9375rem;
+      color: var(--white);
+      outline: none;
+    }
+
+    .form-hint {
+      font-size: 0.75rem;
+      color: var(--white-30);
+      margin-top: 0.5rem;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+
+    .form-actions .btn-cta {
+      flex: 1;
+      justify-content: center;
+      animation: none;
+    }
+
+    .btn-back {
+      padding: 1rem 1.25rem;
+      background: var(--white-08);
+      border: 1px solid var(--white-08);
+      border-radius: 100px;
+      color: var(--white-70);
+      font-family: var(--font-display);
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-back:hover {
+      background: var(--white-15);
+      color: var(--white);
+    }
+
+    /* ==================== SCAN SCREEN ==================== */
+    .scan-screen.active {
+      align-items: center;
+      justify-content: center;
+    }
+
+    .scan-container {
+      text-align: center;
+      max-width: 420px;
+      animation: screen-enter 0.6s var(--ease-out-expo);
+    }
+
+    .scan-visual {
+      position: relative;
+      width: 180px;
+      height: 180px;
+      margin: 0 auto 2.5rem;
+    }
+
+    .scan-ring {
+      position: absolute;
+      inset: 0;
+      border: 2px solid var(--cyan);
+      border-radius: 50%;
+      animation: scan-expand 2.5s var(--ease-out-expo) infinite;
+    }
+
+    .scan-ring:nth-child(1) { animation-delay: 0s; }
+    .scan-ring:nth-child(2) { animation-delay: 0.5s; }
+    .scan-ring:nth-child(3) { animation-delay: 1s; }
+
+    @keyframes scan-expand {
+      0% { transform: scale(0.3); opacity: 1; }
+      100% { transform: scale(1.2); opacity: 0; }
+    }
+
+    .scan-core {
+      position: absolute;
+      inset: 35px;
+      background: var(--void-surface);
+      border: 2px solid var(--cyan);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 50px var(--cyan-glow), inset 0 0 30px var(--cyan-whisper);
+    }
+
+    .scan-icon {
+      font-size: 2.5rem;
+      animation: spin 4s linear infinite;
+    }
+
+    .scan-status {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+
+    .scan-detail {
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      color: var(--white-50);
+      margin-bottom: 1.5rem;
+      height: 1.2em;
+    }
+
+    .scan-progress-track {
+      width: 100%;
+      height: 4px;
+      background: var(--white-08);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-bottom: 0.75rem;
+    }
+
+    .scan-progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--cyan), var(--cyan-bright));
+      border-radius: 2px;
+      transition: width 0.3s ease;
+      box-shadow: 0 0 15px var(--cyan-glow);
+    }
+
+    .scan-found {
+      font-size: 0.875rem;
+      color: var(--white-50);
+    }
+
+    .scan-found strong {
+      color: var(--breach);
+    }
+
+    /* ==================== RESULTS SCREEN ==================== */
+    .results-screen.active {
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      overflow-y: auto;
+    }
+
+    .results-container {
+      width: 100%;
+      max-width: 700px;
+      animation: screen-enter 0.6s var(--ease-out-expo);
+    }
+
+    .results-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .results-header h2 {
+      font-family: var(--font-display);
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+    }
+
+    .results-header p {
+      font-size: 0.9375rem;
+      color: var(--white-50);
+    }
+
+    .results-summary {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .summary-card {
+      background: var(--void-surface);
+      border: 1px solid var(--white-08);
+      border-radius: 16px;
+      padding: 1.25rem;
+      text-align: center;
+    }
+
+    .summary-card.danger {
+      border-color: rgba(255, 61, 90, 0.3);
+      background: linear-gradient(135deg, var(--void-surface) 0%, rgba(255, 61, 90, 0.05) 100%);
+    }
+
+    .summary-value {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
+    .summary-card.danger .summary-value {
+      color: var(--breach);
+    }
+
+    .summary-label {
+      font-size: 0.7rem;
+      color: var(--white-50);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .results-list {
+      background: var(--void-surface);
+      border: 1px solid var(--white-08);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 2rem;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .results-list-header {
+      display: flex;
+      justify-content: space-between;
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--white-08);
+      position: sticky;
+      top: 0;
+      background: var(--void-surface);
+    }
+
+    .results-list-header h3 {
+      font-family: var(--font-display);
+      font-size: 0.9375rem;
+      font-weight: 600;
+    }
+
+    .results-list-header span {
+      font-size: 0.8125rem;
+      color: var(--white-50);
+    }
+
+    .result-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.875rem 1.25rem;
+      border-bottom: 1px solid var(--white-04);
+    }
+
+    .result-item:last-child { border-bottom: none; }
+
+    .result-icon {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--breach-subtle);
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    .result-info { flex: 1; }
+
+    .result-name {
+      font-weight: 600;
+      font-size: 0.875rem;
+    }
+
+    .result-data {
+      font-size: 0.75rem;
+      color: var(--white-50);
+    }
+
+    .result-status {
+      font-size: 0.625rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 0.25rem 0.5rem;
+      background: var(--breach-subtle);
+      color: var(--breach);
+      border-radius: 4px;
+    }
+
+    .results-cta {
+      background: var(--void-elevated);
+      border: 1px solid var(--white-08);
+      border-radius: 16px;
+      padding: 2rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .results-cta::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 1.5rem;
+      right: 1.5rem;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+    }
+
+    .results-cta p {
+      font-size: 1rem;
+      color: var(--white-70);
+      margin-bottom: 1rem;
+    }
+
+    .results-cta .btn-cta {
+      animation: none;
+    }
+
+    /* ==================== PAYMENT SCREEN ==================== */
+    .payment-screen.active {
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .payment-card {
+      background: var(--void-surface);
+      border: 1px solid var(--white-08);
+      border-radius: 20px;
+      padding: 2.5rem;
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+      animation: screen-enter 0.6s var(--ease-out-expo);
+    }
+
+    .payment-header h2 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+    }
+
+    .payment-header p {
+      font-size: 0.875rem;
+      color: var(--white-50);
+      margin-bottom: 1.5rem;
+    }
+
+    .payment-amount {
+      background: var(--void-deep);
+      border: 1px solid var(--white-08);
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .payment-amount-label {
+      font-size: 0.65rem;
+      color: var(--white-30);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.3rem;
+    }
+
+    .payment-amount-value {
+      font-family: var(--font-display);
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--cyan);
+    }
+
+    .payment-options {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .payment-option {
+      flex: 1;
+      padding: 1rem 0.5rem;
+      background: var(--void-deep);
+      border: 2px solid var(--white-08);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .payment-option:hover { border-color: var(--white-15); }
+
+    .payment-option.selected {
+      border-color: var(--cyan);
+      background: var(--cyan-whisper);
+    }
+
+    .payment-option-icon { font-size: 1.25rem; margin-bottom: 0.3rem; }
+    .payment-option-name { font-size: 0.8125rem; font-weight: 600; }
+    .payment-option-amount { font-size: 0.7rem; color: var(--white-50); margin-top: 0.15rem; }
+
+    .wallet-box {
+      background: var(--void-deep);
+      border: 1px solid var(--white-08);
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 1.25rem;
+      text-align: left;
+    }
+
+    .wallet-label {
+      font-size: 0.7rem;
+      color: var(--white-30);
+      margin-bottom: 0.4rem;
+    }
+
+    .wallet-value {
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      color: var(--cyan);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .copy-btn {
+      padding: 0.4rem 0.75rem;
+      background: var(--cyan-whisper);
+      border: 1px solid var(--cyan-subtle);
+      border-radius: 6px;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: var(--cyan);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .copy-btn:hover { background: var(--cyan-subtle); }
+
+    .tx-group {
+      text-align: left;
+      margin-bottom: 1.25rem;
+    }
+
+    .tx-group label {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--white-50);
+      margin-bottom: 0.4rem;
+    }
+
+    .payment-card .btn-cta {
+      width: 100%;
+      justify-content: center;
+      animation: none;
+    }
+
+    .payment-note {
+      font-size: 0.7rem;
+      color: var(--white-30);
+      margin-top: 1rem;
+    }
+
+    /* ==================== COMPLETE SCREEN ==================== */
+    .complete-screen.active {
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .complete-container {
+      text-align: center;
+      max-width: 460px;
+      animation: screen-enter 0.6s var(--ease-out-expo);
+    }
+
+    .complete-icon {
+      width: 90px;
+      height: 90px;
+      margin: 0 auto 1.5rem;
+      background: linear-gradient(135deg, var(--protected) 0%, #00cc66 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      box-shadow: 0 0 40px var(--protected-glow);
+    }
+
+    .complete-title {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+
+    .complete-subtitle {
+      font-size: 1rem;
+      color: var(--white-50);
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+
+    .timeline-card {
+      background: var(--void-surface);
+      border: 1px solid var(--white-08);
+      border-radius: 16px;
+      padding: 1.5rem;
+      text-align: left;
+      margin-bottom: 1.5rem;
+    }
+
+    .timeline-card h3 {
+      font-size: 0.9375rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .timeline-item {
+      display: flex;
+      gap: 1rem;
+      padding: 0.6rem 0;
+    }
+
+    .timeline-dot {
+      width: 10px;
+      height: 10px;
+      background: var(--cyan);
+      border-radius: 50%;
+      margin-top: 4px;
+      flex-shrink: 0;
+    }
+
+    .timeline-content {
+      font-size: 0.8125rem;
+      color: var(--white-50);
+    }
+
+    .timeline-content strong {
+      color: var(--white);
+    }
+
+    .share-section {
+      background: var(--void-surface);
+      border: 1px solid var(--white-08);
+      border-radius: 16px;
+      padding: 1.5rem;
+    }
+
+    .share-section h3 {
+      font-size: 0.9375rem;
+      margin-bottom: 1rem;
+    }
+
+    .share-buttons {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+    }
+
+    .share-btn {
+      padding: 0.75rem 1.25rem;
+      background: var(--void-deep);
+      border: 1px solid var(--white-08);
+      border-radius: 8px;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--white);
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .share-btn:hover {
+      border-color: var(--cyan);
+      color: var(--cyan);
+    }
+
+    /* ==================== PROCESSING SCREEN ==================== */
+    .processing-screen.active {
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .processing-container {
+      text-align: center;
+      max-width: 460px;
+      animation: screen-enter 0.6s var(--ease-out-expo);
+    }
+
+    .processing-visual {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 2rem;
+      position: relative;
+    }
+
+    .processing-spinner {
+      position: absolute;
+      inset: 0;
+      border: 3px solid var(--white-08);
+      border-top-color: var(--cyan);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    .processing-spinner:nth-child(2) {
+      inset: 10px;
+      border-top-color: var(--protected);
+      animation-duration: 1.5s;
+      animation-direction: reverse;
+    }
+
+    .processing-icon {
+      position: absolute;
+      inset: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+    }
+
+    .processing-title {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .processing-status {
+      font-size: 0.9375rem;
+      color: var(--white-50);
+      margin-bottom: 2rem;
+    }
+
+    .processing-steps {
+      background: var(--void-surface);
+      border: 1px solid var(--white-08);
+      border-radius: 16px;
+      padding: 1.5rem;
+      text-align: left;
+    }
+
+    .processing-step {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--white-04);
+    }
+
+    .processing-step:last-child {
+      border-bottom: none;
+    }
+
+    .processing-step-icon {
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--void-deep);
+      border-radius: 50%;
+      font-size: 0.75rem;
+      color: var(--white-30);
+      border: 1px solid var(--white-08);
+      transition: all 0.4s var(--ease-out-expo);
+    }
+
+    .processing-step.done .processing-step-icon {
+      background: var(--protected);
+      border-color: var(--protected);
+      color: var(--void-black);
+    }
+
+    .processing-step.active .processing-step-icon {
+      background: var(--cyan-whisper);
+      border-color: var(--cyan);
+      color: var(--cyan);
+      animation: pulse 1.5s ease infinite;
+    }
+
+    .processing-step-text {
+      font-size: 0.875rem;
+      color: var(--white-50);
+      transition: color 0.3s ease;
+    }
+
+    .processing-step.done .processing-step-text,
+    .processing-step.active .processing-step-text {
+      color: var(--white);
+    }
+
+    /* ==================== TIP SECTION ==================== */
+    .tip-section {
+      margin-top: 2rem;
+      padding: 1.25rem;
+      background: var(--void-surface);
+      border: 1px solid var(--white-08);
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .tip-section p {
+      font-size: 0.875rem;
+      color: var(--white-50);
+      margin-bottom: 0.75rem;
+    }
+
+    .tip-link {
+      font-size: 0.875rem;
+      color: var(--cyan);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tip-link:hover {
+      color: var(--cyan-bright);
+      text-decoration: underline;
+    }
+
+    /* ==================== FOOTER ==================== */
+    .site-footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 1rem 2rem;
+      background: linear-gradient(to top, var(--void-black) 0%, transparent 100%);
+      z-index: 100;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .footer-links a {
+      font-size: 0.75rem;
+      color: var(--white-30);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--cyan);
+    }
+
+    .footer-copy {
+      font-size: 0.7rem;
+      color: var(--white-15);
+    }
+
+    /* ==================== RESPONSIVE ==================== */
+    @media (max-width: 900px) {
+      .landing.active {
+        grid-template-columns: 1fr;
+      }
+
+      .landing-content {
+        text-align: center;
+        align-items: center;
+        padding: 5rem 2rem 2rem;
+      }
+
+      .nav-logo {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .hero-subtitle {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .trust-badges {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      .hero-stats {
+        justify-content: center;
+      }
+
+      .landing-visual {
+        display: none;
+      }
+
+      .results-summary {
+        grid-template-columns: 1fr;
+      }
+
+      .payment-options {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="ambient-canvas"></canvas>
+  <div class="grain"></div>
+  <div class="floating-data" id="floating-data"></div>
+
+  <div class="loading-sequence" id="loading-sequence">
+    <div class="loader-mark">
+      <div class="loader-ring"></div>
+      <div class="loader-ring"></div>
+      <div class="loader-ring"></div>
+    </div>
+    <p class="loader-text">Initializing</p>
+  </div>
+
+  <div id="app">
+    <!-- Landing -->
+    <section class="screen landing active" id="screen-landing">
+      <div class="landing-content">
+        <div class="nav-logo">
+          <div class="nav-logo-mark">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+          </div>
+          <span class="nav-logo-text">Data Hunt <span>Hero</span></span>
+        </div>
+
+        <div class="hero-badge">
+          <span>Your data is exposed right now</span>
+        </div>
+
+        <h1 class="hero-title">
+          <span class="line"><span class="line-inner">Your Personal</span></span>
+          <span class="line"><span class="line-inner">Data Is Being</span></span>
+          <span class="line"><span class="line-inner gradient-text">Sold. Stop It.</span></span>
+        </h1>
+
+        <p class="hero-subtitle">
+          We scan 200+ data broker sites, find where you're exposed, and automatically submit removal requests. One payment. No subscriptions.
+        </p>
+
+        <button class="btn-cta" onclick="goToScreen('screen-form')">
+          <span>See Your Exposure</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+
+        <div class="trust-badges">
+          <div class="trust-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span>200+ Data Brokers</span>
+          </div>
+          <div class="trust-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span>GDPR/CCPA Compliant</span>
+          </div>
+          <div class="trust-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span>Crypto Payments</span>
+          </div>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat">
+            <div class="stat-value">200+</div>
+            <div class="stat-label">Data Brokers</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value">89%</div>
+            <div class="stat-label">Removal Rate</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value">$35</div>
+            <div class="stat-label">One-Time Fee</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="landing-visual">
+        <div class="exposure-display">
+          <p class="exposure-label">Average Exposures Found</p>
+          <div class="exposure-number" id="exposure-counter">47</div>
+          <p class="exposure-caption">data records across <strong>12 broker sites</strong></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Form -->
+    <section class="screen form-screen" id="screen-form">
+      <div class="form-container">
+        <div class="form-progress">
+          <div class="form-progress-step active" id="prog-1"></div>
+          <div class="form-progress-step" id="prog-2"></div>
+          <div class="form-progress-step" id="prog-3"></div>
+          <div class="form-progress-step" id="prog-4"></div>
+        </div>
+
+        <div class="form-card">
+          <!-- Step 1 -->
+          <div class="form-step active" id="step-1">
+            <div class="form-header">
+              <h2>What's your name?</h2>
+              <p>Enter your full legal name as it appears on documents</p>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Full Name</label>
+              <input type="text" class="form-input" id="fullName" placeholder="e.g., John Michael Smith">
+            </div>
+            <div class="form-actions">
+              <button class="btn-back" onclick="goToScreen('screen-landing')">Back</button>
+              <button class="btn-cta" onclick="nextStep(2)">Continue</button>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="form-step" id="step-2">
+            <div class="form-header">
+              <h2>Any nicknames or aliases?</h2>
+              <p>Maiden names, nicknames, or name variations</p>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Aliases (press Enter to add)</label>
+              <div class="tag-container" id="aliases-container">
+                <input type="text" class="tag-input" id="aliasInput" placeholder="Type and press Enter...">
+              </div>
+              <p class="form-hint">Skip if none apply</p>
+            </div>
+            <div class="form-actions">
+              <button class="btn-back" onclick="prevStep(1)">Back</button>
+              <button class="btn-cta" onclick="nextStep(3)">Continue</button>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="form-step" id="step-3">
+            <div class="form-header">
+              <h2>Your email addresses</h2>
+              <p>Add all emails you've used online</p>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Emails (press Enter to add)</label>
+              <div class="tag-container" id="emails-container">
+                <input type="email" class="tag-input" id="emailInput" placeholder="Type and press Enter...">
+              </div>
+            </div>
+            <div class="form-actions">
+              <button class="btn-back" onclick="prevStep(2)">Back</button>
+              <button class="btn-cta" onclick="nextStep(4)">Continue</button>
+            </div>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="form-step" id="step-4">
+            <div class="form-header">
+              <h2>Online usernames</h2>
+              <p>Social media, forums, gaming (optional)</p>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Usernames (press Enter to add)</label>
+              <div class="tag-container" id="usernames-container">
+                <input type="text" class="tag-input" id="usernameInput" placeholder="Type and press Enter...">
+              </div>
+              <p class="form-hint">Optional but helps find more exposures</p>
+            </div>
+            <div class="form-actions">
+              <button class="btn-back" onclick="prevStep(3)">Back</button>
+              <button class="btn-cta" onclick="startScan()">Start Scan</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Scan -->
+    <section class="screen scan-screen" id="screen-scan">
+      <div class="scan-container">
+        <div class="scan-visual">
+          <div class="scan-ring"></div>
+          <div class="scan-ring"></div>
+          <div class="scan-ring"></div>
+          <div class="scan-core">
+            <span class="scan-icon">🔍</span>
+          </div>
+        </div>
+
+        <h2 class="scan-status">Scanning Data Brokers</h2>
+        <p class="scan-detail" id="scan-detail">Initializing...</p>
+
+        <div class="scan-progress-track">
+          <div class="scan-progress-bar" id="scan-progress-bar" style="width: 0%"></div>
+        </div>
+        <p class="scan-found">Found <strong id="found-count">0</strong> exposures</p>
+      </div>
+    </section>
+
+    <!-- Results -->
+    <section class="screen results-screen" id="screen-results">
+      <div class="results-container">
+        <div class="results-header">
+          <h2>Scan Complete</h2>
+          <p>We found your data exposed on multiple sites</p>
+        </div>
+
+        <div class="results-summary">
+          <div class="summary-card danger">
+            <div class="summary-value" id="result-sites">0</div>
+            <div class="summary-label">Sites With Your Data</div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-value" id="result-records">0</div>
+            <div class="summary-label">Records Found</div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-value">High</div>
+            <div class="summary-label">Risk Level</div>
+          </div>
+        </div>
+
+        <div class="results-list">
+          <div class="results-list-header">
+            <h3>Exposed Sites</h3>
+            <span id="results-count">0 sites</span>
+          </div>
+          <div id="results-items"></div>
+        </div>
+
+        <div class="results-cta">
+          <p>Ready to remove your data from all these sites?</p>
+          <button class="btn-cta" onclick="goToScreen('screen-payment')">
+            <span>Remove My Data — $35</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Payment -->
+    <section class="screen payment-screen" id="screen-payment">
+      <div class="payment-card">
+        <div class="payment-header">
+          <h2>Complete Payment</h2>
+          <p>Send crypto to start removal</p>
+        </div>
+
+        <div class="payment-amount">
+          <div class="payment-amount-label">Amount Due</div>
+          <div class="payment-amount-value" id="payment-display">0.01 ETH</div>
+        </div>
+
+        <div class="payment-options">
+          <div class="payment-option selected" onclick="selectPayment('eth')">
+            <div class="payment-option-icon">⟠</div>
+            <div class="payment-option-name">ETH</div>
+            <div class="payment-option-amount">0.01 ETH</div>
+          </div>
+          <div class="payment-option" onclick="selectPayment('usdc')">
+            <div class="payment-option-icon">💵</div>
+            <div class="payment-option-name">USDC</div>
+            <div class="payment-option-amount">35 USDC</div>
+          </div>
+          <div class="payment-option" onclick="selectPayment('usdt')">
+            <div class="payment-option-icon">💲</div>
+            <div class="payment-option-name">USDT</div>
+            <div class="payment-option-amount">35 USDT</div>
+          </div>
+        </div>
+
+        <div class="wallet-box">
+          <div class="wallet-label">Send to (Ethereum Mainnet)</div>
+          <div class="wallet-value">
+            <span>huntclubhero.eth</span>
+            <button class="copy-btn" onclick="copyAddress()">Copy</button>
+          </div>
+        </div>
+
+        <div class="tx-group">
+          <label>Paste Etherscan transaction link</label>
+          <input type="text" class="form-input" id="txLink" placeholder="https://etherscan.io/tx/0x...">
+        </div>
+
+        <button class="btn-cta" onclick="verifyPayment()">Verify Payment</button>
+        <p class="payment-note">After sending, paste the transaction URL above</p>
+      </div>
+    </section>
+
+    <!-- Processing -->
+    <section class="screen processing-screen" id="screen-processing">
+      <div class="processing-container">
+        <div class="processing-visual">
+          <div class="processing-spinner"></div>
+          <div class="processing-spinner"></div>
+          <div class="processing-icon">🛡️</div>
+        </div>
+
+        <h2 class="processing-title">Processing Your Request</h2>
+        <p class="processing-status">Please wait while we secure your data removal...</p>
+
+        <div class="processing-steps">
+          <div class="processing-step done" id="proc-step-1">
+            <div class="processing-step-icon">✓</div>
+            <div class="processing-step-text">Payment verified</div>
+          </div>
+          <div class="processing-step active" id="proc-step-2">
+            <div class="processing-step-icon">2</div>
+            <div class="processing-step-text">Creating removal requests</div>
+          </div>
+          <div class="processing-step" id="proc-step-3">
+            <div class="processing-step-icon">3</div>
+            <div class="processing-step-text">Sending to data brokers</div>
+          </div>
+          <div class="processing-step" id="proc-step-4">
+            <div class="processing-step-icon">4</div>
+            <div class="processing-step-text">Confirmation complete</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Complete -->
+    <section class="screen complete-screen" id="screen-complete">
+      <div class="complete-container">
+        <div class="complete-icon">✓</div>
+        <h2 class="complete-title">You're All Set!</h2>
+        <p class="complete-subtitle">
+          We've submitted removal requests to all identified data brokers. Your digital footprint is being erased.
+        </p>
+
+        <div class="timeline-card">
+          <h3>⏱️ What happens next</h3>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content"><strong>Within 24 hours:</strong> All opt-out requests submitted</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content"><strong>1-2 weeks:</strong> Most sites process removal</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content"><strong>30 days:</strong> Full removal from compliant sites</div>
+          </div>
+        </div>
+
+        <div class="share-section">
+          <h3>Help others protect their privacy</h3>
+          <div class="share-buttons">
+            <button class="share-btn" onclick="shareTwitter()">𝕏 Share</button>
+            <button class="share-btn" onclick="copyLink()">🔗 Copy Link</button>
+          </div>
+        </div>
+
+        <div class="tip-section">
+          <p>Love what we do? Tips are always appreciated</p>
+          <span class="tip-link" onclick="showTip()">Send a tip to huntclubhero.eth →</span>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-links">
+      <a href="terms.html">Terms of Service</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="refund.html">Refund Policy</a>
+    </div>
+    <p class="footer-copy">© 2026 Data Hunt Hero. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Data
+    const userData = { fullName: '', aliases: [], emails: [], usernames: [] };
+    const brokers = [
+      { name: 'Spokeo', data: 'Name, Address, Phone, Email', icon: '📊' },
+      { name: 'WhitePages', data: 'Name, Address, Phone, Relatives', icon: '📖' },
+      { name: 'BeenVerified', data: 'Name, Address, Email, Social', icon: '✅' },
+      { name: 'PeopleFinder', data: 'Name, Address, Phone', icon: '🔍' },
+      { name: 'Intelius', data: 'Name, Address, Phone, Email', icon: '🎯' },
+      { name: 'TruePeopleSearch', data: 'Name, Address, Phone, Age', icon: '👤' },
+      { name: 'FastPeopleSearch', data: 'Name, Address, Relatives', icon: '⚡' },
+      { name: 'ThatsThem', data: 'Name, Address, Email, IP', icon: '📍' },
+      { name: 'Radaris', data: 'Name, Address, Court Records', icon: '⚖️' },
+      { name: 'USSearch', data: 'Name, Address, Criminal Records', icon: '🔒' },
+      { name: 'PeopleLooker', data: 'Name, Address, Social Media', icon: '👁️' },
+      { name: 'Instant Checkmate', data: 'Name, Address, Phone, Email', icon: '✔️' },
+    ];
+
+    let currentStep = 1;
+
+    // Canvas
+    const canvas = document.getElementById('ambient-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let mouse = { x: 0, y: 0 };
+
+    function initCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      particles = [];
+      const count = Math.min(50, Math.floor(window.innerWidth / 30));
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          vx: (Math.random() - 0.5) * 0.15,
+          vy: (Math.random() - 0.5) * 0.15,
+          size: Math.random() * 1.5 + 0.5,
+          opacity: Math.random() * 0.25 + 0.1
+        });
+      }
+    }
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const gradient = ctx.createRadialGradient(canvas.width * 0.3, canvas.height * 0.3, 0, canvas.width * 0.3, canvas.height * 0.3, canvas.width * 0.7);
+      gradient.addColorStop(0, 'rgba(0, 240, 255, 0.02)');
+      gradient.addColorStop(1, 'transparent');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      particles.forEach((p, i) => {
+        const dx = mouse.x - p.x;
+        const dy = mouse.y - p.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 120) {
+          const force = (120 - dist) / 120;
+          p.vx -= (dx / dist) * force * 0.008;
+          p.vy -= (dy / dist) * force * 0.008;
+        }
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0) p.x = canvas.width;
+        if (p.x > canvas.width) p.x = 0;
+        if (p.y < 0) p.y = canvas.height;
+        if (p.y > canvas.height) p.y = 0;
+        p.vx *= 0.99;
+        p.vy *= 0.99;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(0, 240, 255, ${p.opacity})`;
+        ctx.fill();
+        particles.slice(i + 1).forEach(other => {
+          const dx = other.x - p.x;
+          const dy = other.y - p.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 80) {
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(other.x, other.y);
+            ctx.strokeStyle = `rgba(0, 240, 255, ${0.04 * (1 - dist / 80)})`;
+            ctx.stroke();
+          }
+        });
+      });
+      requestAnimationFrame(animateParticles);
+    }
+
+    window.addEventListener('resize', initCanvas);
+    document.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+    initCanvas();
+    animateParticles();
+
+    // Floating data
+    const floatingContainer = document.getElementById('floating-data');
+    const dataSnippets = ['name: "John Smith"', 'email: "j***@gmail.com"', 'phone: "(555) ***-1234"', 'address: "123 Main St"', 'DOB: "**/**/1985"', 'relatives: ["Jane S."]', 'employer: "ACME Corp"', 'income: "$75,000"', 'social: "@john***"'];
+
+    function createDataParticle() {
+      const particle = document.createElement('div');
+      particle.className = 'data-particle';
+      particle.textContent = dataSnippets[Math.floor(Math.random() * dataSnippets.length)];
+      particle.style.left = Math.random() * 100 + '%';
+      particle.style.animationDuration = (10 + Math.random() * 8) + 's';
+      particle.style.animationDelay = Math.random() * 2 + 's';
+      floatingContainer.appendChild(particle);
+      setTimeout(() => particle.remove(), 18000);
+    }
+
+    setInterval(createDataParticle, 900);
+    for (let i = 0; i < 6; i++) setTimeout(createDataParticle, i * 400);
+
+    // Loading
+    setTimeout(() => document.getElementById('loading-sequence').classList.add('exit'), 1500);
+
+    // Counter
+    function animateCounter() {
+      const counter = document.getElementById('exposure-counter');
+      const target = 47;
+      let current = 0;
+      const duration = 1800;
+      const start = performance.now();
+      function update(timestamp) {
+        const elapsed = timestamp - start;
+        const progress = Math.min(elapsed / duration, 1);
+        current = Math.floor((1 - Math.pow(1 - progress, 4)) * target);
+        counter.textContent = current;
+        if (progress < 1) requestAnimationFrame(update);
+      }
+      setTimeout(() => requestAnimationFrame(update), 2000);
+    }
+    animateCounter();
+
+    // Navigation
+    function goToScreen(id) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+
+    // Form steps
+    function nextStep(step) {
+      if (currentStep === 1) {
+        const name = document.getElementById('fullName').value.trim();
+        if (!name) { alert('Please enter your name'); return; }
+        userData.fullName = name;
+      }
+      document.getElementById(`prog-${currentStep}`).classList.remove('active');
+      document.getElementById(`prog-${currentStep}`).classList.add('completed');
+      document.getElementById(`prog-${step}`).classList.add('active');
+      document.getElementById(`step-${currentStep}`).classList.remove('active');
+      document.getElementById(`step-${step}`).classList.add('active');
+      currentStep = step;
+    }
+
+    function prevStep(step) {
+      document.getElementById(`prog-${currentStep}`).classList.remove('active');
+      document.getElementById(`prog-${step}`).classList.remove('completed');
+      document.getElementById(`prog-${step}`).classList.add('active');
+      document.getElementById(`step-${currentStep}`).classList.remove('active');
+      document.getElementById(`step-${step}`).classList.add('active');
+      currentStep = step;
+    }
+
+    // Tag inputs
+    function setupTagInput(containerId, inputId, dataKey) {
+      const container = document.getElementById(containerId);
+      const input = document.getElementById(inputId);
+      input.addEventListener('keydown', e => {
+        if (e.key === 'Enter' && input.value.trim()) {
+          e.preventDefault();
+          const value = input.value.trim();
+          userData[dataKey].push(value);
+          const tag = document.createElement('span');
+          tag.className = 'tag';
+          tag.innerHTML = `${value} <span class="tag-remove" onclick="removeTag(this, '${dataKey}', '${value}')">×</span>`;
+          container.insertBefore(tag, input);
+          input.value = '';
+        }
+      });
+      container.addEventListener('click', () => input.focus());
+    }
+
+    function removeTag(el, dataKey, value) {
+      el.parentElement.remove();
+      userData[dataKey] = userData[dataKey].filter(v => v !== value);
+    }
+
+    setupTagInput('aliases-container', 'aliasInput', 'aliases');
+    setupTagInput('emails-container', 'emailInput', 'emails');
+    setupTagInput('usernames-container', 'usernameInput', 'usernames');
+
+    // Scan
+    function startScan() {
+      goToScreen('screen-scan');
+      let progress = 0;
+      let found = 0;
+      const progressBar = document.getElementById('scan-progress-bar');
+      const scanDetail = document.getElementById('scan-detail');
+      const foundCount = document.getElementById('found-count');
+
+      const interval = setInterval(() => {
+        progress += Math.random() * 7 + 2;
+        if (progress > 100) progress = 100;
+        progressBar.style.width = progress + '%';
+        const idx = Math.floor((progress / 100) * brokers.length);
+        if (idx < brokers.length) scanDetail.textContent = `Scanning ${brokers[idx].name}...`;
+        if (Math.random() > 0.4 && found < 12) { found++; foundCount.textContent = found; }
+        if (progress >= 100) {
+          clearInterval(interval);
+          foundCount.textContent = '12';
+          scanDetail.textContent = 'Complete';
+          setTimeout(() => showResults(12), 500);
+        }
+      }, 180);
+    }
+
+    function showResults(count) {
+      document.getElementById('result-sites').textContent = count;
+      document.getElementById('result-records').textContent = count * 4;
+      document.getElementById('results-count').textContent = count + ' sites';
+      const container = document.getElementById('results-items');
+      container.innerHTML = '';
+      brokers.slice(0, count).forEach(b => {
+        container.innerHTML += `<div class="result-item"><div class="result-icon">${b.icon}</div><div class="result-info"><div class="result-name">${b.name}</div><div class="result-data">Exposed: ${b.data}</div></div><div class="result-status">Exposed</div></div>`;
+      });
+      goToScreen('screen-results');
+    }
+
+    // Payment
+    function selectPayment(type) {
+      document.querySelectorAll('.payment-option').forEach(o => o.classList.remove('selected'));
+      event.currentTarget.classList.add('selected');
+      const display = document.getElementById('payment-display');
+      if (type === 'eth') display.textContent = '0.01 ETH';
+      else if (type === 'usdc') display.textContent = '35 USDC';
+      else display.textContent = '35 USDT';
+    }
+
+    function copyAddress() {
+      navigator.clipboard.writeText('huntclubhero.eth');
+      event.currentTarget.textContent = 'Copied!';
+      setTimeout(() => event.currentTarget.textContent = 'Copy', 2000);
+    }
+
+    function verifyPayment() {
+      const tx = document.getElementById('txLink').value.trim();
+      if (!tx || !tx.includes('etherscan.io/tx/')) { alert('Please paste a valid Etherscan link'); return; }
+      startProcessing();
+    }
+
+    // Processing
+    function startProcessing() {
+      goToScreen('screen-processing');
+
+      const steps = [
+        { id: 'proc-step-2', delay: 1500 },
+        { id: 'proc-step-3', delay: 3000 },
+        { id: 'proc-step-4', delay: 4500 }
+      ];
+
+      steps.forEach((step, index) => {
+        setTimeout(() => {
+          // Mark previous step as done
+          if (index > 0) {
+            const prevStep = document.getElementById(steps[index - 1].id);
+            prevStep.classList.remove('active');
+            prevStep.classList.add('done');
+            prevStep.querySelector('.processing-step-icon').textContent = '✓';
+          } else {
+            const step2 = document.getElementById('proc-step-2');
+            step2.classList.remove('active');
+            step2.classList.add('done');
+            step2.querySelector('.processing-step-icon').textContent = '✓';
+          }
+
+          // Mark current step as active
+          const currentStep = document.getElementById(step.id);
+          currentStep.classList.add('active');
+        }, step.delay);
+      });
+
+      // Complete the last step and transition
+      setTimeout(() => {
+        const lastStep = document.getElementById('proc-step-4');
+        lastStep.classList.remove('active');
+        lastStep.classList.add('done');
+        lastStep.querySelector('.processing-step-icon').textContent = '✓';
+      }, 5500);
+
+      setTimeout(() => {
+        goToScreen('screen-complete');
+      }, 6500);
+    }
+
+    // Complete
+    function showTip() {
+      alert('Send tips to: huntclubhero.eth\n\nThank you for your support!');
+    }
+
+    function shareTwitter() {
+      const text = encodeURIComponent("I just cleaned up my digital footprint with Data Hunt Hero! 🛡️");
+      window.open(`https://twitter.com/intent/tweet?text=${text}&url=${encodeURIComponent(window.location.href)}`, '_blank');
+    }
+
+    function copyLink() {
+      navigator.clipboard.writeText(window.location.href);
+      alert('Link copied!');
+    }
+  </script>
+</body>
+</html>
