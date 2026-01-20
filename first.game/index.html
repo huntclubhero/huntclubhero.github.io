@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FOREVAH - Evah's Lightning Run</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #1a1a2e;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+        }
+
+        #gameContainer {
+            position: relative;
+            border: 4px solid #ff6b9d;
+            border-radius: 12px;
+            box-shadow: 0 0 30px rgba(255, 107, 157, 0.5);
+        }
+
+        #gameCanvas {
+            display: block;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        #ui {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        #title {
+            font-size: 42px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow:
+                3px 3px 0 #ff6b9d,
+                -1px -1px 0 #ff6b9d,
+                1px -1px 0 #ff6b9d,
+                -1px 1px 0 #ff6b9d,
+                0 0 20px rgba(255, 107, 157, 0.8);
+            letter-spacing: 8px;
+        }
+
+        #score {
+            font-size: 28px;
+            color: #fff;
+            margin-top: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        #multiplier {
+            font-size: 20px;
+            color: #ffd700;
+            margin-top: 5px;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+        }
+
+        #pauseBtn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 107, 157, 0.8);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            z-index: 15;
+            transition: all 0.2s;
+        }
+
+        #pauseBtn:hover {
+            background: rgba(255, 107, 157, 1);
+            transform: scale(1.05);
+        }
+
+        #pauseOverlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 25;
+            border-radius: 8px;
+        }
+
+        #pauseOverlay.hidden {
+            display: none;
+        }
+
+        #pauseText {
+            font-size: 64px;
+            color: #ff6b9d;
+            font-weight: bold;
+            text-shadow: 0 0 30px rgba(255, 107, 157, 0.8);
+        }
+
+        #resumeText {
+            font-size: 24px;
+            color: #fff;
+            margin-top: 20px;
+            opacity: 0.8;
+        }
+
+        #gameOver {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 20;
+            border-radius: 8px;
+        }
+
+        #gameOver.hidden {
+            display: none;
+        }
+
+        #finalScore {
+            font-size: 64px;
+            color: #ff6b9d;
+            font-weight: bold;
+            text-shadow: 0 0 30px rgba(255, 107, 157, 0.8);
+            animation: pulse 0.5s ease-in-out infinite alternate;
+        }
+
+        #restartText {
+            font-size: 24px;
+            color: #fff;
+            margin-top: 20px;
+            opacity: 0.8;
+        }
+
+        @keyframes pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.1); }
+        }
+
+        #startScreen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 30;
+            border-radius: 8px;
+        }
+
+        #startScreen.hidden {
+            display: none;
+        }
+
+        #startTitle {
+            font-size: 72px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow:
+                4px 4px 0 #ff6b9d,
+                0 0 30px rgba(255, 107, 157, 0.8);
+            letter-spacing: 12px;
+            margin-bottom: 20px;
+        }
+
+        #characterSelect {
+            display: flex;
+            gap: 40px;
+            margin: 20px 0;
+        }
+
+        .charOption {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            padding: 15px;
+            border: 4px solid transparent;
+            border-radius: 16px;
+            transition: all 0.3s;
+        }
+
+        .charOption:hover {
+            border-color: rgba(255, 107, 157, 0.5);
+            background: rgba(255, 107, 157, 0.1);
+        }
+
+        .charOption.selected {
+            border-color: #ff6b9d;
+            background: rgba(255, 107, 157, 0.2);
+            box-shadow: 0 0 20px rgba(255, 107, 157, 0.5);
+        }
+
+        .charOption img {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+            transform: scaleX(-1);
+        }
+
+        .charName {
+            color: #fff;
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        #instructions {
+            color: #fff;
+            font-size: 16px;
+            text-align: center;
+            line-height: 1.8;
+            opacity: 0.9;
+            margin-top: 15px;
+        }
+
+        #instructions span {
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        #pressStart {
+            margin-top: 25px;
+            font-size: 28px;
+            color: #ff6b9d;
+            animation: blink 1s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.3; }
+        }
+    </style>
+</head>
+<body>
+    <div id="gameContainer">
+        <canvas id="gameCanvas" width="1000" height="500"></canvas>
+        <div id="ui">
+            <div id="title">FOREVAH</div>
+            <div id="score">0</div>
+            <div id="multiplier"></div>
+        </div>
+        <button id="pauseBtn">PAUSE</button>
+        <div id="startScreen">
+            <div id="startTitle">FOREVAH</div>
+            <div id="characterSelect">
+                <div class="charOption selected" data-char="evah">
+                    <img src="9995.png" alt="Evah">
+                    <div class="charName">EVAH</div>
+                </div>
+                <div class="charOption" data-char="luka">
+                    <img src="11352.png" alt="Luka">
+                    <div class="charName">LUKA</div>
+                </div>
+            </div>
+            <div id="instructions">
+                <span>SPACE</span> or <span>UP ARROW</span> to Jump<br>
+                <span>DOUBLE TAP</span> to Punch Jump (higher!)<br>
+                Avoid the fire! | <span>CLICK</span> to Pause
+            </div>
+            <div id="pressStart">Press SPACE to Start</div>
+        </div>
+        <div id="pauseOverlay" class="hidden">
+            <div id="pauseText">PAUSED</div>
+            <div id="resumeText">Click to Resume</div>
+        </div>
+        <div id="gameOver" class="hidden">
+            <div id="finalScore">0</div>
+            <div id="restartText">Restarting...</div>
+        </div>
+    </div>
+
+    <script>
+        // Audio context
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        let audioCtx = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new AudioContext();
+            }
+        }
+
+        function playSuccessSound() {
+            if (!audioCtx) return;
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            oscillator.frequency.setValueAtTime(523.25, audioCtx.currentTime);
+            oscillator.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1);
+            oscillator.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.2);
+            oscillator.type = 'sine';
+            gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+            oscillator.start(audioCtx.currentTime);
+            oscillator.stop(audioCtx.currentTime + 0.3);
+        }
+
+        function playJumpSound() {
+            if (!audioCtx) return;
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            oscillator.frequency.setValueAtTime(300, audioCtx.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(600, audioCtx.currentTime + 0.15);
+            oscillator.type = 'sine';
+            gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+            oscillator.start(audioCtx.currentTime);
+            oscillator.stop(audioCtx.currentTime + 0.15);
+        }
+
+        function playPunchSound() {
+            if (!audioCtx) return;
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            oscillator.frequency.setValueAtTime(200, audioCtx.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.1);
+            oscillator.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 0.2);
+            oscillator.type = 'sawtooth';
+            gainNode.gain.setValueAtTime(0.25, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+            oscillator.start(audioCtx.currentTime);
+            oscillator.stop(audioCtx.currentTime + 0.2);
+        }
+
+        function playHitSound() {
+            if (!audioCtx) return;
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            oscillator.frequency.setValueAtTime(200, audioCtx.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.3);
+            oscillator.type = 'square';
+            gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+            oscillator.start(audioCtx.currentTime);
+            oscillator.stop(audioCtx.currentTime + 0.3);
+        }
+
+        // Game setup
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Character images
+        const evahImg = new Image();
+        evahImg.src = '9995.png';
+
+        const lukaImg = new Image();
+        lukaImg.src = '11352.png';
+
+        const backgroundImg = new Image();
+        backgroundImg.src = 'backgrounds.png';
+
+        // Track loading
+        let evahLoaded = false;
+        let lukaLoaded = false;
+        let bgLoaded = false;
+        let selectedCharacter = 'evah';
+
+        evahImg.onload = () => { evahLoaded = true; checkStart(); };
+        lukaImg.onload = () => { lukaLoaded = true; checkStart(); };
+        backgroundImg.onload = () => { bgLoaded = true; checkStart(); };
+        evahImg.onerror = () => console.error('Failed to load 9995.png');
+        lukaImg.onerror = () => console.error('Failed to load 11352.png');
+        backgroundImg.onerror = () => console.error('Failed to load backgrounds.png');
+
+        // Character selection
+        document.querySelectorAll('.charOption').forEach(option => {
+            option.addEventListener('click', () => {
+                document.querySelectorAll('.charOption').forEach(o => o.classList.remove('selected'));
+                option.classList.add('selected');
+                selectedCharacter = option.dataset.char;
+            });
+        });
+
+        // Game state
+        let gameState = 'start';
+        let score = 0;
+        let obstaclesCleared = 0;
+        let consecutiveClears = 0;
+        let gameSpeed = 5;
+        let baseSpeed = 5;
+
+        // Background scroll
+        let bgScrollX = 0;
+
+        // Character
+        const player = {
+            x: 150,
+            y: 350,
+            width: 100,
+            height: 100,
+            groundY: 350,
+            velocityY: 0,
+            isJumping: false,
+            canDoubleJump: true,
+            isPunching: false,
+            punchTimer: 0,
+            walkFrame: 0,
+            walkTimer: 0
+        };
+
+        // Obstacles - more random timing
+        let obstacles = [];
+        let obstacleTimer = 0;
+        let nextObstacleInterval = 2000;
+
+        function getRandomInterval() {
+            // Random interval between 1500ms and 4000ms
+            return 1500 + Math.random() * 2500;
+        }
+
+        // Input
+        let lastJumpTime = 0;
+        const doubleJumpWindow = 300;
+
+        function getMultiplier() {
+            if (obstaclesCleared >= 15) return 1000;
+            if (obstaclesCleared >= 10) return 5;
+            if (obstaclesCleared >= 3) return 2;
+            return 1;
+        }
+
+        function spawnObstacle() {
+            const isLarge = Math.random() > 0.5;
+            obstacles.push({
+                x: canvas.width + 50,
+                width: isLarge ? 70 : 50,
+                height: isLarge ? 130 : 70,
+                isLarge: isLarge,
+                passed: false,
+                animFrame: Math.random() * 100
+            });
+            // Set next random interval
+            nextObstacleInterval = getRandomInterval();
+        }
+
+        // Draw fire
+        function drawFire(x, y, width, height, animFrame) {
+            ctx.save();
+            const time = animFrame * 0.1;
+
+            ctx.shadowColor = '#ff4400';
+            ctx.shadowBlur = 30;
+
+            for (let layer = 0; layer < 3; layer++) {
+                const layerOffset = layer * 5;
+                const flickerX = Math.sin(time + layer) * 5;
+                const flickerH = Math.sin(time * 1.5 + layer) * 10;
+
+                const gradient = ctx.createLinearGradient(x, y + height, x, y - flickerH);
+
+                if (layer === 0) {
+                    gradient.addColorStop(0, '#ff0000');
+                    gradient.addColorStop(0.3, '#ff4400');
+                    gradient.addColorStop(0.6, '#ff8800');
+                    gradient.addColorStop(1, '#ffcc00');
+                } else if (layer === 1) {
+                    gradient.addColorStop(0, '#ff4400');
+                    gradient.addColorStop(0.4, '#ff8800');
+                    gradient.addColorStop(0.8, '#ffcc00');
+                    gradient.addColorStop(1, '#ffff88');
+                } else {
+                    gradient.addColorStop(0, '#ff8800');
+                    gradient.addColorStop(0.5, '#ffcc00');
+                    gradient.addColorStop(1, '#ffffff');
+                }
+
+                ctx.fillStyle = gradient;
+                ctx.beginPath();
+
+                const flameWidth = width - layer * 15;
+                const flameX = x + (width - flameWidth) / 2 + flickerX;
+                const flameHeight = height - layer * 20 + flickerH;
+                const flameY = y + height - flameHeight + layerOffset;
+
+                ctx.moveTo(flameX, y + height);
+
+                ctx.quadraticCurveTo(
+                    flameX - flameWidth * 0.3 + Math.sin(time + 1) * 8,
+                    flameY + flameHeight * 0.6,
+                    flameX + flameWidth * 0.2,
+                    flameY + flameHeight * 0.3
+                );
+
+                const tips = height > 100 ? 4 : 3;
+                for (let t = 0; t < tips; t++) {
+                    const tipX = flameX + (flameWidth / (tips + 1)) * (t + 1);
+                    const tipY = flameY + Math.sin(time * 2 + t) * 15;
+                    const prevX = flameX + (flameWidth / (tips + 1)) * t;
+
+                    ctx.quadraticCurveTo(
+                        (prevX + tipX) / 2,
+                        tipY + 20,
+                        tipX,
+                        tipY
+                    );
+                }
+
+                ctx.quadraticCurveTo(
+                    flameX + flameWidth + flameWidth * 0.3 + Math.sin(time + 2) * 8,
+                    flameY + flameHeight * 0.6,
+                    flameX + flameWidth,
+                    y + height
+                );
+
+                ctx.closePath();
+                ctx.fill();
+            }
+
+            ctx.shadowBlur = 10;
+            for (let i = 0; i < 5; i++) {
+                const sparkX = x + width / 2 + (Math.random() - 0.5) * width;
+                const sparkY = y + Math.random() * height * 0.5;
+                const sparkSize = 2 + Math.random() * 3;
+                ctx.fillStyle = Math.random() > 0.5 ? '#ffff00' : '#ff8800';
+                ctx.beginPath();
+                ctx.arc(sparkX, sparkY, sparkSize, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            const baseGradient = ctx.createRadialGradient(
+                x + width / 2, y + height, 5,
+                x + width / 2, y + height, width
+            );
+            baseGradient.addColorStop(0, 'rgba(255, 100, 0, 0.6)');
+            baseGradient.addColorStop(1, 'rgba(255, 100, 0, 0)');
+            ctx.fillStyle = baseGradient;
+            ctx.beginPath();
+            ctx.ellipse(x + width / 2, y + height, width, 20, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.restore();
+        }
+
+        // Draw player
+        function drawPlayer() {
+            ctx.save();
+
+            const currentImg = selectedCharacter === 'evah' ? evahImg : lukaImg;
+            const isLoaded = selectedCharacter === 'evah' ? evahLoaded : lukaLoaded;
+
+            const bobOffset = player.isJumping ? 0 : Math.sin(player.walkFrame * 0.3) * 3;
+            const drawY = player.y + bobOffset;
+
+            // Shadow
+            const shadowScale = 1 - (player.groundY - player.y) / 200;
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+            ctx.beginPath();
+            ctx.ellipse(
+                player.x + player.width / 2,
+                player.groundY + player.height - 5,
+                40 * Math.max(0.3, shadowScale),
+                15 * Math.max(0.3, shadowScale),
+                0, 0, Math.PI * 2
+            );
+            ctx.fill();
+
+            if (isLoaded) {
+                if (player.isPunching) {
+                    ctx.save();
+                    ctx.translate(player.x + player.width / 2, drawY + player.height / 2);
+                    ctx.scale(-1, 1);
+                    ctx.rotate(-0.3);
+                    ctx.drawImage(currentImg, -player.width / 2 - 10, -player.height / 2 - 20, player.width + 20, player.height + 20);
+                    ctx.restore();
+
+                    ctx.fillStyle = 'rgba(255, 107, 157, 0.6)';
+                    ctx.beginPath();
+                    ctx.arc(player.x + player.width - 10, drawY - 20, 25, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    ctx.strokeStyle = '#ff6b9d';
+                    ctx.lineWidth = 3;
+                    for (let i = 0; i < 5; i++) {
+                        const angle = -Math.PI / 2 + (Math.random() - 0.5) * 0.8;
+                        const len = 20 + Math.random() * 15;
+                        ctx.beginPath();
+                        ctx.moveTo(player.x + player.width - 10, drawY - 20);
+                        ctx.lineTo(
+                            player.x + player.width - 10 + Math.cos(angle) * len,
+                            drawY - 20 + Math.sin(angle) * len
+                        );
+                        ctx.stroke();
+                    }
+                } else {
+                    // Flipped horizontally
+                    ctx.save();
+                    ctx.translate(player.x + player.width, drawY);
+                    ctx.scale(-1, 1);
+                    ctx.drawImage(currentImg, 0, 0, player.width, player.height);
+                    ctx.restore();
+                }
+            } else {
+                ctx.fillStyle = '#ff6b9d';
+                ctx.fillRect(player.x, drawY, player.width, player.height);
+            }
+
+            ctx.restore();
+        }
+
+        // Draw background - fixed gap issue
+        function drawBackground() {
+            if (!bgLoaded) {
+                const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+                gradient.addColorStop(0, '#87CEEB');
+                gradient.addColorStop(1, '#228B22');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                return;
+            }
+
+            const srcPanelWidth = backgroundImg.width / 2;
+            const srcPanelHeight = backgroundImg.height / 3;
+            const destPanelWidth = canvas.width;
+            const totalWidth = destPanelWidth * 6;
+
+            const panels = [
+                [0, 0], [1, 0],
+                [0, 1], [1, 1],
+                [0, 2], [1, 2]
+            ];
+
+            const scrollPos = ((bgScrollX % totalWidth) + totalWidth) % totalWidth;
+
+            // Draw panels with slight overlap to prevent gaps
+            for (let copy = 0; copy < 2; copy++) {
+                for (let i = 0; i < 6; i++) {
+                    const [col, row] = panels[i];
+                    let panelX = (i * destPanelWidth) - scrollPos + (copy * totalWidth);
+
+                    if (panelX > -destPanelWidth && panelX < canvas.width + 1) {
+                        ctx.drawImage(
+                            backgroundImg,
+                            col * srcPanelWidth, row * srcPanelHeight, srcPanelWidth, srcPanelHeight,
+                            Math.floor(panelX), 0, destPanelWidth + 1, canvas.height
+                        );
+                    }
+                }
+            }
+        }
+
+        function update(deltaTime) {
+            if (gameState !== 'playing') return;
+
+            bgScrollX += gameSpeed;
+
+            player.walkTimer += deltaTime;
+            if (player.walkTimer > 50) {
+                player.walkFrame++;
+                player.walkTimer = 0;
+            }
+
+            if (player.isJumping) {
+                player.velocityY += 0.8;
+                player.y += player.velocityY;
+
+                if (player.y >= player.groundY) {
+                    player.y = player.groundY;
+                    player.isJumping = false;
+                    player.canDoubleJump = true;
+                    player.velocityY = 0;
+                }
+            }
+
+            if (player.isPunching) {
+                player.punchTimer -= deltaTime;
+                if (player.punchTimer <= 0) {
+                    player.isPunching = false;
+                }
+            }
+
+            obstacleTimer += deltaTime;
+            const adjustedInterval = nextObstacleInterval / (gameSpeed / baseSpeed);
+            if (obstacleTimer > adjustedInterval) {
+                spawnObstacle();
+                obstacleTimer = 0;
+            }
+
+            for (let i = obstacles.length - 1; i >= 0; i--) {
+                const obs = obstacles[i];
+                obs.x -= gameSpeed;
+                obs.animFrame += 1;
+
+                if (!obs.passed && obs.x + obs.width < player.x) {
+                    obs.passed = true;
+                    obstaclesCleared++;
+                    consecutiveClears++;
+
+                    const points = obs.isLarge ? 5 : 3;
+                    score += points * getMultiplier();
+
+                    playSuccessSound();
+
+                    if (consecutiveClears >= 3) {
+                        gameSpeed *= 1.04;
+                        consecutiveClears = 0;
+                    }
+
+                    document.getElementById('score').textContent = score;
+                    updateMultiplierDisplay();
+                }
+
+                if (obs.x + obs.width < -50) {
+                    obstacles.splice(i, 1);
+                }
+
+                const playerHitbox = {
+                    x: player.x + 25,
+                    y: player.y + 15,
+                    width: player.width - 50,
+                    height: player.height - 25
+                };
+
+                const obsHitbox = {
+                    x: obs.x + 15,
+                    y: canvas.height - 50 - obs.height,
+                    width: obs.width - 30,
+                    height: obs.height - 10
+                };
+
+                if (playerHitbox.x < obsHitbox.x + obsHitbox.width &&
+                    playerHitbox.x + playerHitbox.width > obsHitbox.x &&
+                    playerHitbox.y + playerHitbox.height > obsHitbox.y &&
+                    playerHitbox.y < obsHitbox.y + obsHitbox.height) {
+                    gameOver();
+                }
+            }
+        }
+
+        function updateMultiplierDisplay() {
+            const mult = getMultiplier();
+            const multEl = document.getElementById('multiplier');
+            if (mult > 1) {
+                multEl.textContent = `${mult}x MULTIPLIER!`;
+                if (mult === 1000) {
+                    multEl.style.color = '#ff00ff';
+                    multEl.style.fontSize = '28px';
+                }
+            } else {
+                multEl.textContent = '';
+            }
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            drawBackground();
+
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+            ctx.fillRect(0, canvas.height - 50, canvas.width, 50);
+
+            for (const obs of obstacles) {
+                drawFire(obs.x, canvas.height - 50 - obs.height, obs.width, obs.height, obs.animFrame);
+            }
+
+            drawPlayer();
+        }
+
+        function togglePause() {
+            if (gameState === 'playing') {
+                gameState = 'paused';
+                document.getElementById('pauseOverlay').classList.remove('hidden');
+                document.getElementById('pauseBtn').textContent = 'RESUME';
+            } else if (gameState === 'paused') {
+                gameState = 'playing';
+                document.getElementById('pauseOverlay').classList.add('hidden');
+                document.getElementById('pauseBtn').textContent = 'PAUSE';
+            }
+        }
+
+        function gameOver() {
+            gameState = 'gameover';
+            playHitSound();
+
+            document.getElementById('finalScore').textContent = score;
+            document.getElementById('gameOver').classList.remove('hidden');
+
+            setTimeout(() => {
+                resetGame();
+                document.getElementById('gameOver').classList.add('hidden');
+                gameState = 'playing';
+            }, 1500);
+        }
+
+        function resetGame() {
+            score = 0;
+            obstaclesCleared = 0;
+            consecutiveClears = 0;
+            gameSpeed = baseSpeed;
+            obstacles = [];
+            obstacleTimer = 0;
+            nextObstacleInterval = getRandomInterval();
+
+            player.y = player.groundY;
+            player.velocityY = 0;
+            player.isJumping = false;
+            player.canDoubleJump = true;
+            player.isPunching = false;
+
+            document.getElementById('score').textContent = '0';
+            document.getElementById('multiplier').textContent = '';
+            document.getElementById('multiplier').style.color = '#ffd700';
+            document.getElementById('multiplier').style.fontSize = '20px';
+            document.getElementById('pauseBtn').textContent = 'PAUSE';
+        }
+
+        function handleJump() {
+            const now = Date.now();
+
+            if (!player.isJumping) {
+                player.isJumping = true;
+                player.velocityY = -17; // Increased from -15 for higher jump
+                player.canDoubleJump = true;
+                lastJumpTime = now;
+                playJumpSound();
+            } else if (player.canDoubleJump && (now - lastJumpTime < doubleJumpWindow || player.velocityY > -5)) {
+                player.velocityY = -18;
+                player.canDoubleJump = false;
+                player.isPunching = true;
+                player.punchTimer = 300;
+                playPunchSound();
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space' || e.code === 'ArrowUp') {
+                e.preventDefault();
+                initAudio();
+
+                if (gameState === 'start') {
+                    gameState = 'playing';
+                    document.getElementById('startScreen').classList.add('hidden');
+                } else if (gameState === 'playing') {
+                    handleJump();
+                } else if (gameState === 'paused') {
+                    togglePause();
+                }
+            }
+
+            if (e.code === 'Escape' || e.code === 'KeyP') {
+                if (gameState === 'playing' || gameState === 'paused') {
+                    togglePause();
+                }
+            }
+        });
+
+        document.getElementById('pauseBtn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            initAudio();
+            if (gameState === 'playing' || gameState === 'paused') {
+                togglePause();
+            }
+        });
+
+        document.getElementById('pauseOverlay').addEventListener('click', () => {
+            if (gameState === 'paused') {
+                togglePause();
+            }
+        });
+
+        canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            initAudio();
+
+            if (gameState === 'start') {
+                gameState = 'playing';
+                document.getElementById('startScreen').classList.add('hidden');
+            } else if (gameState === 'playing') {
+                handleJump();
+            }
+        });
+
+        let lastTime = 0;
+        function gameLoop(timestamp) {
+            const deltaTime = timestamp - lastTime;
+            lastTime = timestamp;
+
+            if (gameState !== 'paused') {
+                update(deltaTime);
+            }
+            draw();
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        function checkStart() {
+            if ((evahLoaded || lukaLoaded) && bgLoaded) {
+                requestAnimationFrame(gameLoop);
+            }
+        }
+
+        setTimeout(() => {
+            if (!evahLoaded && !lukaLoaded) {
+                console.log('Starting with fallback');
+            }
+            requestAnimationFrame(gameLoop);
+        }, 2000);
+    </script>
+</body>
+</html>
