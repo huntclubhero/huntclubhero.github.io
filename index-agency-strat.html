@@ -1,0 +1,1491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compliable Agency Partnership Program</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'compliable-blue': '#2563eb',
+                        'compliable-dark': '#1d4ed8',
+                        'compliable-indigo': '#4f46e5',
+                        'critical-red': '#dc2626',
+                        'serious-orange': '#ea580c',
+                        'success-green': '#059669',
+                        'text-dark': '#0f172a',
+                        'text-gray': '#475569',
+                        'bg-light': '#f8fafc',
+                    },
+                    fontFamily: {
+                        'display': ['Space Grotesk', 'sans-serif'],
+                        'body': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @page {
+            size: 1920px 1080px;
+            margin: 0;
+        }
+
+        .slide {
+            width: 1920px;
+            height: 1080px;
+            page-break-after: always;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide:last-child {
+            page-break-after: avoid;
+        }
+
+        /* Gradient background */
+        .gradient-bg {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #eff6ff 100%);
+        }
+
+        /* Logo gradient */
+        .logo-gradient {
+            background: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Countdown animation */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .countdown-pulse {
+            animation: pulse 2s infinite;
+        }
+
+        /* Progress bar animation */
+        @keyframes grow {
+            from { width: 0; }
+            to { width: var(--target-width); }
+        }
+
+        .progress-animate {
+            animation: grow 1s ease-out forwards;
+        }
+
+        /* Fade in animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .fade-in-delay-1 { animation-delay: 0.2s; opacity: 0; }
+        .fade-in-delay-2 { animation-delay: 0.4s; opacity: 0; }
+        .fade-in-delay-3 { animation-delay: 0.6s; opacity: 0; }
+        .fade-in-delay-4 { animation-delay: 0.8s; opacity: 0; }
+
+        /* Shield icon */
+        .shield-icon {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .shield-icon::before {
+            content: '';
+            width: 60px;
+            height: 70px;
+            background: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            position: absolute;
+        }
+
+        .shield-icon::after {
+            content: '✓';
+            position: relative;
+            z-index: 1;
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        /* Decorative corner accent */
+        .corner-accent {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.05) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .corner-accent.top-right {
+            top: -150px;
+            right: -150px;
+        }
+
+        .corner-accent.bottom-left {
+            bottom: -150px;
+            left: -150px;
+        }
+
+        /* Hero number style */
+        .hero-number {
+            font-size: 180px;
+            line-height: 1;
+            font-weight: 700;
+            background: linear-gradient(135deg, #dc2626 0%, #ea580c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Money number style */
+        .money-number {
+            font-size: 120px;
+            line-height: 1;
+            font-weight: 700;
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Tier card */
+        .tier-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .tier-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .tier-card.featured {
+            border: 3px solid #2563eb;
+        }
+
+        /* Stat card */
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        /* Timeline */
+        .timeline-item {
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 12px;
+            top: 32px;
+            bottom: -32px;
+            width: 2px;
+            background: #e2e8f0;
+        }
+
+        .timeline-item:last-child::before {
+            display: none;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 0;
+            top: 6px;
+            width: 26px;
+            height: 26px;
+            background: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        /* Comparison bar */
+        .comparison-bar {
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .comparison-bar.us {
+            background: linear-gradient(90deg, #059669 0%, #10b981 100%);
+        }
+
+        .comparison-bar.them {
+            background: linear-gradient(90deg, #dc2626 0%, #f87171 100%);
+        }
+    </style>
+</head>
+<body class="font-body text-text-dark">
+
+    <!-- Slide 1: Title -->
+    <div class="slide gradient-bg flex flex-col justify-center items-center">
+        <div class="corner-accent top-right"></div>
+        <div class="corner-accent bottom-left"></div>
+
+        <div class="text-center">
+            <div class="flex items-center justify-center gap-6 mb-8">
+                <div class="shield-icon" style="transform: scale(1.5);"></div>
+                <h1 class="font-display text-7xl font-bold">
+                    <span class="logo-gradient">Compli</span><span class="text-text-dark">able</span>
+                </h1>
+            </div>
+
+            <h2 class="font-display text-5xl font-semibold text-text-dark mb-6 fade-in">
+                The Agency Partnership Program
+            </h2>
+
+            <p class="text-2xl text-text-gray mb-12 fade-in fade-in-delay-1">
+                Internal Launch Briefing | January 2026
+            </p>
+
+            <div class="flex items-center justify-center gap-4 fade-in fade-in-delay-2">
+                <div class="px-6 py-3 bg-compliable-blue/10 rounded-full">
+                    <span class="text-compliable-blue font-semibold">Scaling Through Partners</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 2: The Situation -->
+    <div class="slide gradient-bg p-20">
+        <div class="corner-accent top-right"></div>
+
+        <div class="mb-12">
+            <span class="text-compliable-blue font-semibold text-xl uppercase tracking-wider">The Situation</span>
+            <h2 class="font-display text-5xl font-bold mt-4">Healthcare websites face a<br>compliance reckoning</h2>
+        </div>
+
+        <div class="grid grid-cols-3 gap-8 mt-16">
+            <div class="stat-card fade-in">
+                <div class="text-6xl font-bold text-critical-red mb-4">4,187</div>
+                <div class="text-xl text-text-gray">Accessibility lawsuits<br>filed in 2024</div>
+                <div class="mt-4 h-2 bg-critical-red/20 rounded-full">
+                    <div class="h-full bg-critical-red rounded-full" style="width: 85%"></div>
+                </div>
+            </div>
+
+            <div class="stat-card fade-in fade-in-delay-1">
+                <div class="text-6xl font-bold text-serious-orange mb-4">$1M</div>
+                <div class="text-xl text-text-gray">FTC fine against accessiBe<br>for false compliance claims</div>
+                <div class="mt-4 px-4 py-2 bg-serious-orange/10 rounded-lg">
+                    <span class="text-serious-orange font-semibold">January 2025</span>
+                </div>
+            </div>
+
+            <div class="stat-card fade-in fade-in-delay-2">
+                <div class="text-6xl font-bold text-text-dark mb-4">25%</div>
+                <div class="text-xl text-text-gray">of 2024 lawsuits explicitly<br>cited overlay widgets</div>
+                <div class="mt-4 text-text-gray italic">
+                    "Overlays are getting sued."
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-16 p-8 bg-white rounded-2xl shadow-lg fade-in fade-in-delay-3">
+            <div class="flex items-center gap-6">
+                <div class="w-2 h-24 bg-critical-red rounded-full"></div>
+                <div>
+                    <p class="text-2xl font-semibold text-text-dark">The market is saturated with quick-fix solutions that don't work.</p>
+                    <p class="text-xl text-text-gray mt-2">Healthcare providers are exposed. Agencies don't have a real solution to offer.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 3: The Deadline (HERO) -->
+    <div class="slide bg-text-dark flex flex-col justify-center items-center text-white">
+        <div class="absolute inset-0" style="background: radial-gradient(circle at 50% 50%, rgba(220, 38, 38, 0.15) 0%, transparent 60%);"></div>
+
+        <div class="text-center relative z-10">
+            <span class="text-critical-red font-semibold text-2xl uppercase tracking-widest mb-8 block">The Deadline</span>
+
+            <div class="hero-number countdown-pulse mb-8">468</div>
+
+            <div class="text-4xl font-semibold mb-4">DAYS REMAINING</div>
+
+            <div class="text-2xl text-white/70 mb-12">Until May 11, 2026</div>
+
+            <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-8 max-w-3xl mx-auto">
+                <h3 class="text-2xl font-bold mb-4">HHS Section 504 Deadline</h3>
+                <p class="text-xl text-white/80">
+                    Healthcare entities with 15+ employees must achieve digital accessibility compliance.
+                    <br><br>
+                    <span class="text-critical-red font-semibold">This is a legal mandate, not a suggestion.</span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 4: The Complication -->
+    <div class="slide gradient-bg p-20">
+        <div class="corner-accent top-right"></div>
+
+        <div class="mb-12">
+            <span class="text-serious-orange font-semibold text-xl uppercase tracking-wider">The Complication</span>
+            <h2 class="font-display text-5xl font-bold mt-4">Agencies have the clients,<br>but no solution</h2>
+        </div>
+
+        <div class="grid grid-cols-2 gap-16 mt-12">
+            <div>
+                <h3 class="text-2xl font-bold mb-8 text-critical-red">Pain Points for Agencies</h3>
+
+                <div class="space-y-6">
+                    <div class="flex items-start gap-4 fade-in">
+                        <div class="w-8 h-8 bg-critical-red/10 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                            <span class="text-critical-red font-bold">1</span>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-semibold">Client retention risk</h4>
+                            <p class="text-text-gray mt-1">If their clients get sued, they'll blame the agency that built the site.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4 fade-in fade-in-delay-1">
+                        <div class="w-8 h-8 bg-critical-red/10 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                            <span class="text-critical-red font-bold">2</span>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-semibold">No in-house expertise</h4>
+                            <p class="text-text-gray mt-1">WCAG is complex. Agencies don't have accessibility specialists.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4 fade-in fade-in-delay-2">
+                        <div class="w-8 h-8 bg-critical-red/10 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                            <span class="text-critical-red font-bold">3</span>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-semibold">Missing revenue stream</h4>
+                            <p class="text-text-gray mt-1">They see the need but can't monetize it without a solution.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4 fade-in fade-in-delay-3">
+                        <div class="w-8 h-8 bg-critical-red/10 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                            <span class="text-critical-red font-bold">4</span>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-semibold">Overlay liability</h4>
+                            <p class="text-text-gray mt-1">Recommending accessiBe or similar now exposes them to lawsuits.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-10 shadow-lg">
+                <h3 class="text-2xl font-bold mb-6">The Gap We Fill</h3>
+
+                <div class="space-y-6">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-success-green/10 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-success-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <span class="text-lg font-semibold">Real scanning technology</span>
+                            <p class="text-text-gray">Not overlays. Actual code-level detection.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-success-green/10 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-success-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <span class="text-lg font-semibold">Partner-friendly margins</span>
+                            <p class="text-text-gray">40-60% margins vs. 20% referral commissions elsewhere.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-success-green/10 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-success-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <span class="text-lg font-semibold">Healthcare expertise</span>
+                            <p class="text-text-gray">HHS Section 504 specialists, not generic accessibility.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 5: The Opportunity -->
+    <div class="slide gradient-bg p-20">
+        <div class="corner-accent top-right"></div>
+
+        <div class="mb-12">
+            <span class="text-success-green font-semibold text-xl uppercase tracking-wider">The Opportunity</span>
+            <h2 class="font-display text-5xl font-bold mt-4">A massive market is forming</h2>
+        </div>
+
+        <div class="grid grid-cols-2 gap-16 mt-12">
+            <div class="space-y-8">
+                <div class="stat-card">
+                    <div class="flex items-end gap-4">
+                        <span class="text-7xl font-bold text-compliable-blue">26%</span>
+                        <span class="text-2xl text-text-gray pb-3">of American adults<br>have a disability</span>
+                    </div>
+                    <p class="mt-4 text-lg text-text-gray">That's patients who can't book appointments on inaccessible websites.</p>
+                </div>
+
+                <div class="stat-card">
+                    <div class="flex items-end gap-4">
+                        <span class="text-7xl font-bold text-compliable-blue">81%</span>
+                        <span class="text-2xl text-text-gray pb-3">will choose an<br>accessible competitor</span>
+                    </div>
+                    <p class="mt-4 text-lg text-text-gray">Lost patients, not just compliance risk.</p>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-10 shadow-lg">
+                <h3 class="text-2xl font-bold mb-8">Why Partner Channel?</h3>
+
+                <div class="space-y-6">
+                    <div class="p-4 bg-bg-light rounded-xl">
+                        <div class="font-semibold text-lg">Medical Website Agencies</div>
+                        <p class="text-text-gray mt-1">50-500+ healthcare clients per agency</p>
+                        <div class="mt-2 text-compliable-blue font-semibold">One partnership = massive reach</div>
+                    </div>
+
+                    <div class="p-4 bg-bg-light rounded-xl">
+                        <div class="font-semibold text-lg">Built-in Trust</div>
+                        <p class="text-text-gray mt-1">Agencies already have the client relationship</p>
+                        <div class="mt-2 text-compliable-blue font-semibold">They recommend, clients buy</div>
+                    </div>
+
+                    <div class="p-4 bg-bg-light rounded-xl">
+                        <div class="font-semibold text-lg">Recurring Revenue</div>
+                        <p class="text-text-gray mt-1">Compliance is ongoing, not one-time</p>
+                        <div class="mt-2 text-compliable-blue font-semibold">Annual subscriptions for partners + us</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 6: Our Solution - Partner Tiers -->
+    <div class="slide gradient-bg p-20">
+        <div class="corner-accent top-right"></div>
+
+        <div class="mb-12">
+            <span class="text-compliable-blue font-semibold text-xl uppercase tracking-wider">Our Solution</span>
+            <h2 class="font-display text-5xl font-bold mt-4">Three partnership tiers</h2>
+        </div>
+
+        <div class="grid grid-cols-3 gap-8 mt-12">
+            <!-- Referral Tier -->
+            <div class="tier-card p-8">
+                <div class="text-center mb-6">
+                    <div class="inline-block px-4 py-2 bg-gray-100 rounded-full text-text-gray font-semibold mb-4">TIER 1</div>
+                    <h3 class="text-3xl font-bold">Referral</h3>
+                    <p class="text-text-gray mt-2">Test the waters</p>
+                </div>
+
+                <div class="text-center py-6 border-t border-b border-gray-100">
+                    <div class="text-5xl font-bold text-text-dark">20%</div>
+                    <div class="text-text-gray">commission</div>
+                </div>
+
+                <ul class="mt-6 space-y-3">
+                    <li class="flex items-center gap-3">
+                        <svg class="w-5 h-5 text-success-green" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span>Send leads, we close</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <svg class="w-5 h-5 text-success-green" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span>No minimum commitment</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <svg class="w-5 h-5 text-success-green" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span>We handle everything</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Reseller Tier -->
+            <div class="tier-card featured p-8">
+                <div class="text-center mb-6">
+                    <div class="inline-block px-4 py-2 bg-compliable-blue text-white rounded-full font-semibold mb-4">TIER 2 - RECOMMENDED</div>
+                    <h3 class="text-3xl font-bold">Reseller</h3>
+                    <p class="text-text-gray mt-2">Own the relationship</p>
+                </div>
+
+                <div class="text-center py-6 border-t border-b border-compliable-blue/20 bg-compliable-blue/5">
+                    <div class="text-5xl font-bold text-compliable-blue">40%</div>
+                    <div class="text-compliable-blue">margin</div>
+                </div>
+
+                <ul class="mt-6 space-y-3">
+                    <li class="flex items-center gap-3">
+                        <svg class="w-5 h-5 text-success-green" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span>Buy at $720, sell at $1,200</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <svg class="w-5 h-5 text-success-green" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span>Min 5 sites/year</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <svg class="w-5 h-5 text-success-green" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span>You manage clients</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- White-Label Tier -->
+            <div class="tier-card p-8">
+                <div class="text-center mb-6">
+                    <div class="inline-block px-4 py-2 bg-compliable-indigo/10 rounded-full text-compliable-indigo font-semibold mb-4">TIER 3</div>
+                    <h3 class="text-3xl font-bold">White-Label</h3>
+                    <p class="text-text-gray mt-2">Your brand, our tech</p>
+                </div>
+
+                <div class="text-center py-6 border-t border-b border-gray-100">
+                    <div class="text-5xl font-bold text-compliable-indigo">60%+</div>
+                    <div class="text-text-gray">margin</div>
+                </div>
+
+                <ul class="mt-6 space-y-3">
+                    <li class="flex items-center gap-3">
+                        <svg class="w-5 h-5 text-success-green" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span>Buy at $480, set your price</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <svg class="w-5 h-5 text-success-green" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span>Min 10 sites/year</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <svg class="w-5 h-5 text-success-green" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span>Full brand customization</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="mt-12 text-center">
+            <p class="text-xl text-text-gray">
+                <span class="font-semibold text-text-dark">Volume discounts:</span>
+                10% off at 50+ sites • 20% off at 100+ sites
+            </p>
+        </div>
+    </div>
+
+    <!-- Slide 7: The Math (HERO) -->
+    <div class="slide bg-text-dark flex flex-col justify-center items-center text-white p-20">
+        <div class="absolute inset-0" style="background: radial-gradient(circle at 50% 50%, rgba(5, 150, 105, 0.15) 0%, transparent 60%);"></div>
+
+        <div class="text-center relative z-10">
+            <span class="text-success-green font-semibold text-2xl uppercase tracking-widest mb-8 block">The Math</span>
+
+            <h2 class="font-display text-4xl font-bold mb-16">Partner Economics at a Glance</h2>
+
+            <div class="flex items-center justify-center gap-8 mb-16">
+                <div class="text-center">
+                    <div class="text-7xl font-bold text-white/90">$480</div>
+                    <div class="text-xl text-white/60 mt-2">Your Cost<br>(White-Label)</div>
+                </div>
+
+                <div class="text-6xl text-white/40">→</div>
+
+                <div class="text-center">
+                    <div class="text-7xl font-bold text-white/90">$1,200</div>
+                    <div class="text-xl text-white/60 mt-2">MSRP</div>
+                </div>
+
+                <div class="text-6xl text-white/40">=</div>
+
+                <div class="text-center">
+                    <div class="money-number">$720</div>
+                    <div class="text-xl text-success-green mt-2">Profit Per Site</div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-3 gap-8 max-w-4xl mx-auto">
+                <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6">
+                    <div class="text-3xl font-bold">10 sites</div>
+                    <div class="text-success-green text-2xl font-bold mt-2">$7,200/year</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6">
+                    <div class="text-3xl font-bold">50 sites</div>
+                    <div class="text-success-green text-2xl font-bold mt-2">$36,000/year</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6">
+                    <div class="text-3xl font-bold">100 sites</div>
+                    <div class="text-success-green text-2xl font-bold mt-2">$72,000+/year</div>
+                </div>
+            </div>
+
+            <p class="mt-12 text-xl text-white/70">
+                Plus volume discounts. Plus upsell opportunities. Plus renewal revenue.
+            </p>
+        </div>
+    </div>
+
+    <!-- Slide 8: The Advantage -->
+    <div class="slide gradient-bg p-20">
+        <div class="corner-accent top-right"></div>
+
+        <div class="mb-12">
+            <span class="text-compliable-blue font-semibold text-xl uppercase tracking-wider">The Advantage</span>
+            <h2 class="font-display text-5xl font-bold mt-4">Why partners choose Compliable</h2>
+        </div>
+
+        <div class="grid grid-cols-2 gap-16 mt-12">
+            <div>
+                <h3 class="text-2xl font-bold mb-8">vs. accessiBe & Overlays</h3>
+
+                <div class="space-y-6">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="font-semibold">Compliable Partner Margins</span>
+                            <span class="font-bold text-success-green">40-60%</span>
+                        </div>
+                        <div class="comparison-bar us" style="width: 100%;">
+                            $480-720 profit per site
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="font-semibold">accessiBe Referral Commission</span>
+                            <span class="font-bold text-critical-red">20%</span>
+                        </div>
+                        <div class="comparison-bar them" style="width: 33%;">
+                            ~$100
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-12 p-6 bg-white rounded-xl shadow-lg">
+                    <h4 class="font-bold text-lg mb-4">The Overlay Problem</h4>
+                    <ul class="space-y-3 text-text-gray">
+                        <li class="flex items-start gap-2">
+                            <span class="text-critical-red">✗</span>
+                            <span>$1M FTC fine for false compliance claims (Jan 2025)</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-critical-red">✗</span>
+                            <span>25% of 2024 lawsuits cited overlays as the problem</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-critical-red">✗</span>
+                            <span>Only detect 30-40% of actual accessibility issues</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-10 shadow-lg">
+                <h3 class="text-2xl font-bold mb-8">Our Differentiators</h3>
+
+                <div class="space-y-8">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 bg-compliable-blue/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <svg class="w-6 h-6 text-compliable-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-lg">Real Scanning</h4>
+                            <p class="text-text-gray mt-1">We find actual code issues. Not cosmetic overlays that get you sued.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 bg-compliable-blue/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <svg class="w-6 h-6 text-compliable-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-lg">Healthcare Expertise</h4>
+                            <p class="text-text-gray mt-1">HHS Section 504 specialists. We know the deadline. We know the law.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 bg-compliable-blue/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <svg class="w-6 h-6 text-compliable-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-lg">Personal Service</h4>
+                            <p class="text-text-gray mt-1">You're not a number. Founder-level support and responsiveness.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 bg-compliable-blue/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <svg class="w-6 h-6 text-compliable-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-lg">Industry-Best Margins</h4>
+                            <p class="text-text-gray mt-1">40-60% vs. 20% elsewhere. Real profit, not token commissions.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 9: The Impossible Drop -->
+    <div class="slide gradient-bg p-20">
+        <div class="corner-accent top-right"></div>
+
+        <div class="mb-12">
+            <span class="text-compliable-indigo font-semibold text-xl uppercase tracking-wider">The Secret Weapon</span>
+            <h2 class="font-display text-5xl font-bold mt-4">The Impossible Drop</h2>
+            <p class="text-2xl text-text-gray mt-4">Something no competitor has ever done</p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-16 mt-8">
+            <div class="space-y-8">
+                <div class="bg-white rounded-xl p-8 shadow-lg">
+                    <h3 class="text-2xl font-bold mb-4">Before First Contact</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-4">
+                            <div class="w-8 h-8 bg-compliable-blue text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">1</div>
+                            <p class="text-lg">Research each target agency's client portfolio</p>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="w-8 h-8 bg-compliable-blue text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">2</div>
+                            <p class="text-lg">Run Compliable scans on 10-20 of their healthcare clients</p>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="w-8 h-8 bg-compliable-blue text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">3</div>
+                            <p class="text-lg">Compile aggregate data: issues, severity, opportunity</p>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="w-8 h-8 bg-compliable-blue text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">4</div>
+                            <p class="text-lg">Lead outreach with: "I already scanned your portfolio"</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-compliable-blue/5 border-2 border-compliable-blue/20 rounded-xl p-8">
+                    <h4 class="font-bold text-lg text-compliable-blue mb-4">Why It Works</h4>
+                    <ul class="space-y-3 text-text-gray">
+                        <li class="flex items-start gap-2">
+                            <span class="text-compliable-blue">✓</span>
+                            <span><strong>Instant value delivery</strong> - they see the scope immediately</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-compliable-blue">✓</span>
+                            <span><strong>Proof of capability</strong> - we're showing, not telling</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-compliable-blue">✓</span>
+                            <span><strong>Impossible to ignore</strong> - it's their clients, their risk</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bg-text-dark rounded-2xl p-10 text-white">
+                <h3 class="text-xl font-semibold text-white/60 mb-4">The Opening Email Hook</h3>
+
+                <div class="bg-white/10 rounded-xl p-8 font-mono text-lg leading-relaxed">
+                    <p class="text-white/80">Subject: <span class="text-white">Your 47 healthcare clients</span></p>
+                    <br>
+                    <p>I scanned <span class="text-success-green font-bold">47</span> of your healthcare clients' websites.</p>
+                    <br>
+                    <p>Found <span class="text-critical-red font-bold">312 issues</span> that will be problematic after May 2026.</p>
+                    <br>
+                    <p>Not pitching you on fixing them.</p>
+                    <br>
+                    <p>Pitching you on <span class="text-success-green font-bold">selling the fixes</span>.</p>
+                </div>
+
+                <div class="mt-8 text-center">
+                    <p class="text-white/60 text-lg">Specific numbers > vague claims</p>
+                    <p class="text-white/60 text-lg mt-2">Their portfolio > generic pitch</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 10: The Targets -->
+    <div class="slide gradient-bg p-20">
+        <div class="corner-accent top-right"></div>
+
+        <div class="mb-8">
+            <span class="text-compliable-blue font-semibold text-xl uppercase tracking-wider">The Targets</span>
+            <h2 class="font-display text-5xl font-bold mt-4">20 Medical Website Agencies</h2>
+            <p class="text-2xl text-text-gray mt-4">Limited to 20 launch partners • First-mover advantage</p>
+        </div>
+
+        <div class="grid grid-cols-3 gap-6 mt-6">
+            <div class="bg-white rounded-xl p-5 shadow-lg">
+                <div class="text-lg font-bold text-compliable-blue mb-1">Tier 1 - Priority</div>
+                <div class="text-sm text-text-gray mb-3">Medical-only, 500+ clients</div>
+                <ul class="space-y-2">
+                    <li class="flex items-center gap-2">
+                        <div class="w-2 h-2 bg-compliable-blue rounded-full"></div>
+                        <span class="font-medium text-sm">Practice Builders</span>
+                        <span class="text-xs text-text-gray ml-auto">16K+</span>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <div class="w-2 h-2 bg-compliable-blue rounded-full"></div>
+                        <span class="font-medium text-sm">Practis (Onspire)</span>
+                        <span class="text-xs text-text-gray ml-auto">3K+</span>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <div class="w-2 h-2 bg-compliable-blue rounded-full"></div>
+                        <span class="font-medium text-sm">iHealthSpot</span>
+                        <span class="text-xs text-text-gray ml-auto">4K+</span>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <div class="w-2 h-2 bg-compliable-blue rounded-full"></div>
+                        <span class="font-medium text-sm">Rosemont Media</span>
+                        <span class="text-xs text-text-gray ml-auto">500+</span>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <div class="w-2 h-2 bg-compliable-blue rounded-full"></div>
+                        <span class="font-medium text-sm">MedPB (Onspire)</span>
+                        <span class="text-xs text-text-gray ml-auto">500+</span>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <div class="w-2 h-2 bg-compliable-blue rounded-full"></div>
+                        <span class="font-medium text-sm">Doctor Multimedia</span>
+                        <span class="text-xs text-text-gray ml-auto">1K+</span>
+                    </li>
+                </ul>
+                <div class="mt-3 pt-3 border-t border-gray-100">
+                    <span class="text-xs text-compliable-blue font-semibold">25,000+ healthcare clients combined</span>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl p-5 shadow-lg">
+                <div class="text-lg font-bold text-serious-orange mb-1">Tier 2 - High Value</div>
+                <div class="text-sm text-text-gray mb-3">Healthcare specialists, 100-500 clients</div>
+                <ul class="space-y-2">
+                    <li class="flex items-center gap-2">
+                        <div class="w-2 h-2 bg-serious-orange rounded-full"></div>
+                        <span class="font-medium text-sm">WebToMed</span>
+                        <span class="text-xs text-text-gray ml-auto">1K+</span>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <div class="w-2 h-2 bg-serious-orange rounded-full"></div>
+                        <span class="font-medium text-sm">Officite</span>
+                        <span class="text-xs text-text-gray ml-auto">8K+</span>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <div class="w-2 h-2 bg-serious-orange rounded-full"></div>
+                        <span class="font-medium text-sm">Healthcare Success</span>
+                        <span class="text-xs text-text-gray ml-auto">500+</span>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <div class="w-2 h-2 bg-serious-orange rounded-full"></div>
+                        <span class="font-medium text-sm">DoctorLogic</span>
+                        <span class="text-xs text-text-gray ml-auto">1K+</span>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <div class="w-2 h-2 bg-serious-orange rounded-full"></div>
+                        <span class="font-medium text-sm">Intrepy Healthcare</span>
+                        <span class="text-xs text-text-gray ml-auto">300+</span>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <div class="w-2 h-2 bg-serious-orange rounded-full"></div>
+                        <span class="font-medium text-sm">Aesthetic Brand Mktg</span>
+                        <span class="text-xs text-text-gray ml-auto">200+</span>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <div class="w-2 h-2 bg-serious-orange rounded-full"></div>
+                        <span class="font-medium text-sm">Plastic Surgery Studios</span>
+                        <span class="text-xs text-text-gray ml-auto">1K+</span>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <div class="w-2 h-2 bg-serious-orange rounded-full"></div>
+                        <span class="font-medium text-sm">Medical Web Experts</span>
+                        <span class="text-xs text-text-gray ml-auto">500+</span>
+                    </li>
+                </ul>
+                <div class="mt-3 pt-3 border-t border-gray-100">
+                    <span class="text-xs text-serious-orange font-semibold">12,500+ healthcare clients combined</span>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl p-5 shadow-lg">
+                <div class="text-lg font-bold text-compliable-indigo mb-1">Tier 3 - Opportunity</div>
+                <div class="text-sm text-text-gray mb-3">Niche specialists, emerging players</div>
+                <ul class="space-y-2">
+                    <li class="flex items-center gap-2">
+                        <div class="w-2 h-2 bg-compliable-indigo rounded-full"></div>
+                        <span class="font-medium text-sm">The Medical Edge</span>
+                        <span class="text-xs text-text-gray ml-auto">150+</span>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <div class="w-2 h-2 bg-compliable-indigo rounded-full"></div>
+                        <span class="font-medium text-sm">Geonetric</span>
+                        <span class="text-xs text-text-gray ml-auto">300+</span>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <div class="w-2 h-2 bg-compliable-indigo rounded-full"></div>
+                        <span class="font-medium text-sm">Cardinal Digital</span>
+                        <span class="text-xs text-text-gray ml-auto">200+</span>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <div class="w-2 h-2 bg-compliable-indigo rounded-full"></div>
+                        <span class="font-medium text-sm">Digitalis Medical</span>
+                        <span class="text-xs text-text-gray ml-auto">100+</span>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <div class="w-2 h-2 bg-compliable-indigo rounded-full"></div>
+                        <span class="font-medium text-sm">Physician Practice Spec.</span>
+                        <span class="text-xs text-text-gray ml-auto">100+</span>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <div class="w-2 h-2 bg-compliable-indigo rounded-full"></div>
+                        <span class="font-medium text-sm">Online Mktg for Doctors</span>
+                        <span class="text-xs text-text-gray ml-auto">200+</span>
+                    </li>
+                </ul>
+                <div class="mt-3 pt-3 border-t border-gray-100">
+                    <span class="text-xs text-compliable-indigo font-semibold">1,050+ healthcare clients combined</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-8 bg-compliable-blue/5 rounded-xl p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h4 class="text-xl font-bold">Total Addressable Market Through These Partners</h4>
+                    <p class="text-text-gray mt-1">If we capture 10% of their client base = 3,800+ sites</p>
+                </div>
+                <div class="text-right">
+                    <div class="text-4xl font-bold text-compliable-blue">38,000+</div>
+                    <div class="text-text-gray">healthcare clients</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 11: The Playbook -->
+    <div class="slide gradient-bg p-20">
+        <div class="corner-accent top-right"></div>
+
+        <div class="mb-12">
+            <span class="text-compliable-blue font-semibold text-xl uppercase tracking-wider">The Playbook</span>
+            <h2 class="font-display text-5xl font-bold mt-4">90-Day Launch Plan</h2>
+        </div>
+
+        <div class="grid grid-cols-3 gap-8 mt-8">
+            <!-- Phase 1 -->
+            <div class="bg-white rounded-xl overflow-hidden shadow-lg">
+                <div class="bg-compliable-blue text-white p-6">
+                    <div class="text-sm font-semibold opacity-80">PHASE 1</div>
+                    <div class="text-2xl font-bold mt-1">Foundation</div>
+                    <div class="text-sm opacity-80 mt-1">Weeks 1-2</div>
+                </div>
+                <div class="p-6 space-y-4">
+                    <div class="flex items-start gap-3">
+                        <div class="w-5 h-5 bg-compliable-blue/10 rounded flex items-center justify-center mt-0.5">
+                            <svg class="w-3 h-3 text-compliable-blue" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <span>Finalize all partnership materials</span>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <div class="w-5 h-5 bg-compliable-blue/10 rounded flex items-center justify-center mt-0.5">
+                            <svg class="w-3 h-3 text-compliable-blue" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <span>Research 20 target agencies</span>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <div class="w-5 h-5 bg-compliable-blue/10 rounded flex items-center justify-center mt-0.5">
+                            <svg class="w-3 h-3 text-compliable-blue" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <span>Pre-scan agency client portfolios</span>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <div class="w-5 h-5 bg-compliable-blue/10 rounded flex items-center justify-center mt-0.5">
+                            <svg class="w-3 h-3 text-compliable-blue" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <span>Set up partner demo environment</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phase 2 -->
+            <div class="bg-white rounded-xl overflow-hidden shadow-lg">
+                <div class="bg-compliable-dark text-white p-6">
+                    <div class="text-sm font-semibold opacity-80">PHASE 2</div>
+                    <div class="text-2xl font-bold mt-1">First 5 Partners</div>
+                    <div class="text-sm opacity-80 mt-1">Weeks 3-6</div>
+                </div>
+                <div class="p-6 space-y-4">
+                    <div class="flex items-start gap-3">
+                        <div class="w-5 h-5 bg-compliable-blue/10 rounded flex items-center justify-center mt-0.5">
+                            <svg class="w-3 h-3 text-compliable-blue" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <span>Execute "Impossible Drop" outreach</span>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <div class="w-5 h-5 bg-compliable-blue/10 rounded flex items-center justify-center mt-0.5">
+                            <svg class="w-3 h-3 text-compliable-blue" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <span>Book discovery calls with Tier 1</span>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <div class="w-5 h-5 bg-compliable-blue/10 rounded flex items-center justify-center mt-0.5">
+                            <svg class="w-3 h-3 text-compliable-blue" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <span>Sign first 5 partner agreements</span>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <div class="w-5 h-5 bg-compliable-blue/10 rounded flex items-center justify-center mt-0.5">
+                            <svg class="w-3 h-3 text-compliable-blue" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <span>Support first client wins</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phase 3 -->
+            <div class="bg-white rounded-xl overflow-hidden shadow-lg">
+                <div class="bg-compliable-indigo text-white p-6">
+                    <div class="text-sm font-semibold opacity-80">PHASE 3</div>
+                    <div class="text-2xl font-bold mt-1">Scale</div>
+                    <div class="text-sm opacity-80 mt-1">Weeks 7-12</div>
+                </div>
+                <div class="p-6 space-y-4">
+                    <div class="flex items-start gap-3">
+                        <div class="w-5 h-5 bg-compliable-indigo/10 rounded flex items-center justify-center mt-0.5">
+                            <svg class="w-3 h-3 text-compliable-indigo" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <span>Expand to 15 total partners</span>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <div class="w-5 h-5 bg-compliable-indigo/10 rounded flex items-center justify-center mt-0.5">
+                            <svg class="w-3 h-3 text-compliable-indigo" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <span>Launch partner Slack community</span>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <div class="w-5 h-5 bg-compliable-indigo/10 rounded flex items-center justify-center mt-0.5">
+                            <svg class="w-3 h-3 text-compliable-indigo" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <span>Create case study from early wins</span>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <div class="w-5 h-5 bg-compliable-indigo/10 rounded flex items-center justify-center mt-0.5">
+                            <svg class="w-3 h-3 text-compliable-indigo" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <span>Target 50+ sites through partners</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-12 grid grid-cols-3 gap-8">
+            <div class="bg-white rounded-xl p-6 text-center shadow-lg">
+                <div class="text-4xl font-bold text-compliable-blue">15+</div>
+                <div class="text-text-gray mt-1">Partner Target</div>
+            </div>
+            <div class="bg-white rounded-xl p-6 text-center shadow-lg">
+                <div class="text-4xl font-bold text-success-green">50+</div>
+                <div class="text-text-gray mt-1">Sites Through Partners</div>
+            </div>
+            <div class="bg-white rounded-xl p-6 text-center shadow-lg">
+                <div class="text-4xl font-bold text-compliable-indigo">$30K+</div>
+                <div class="text-text-gray mt-1">Partner Channel MRR</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 12: Success Metrics -->
+    <div class="slide gradient-bg p-20">
+        <div class="corner-accent top-right"></div>
+
+        <div class="mb-12">
+            <span class="text-compliable-blue font-semibold text-xl uppercase tracking-wider">Success Metrics</span>
+            <h2 class="font-display text-5xl font-bold mt-4">What we're tracking</h2>
+        </div>
+
+        <div class="grid grid-cols-2 gap-16 mt-8">
+            <div class="space-y-6">
+                <h3 class="text-2xl font-bold">Leading Indicators</h3>
+
+                <div class="bg-white rounded-xl p-6 shadow-lg">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <div class="font-semibold text-lg">Partners Signed</div>
+                            <div class="text-text-gray">New agreements per week</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-3xl font-bold text-compliable-blue">1-2</div>
+                            <div class="text-sm text-text-gray">weekly target</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-lg">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <div class="font-semibold text-lg">Partner Activation</div>
+                            <div class="text-text-gray">% with 1+ client in 30 days</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-3xl font-bold text-compliable-blue">80%+</div>
+                            <div class="text-sm text-text-gray">target rate</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-lg">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <div class="font-semibold text-lg">Discovery Calls Booked</div>
+                            <div class="text-text-gray">From outreach campaigns</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-3xl font-bold text-compliable-blue">25%</div>
+                            <div class="text-sm text-text-gray">reply-to-call rate</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <h3 class="text-2xl font-bold">Lagging Indicators</h3>
+
+                <div class="bg-white rounded-xl p-6 shadow-lg">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <div class="font-semibold text-lg">Sites Through Partners</div>
+                            <div class="text-text-gray">Total sites activated</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-3xl font-bold text-success-green">50+</div>
+                            <div class="text-sm text-text-gray">90-day target</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-lg">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <div class="font-semibold text-lg">Partner Channel MRR</div>
+                            <div class="text-text-gray">Revenue from partners</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-3xl font-bold text-success-green">$30K+</div>
+                            <div class="text-sm text-text-gray">90-day target</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-lg">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <div class="font-semibold text-lg">Partner Retention</div>
+                            <div class="text-text-gray">12-month retention rate</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-3xl font-bold text-success-green">90%+</div>
+                            <div class="text-sm text-text-gray">target rate</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-12 bg-compliable-blue/5 rounded-xl p-8">
+            <div class="flex items-center gap-4">
+                <div class="w-2 h-12 bg-compliable-blue rounded-full"></div>
+                <div>
+                    <h4 class="text-xl font-bold">Quarterly Business Reviews</h4>
+                    <p class="text-text-gray mt-1">30-minute calls with Reseller/White-Label partners (5+ sites) to review pipeline, issues, and targets</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 13: What's Left Before Launch -->
+    <div class="slide gradient-bg p-16">
+        <div class="corner-accent top-right"></div>
+
+        <div class="mb-8">
+            <span class="text-critical-red font-semibold text-xl uppercase tracking-wider">Before We Go Live</span>
+            <h2 class="font-display text-5xl font-bold mt-4">7 Items to Launch Ready</h2>
+        </div>
+
+        <div class="grid grid-cols-2 gap-12">
+            <!-- Left Column: Blockers -->
+            <div>
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-4 h-4 bg-critical-red rounded-full"></div>
+                    <h3 class="text-2xl font-bold">Blockers (Can't Launch Without)</h3>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="bg-white rounded-xl p-5 shadow-lg border-l-4 border-critical-red">
+                        <div class="flex items-start gap-4">
+                            <div class="w-8 h-8 bg-critical-red text-white rounded-lg flex items-center justify-center font-bold text-sm flex-shrink-0">1</div>
+                            <div class="flex-1">
+                                <div class="flex items-center justify-between">
+                                    <h4 class="font-bold">Legal Review of Partner Agreement</h4>
+                                    <span class="text-xs bg-critical-red/10 text-critical-red px-2 py-1 rounded-full font-semibold">CRITICAL</span>
+                                </div>
+                                <p class="text-text-gray text-sm mt-1">4 sections flagged for attorney review. Cannot sign partners without this.</p>
+                                <div class="mt-2 flex items-center gap-4 text-sm">
+                                    <span class="text-text-gray">Owner: <strong>Legal/Counsel</strong></span>
+                                    <span class="text-text-gray">Est: <strong>4-8 hours</strong></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-5 shadow-lg border-l-4 border-critical-red">
+                        <div class="flex items-start gap-4">
+                            <div class="w-8 h-8 bg-critical-red text-white rounded-lg flex items-center justify-center font-bold text-sm flex-shrink-0">2</div>
+                            <div class="flex-1">
+                                <div class="flex items-center justify-between">
+                                    <h4 class="font-bold">Partner Demo Environment</h4>
+                                    <span class="text-xs bg-critical-red/10 text-critical-red px-2 py-1 rounded-full font-semibold">CRITICAL</span>
+                                </div>
+                                <p class="text-text-gray text-sm mt-1">Partners need to see the product before signing. Sandbox account required.</p>
+                                <div class="mt-2 flex items-center gap-4 text-sm">
+                                    <span class="text-text-gray">Owner: <strong>Product/Eng</strong></span>
+                                    <span class="text-text-gray">Est: <strong>1-2 days</strong></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-5 shadow-lg border-l-4 border-serious-orange">
+                        <div class="flex items-start gap-4">
+                            <div class="w-8 h-8 bg-serious-orange text-white rounded-lg flex items-center justify-center font-bold text-sm flex-shrink-0">3</div>
+                            <div class="flex-1">
+                                <div class="flex items-center justify-between">
+                                    <h4 class="font-bold">Pre-Scan Tier 1 Agency Portfolios</h4>
+                                    <span class="text-xs bg-serious-orange/10 text-serious-orange px-2 py-1 rounded-full font-semibold">HIGH</span>
+                                </div>
+                                <p class="text-text-gray text-sm mt-1">Run scans on 10-20 client sites per agency. Powers "Impossible Drop" outreach.</p>
+                                <div class="mt-2 flex items-center gap-4 text-sm">
+                                    <span class="text-text-gray">Owner: <strong>Sales/Ops</strong></span>
+                                    <span class="text-text-gray">Est: <strong>2-3 days</strong></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Important -->
+            <div>
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-4 h-4 bg-serious-orange rounded-full"></div>
+                    <h3 class="text-2xl font-bold">Important (Before First Partner Signs)</h3>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="bg-white rounded-xl p-5 shadow-lg border-l-4 border-serious-orange">
+                        <div class="flex items-start gap-4">
+                            <div class="w-8 h-8 bg-serious-orange text-white rounded-lg flex items-center justify-center font-bold text-sm flex-shrink-0">4</div>
+                            <div class="flex-1">
+                                <h4 class="font-bold">Add Key Contacts to Agency List</h4>
+                                <p class="text-text-gray text-sm mt-1">LinkedIn URLs + decision-maker names for all 20 agencies.</p>
+                                <div class="mt-2 flex items-center gap-4 text-sm">
+                                    <span class="text-text-gray">Owner: <strong>Research/Sales</strong></span>
+                                    <span class="text-text-gray">Est: <strong>4-6 hours</strong></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-5 shadow-lg border-l-4 border-serious-orange">
+                        <div class="flex items-start gap-4">
+                            <div class="w-8 h-8 bg-serious-orange text-white rounded-lg flex items-center justify-center font-bold text-sm flex-shrink-0">5</div>
+                            <div class="flex-1">
+                                <h4 class="font-bold">Create Training Videos</h4>
+                                <p class="text-text-gray text-sm mt-1">Platform Overview (30 min) + Sales Training (20 min). Referenced in onboarding.</p>
+                                <div class="mt-2 flex items-center gap-4 text-sm">
+                                    <span class="text-text-gray">Owner: <strong>Product/Marketing</strong></span>
+                                    <span class="text-text-gray">Est: <strong>1-2 days</strong></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-5 shadow-lg border-l-4 border-compliable-blue">
+                        <div class="flex items-start gap-4">
+                            <div class="w-8 h-8 bg-compliable-blue text-white rounded-lg flex items-center justify-center font-bold text-sm flex-shrink-0">6</div>
+                            <div class="flex-1">
+                                <h4 class="font-bold">Set Up Partner Portal</h4>
+                                <p class="text-text-gray text-sm mt-1">Central hub for materials, deal registration, commission tracking. Notion works to start.</p>
+                                <div class="mt-2 flex items-center gap-4 text-sm">
+                                    <span class="text-text-gray">Owner: <strong>Ops/Marketing</strong></span>
+                                    <span class="text-text-gray">Est: <strong>1 day</strong></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-5 shadow-lg border-l-4 border-compliable-blue">
+                        <div class="flex items-start gap-4">
+                            <div class="w-8 h-8 bg-compliable-blue text-white rounded-lg flex items-center justify-center font-bold text-sm flex-shrink-0">7</div>
+                            <div class="flex-1">
+                                <h4 class="font-bold">Create Partner Slack Channel</h4>
+                                <p class="text-text-gray text-sm mt-1">Private channel for Reseller/White-Label partners. Quick support + community.</p>
+                                <div class="mt-2 flex items-center gap-4 text-sm">
+                                    <span class="text-text-gray">Owner: <strong>Ops</strong></span>
+                                    <span class="text-text-gray">Est: <strong>1 hour</strong></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-8 bg-text-dark rounded-xl p-6 text-white">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <div class="text-4xl font-bold text-critical-red">2</div>
+                    <div class="text-white/80">blockers</div>
+                    <div class="w-px h-8 bg-white/20 mx-2"></div>
+                    <div class="text-4xl font-bold text-serious-orange">3</div>
+                    <div class="text-white/80">high priority</div>
+                    <div class="w-px h-8 bg-white/20 mx-2"></div>
+                    <div class="text-4xl font-bold text-compliable-blue">2</div>
+                    <div class="text-white/80">nice to have at launch</div>
+                </div>
+                <div class="text-right">
+                    <div class="text-2xl font-bold">~5-7 days to launch ready</div>
+                    <div class="text-white/60">with parallel execution</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 14: Closing / Q&A -->
+    <div class="slide bg-text-dark flex flex-col justify-center items-center text-white">
+        <div class="absolute inset-0" style="background: radial-gradient(circle at 50% 50%, rgba(37, 99, 235, 0.2) 0%, transparent 60%);"></div>
+
+        <div class="text-center relative z-10">
+            <div class="flex items-center justify-center gap-6 mb-8">
+                <div class="shield-icon" style="transform: scale(2);"></div>
+            </div>
+
+            <h2 class="font-display text-5xl font-bold mb-6">
+                Your clients' deadline.<br>Your revenue.
+            </h2>
+
+            <p class="text-2xl text-white/70 mb-12 max-w-2xl mx-auto">
+                We protect what they've built while they profit.<br>
+                No expertise required. We do the scanning, they deliver the value.
+            </p>
+
+            <div class="flex items-center justify-center gap-8 mb-16">
+                <div class="text-center">
+                    <div class="text-5xl font-bold text-critical-red countdown-pulse">468</div>
+                    <div class="text-white/60 mt-2">Days Until Deadline</div>
+                </div>
+                <div class="w-px h-20 bg-white/20"></div>
+                <div class="text-center">
+                    <div class="text-5xl font-bold text-success-green">60%</div>
+                    <div class="text-white/60 mt-2">Partner Margins</div>
+                </div>
+                <div class="w-px h-20 bg-white/20"></div>
+                <div class="text-center">
+                    <div class="text-5xl font-bold text-compliable-blue">20</div>
+                    <div class="text-white/60 mt-2">Launch Partners</div>
+                </div>
+            </div>
+
+            <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-8 max-w-2xl mx-auto">
+                <h3 class="text-2xl font-bold mb-4">Questions?</h3>
+                <p class="text-white/70">
+                    Let's discuss how we make this happen.
+                </p>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
