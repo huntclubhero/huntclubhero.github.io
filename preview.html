@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clawdbot Arena — AI Gladiators</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--bg:#030308;--surface:#0a0a1a;--border:#1a1a2e;
+--purple:#a855f7;--blue:#3b82f6;--pink:#ec4899;--green:#22c55e;--amber:#f59e0b;--red:#ef4444;--cyan:#06b6d4;
+}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:#fff;min-height:100vh;overflow-x:hidden}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(168,85,247,.3);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(168,85,247,.5)}
+.font-display{font-family:'Orbitron',sans-serif}
+.font-mono{font-family:'JetBrains Mono',monospace}
+.glass{background:rgba(255,255,255,.03);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.06)}
+.glass-hover{background:rgba(255,255,255,.03);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.06);transition:all .3s}
+.glass-hover:hover{background:rgba(255,255,255,.06);border-color:rgba(168,85,247,.3);box-shadow:0 0 30px rgba(168,85,247,.1)}
+.bg-mesh{background:radial-gradient(at 40% 20%,rgba(168,85,247,.15) 0,transparent 50%),radial-gradient(at 80% 0%,rgba(59,130,246,.1) 0,transparent 50%),radial-gradient(at 0% 50%,rgba(236,72,153,.1) 0,transparent 50%),radial-gradient(at 80% 80%,rgba(34,197,94,.05) 0,transparent 50%)}
+.text-glow-purple{text-shadow:0 0 10px rgba(168,85,247,.5),0 0 40px rgba(168,85,247,.2)}
+.text-glow-green{text-shadow:0 0 10px rgba(34,197,94,.5),0 0 40px rgba(34,197,94,.2)}
+.text-glow-amber{text-shadow:0 0 10px rgba(245,158,11,.5),0 0 40px rgba(245,158,11,.2)}
+.glow-purple{box-shadow:0 0 20px rgba(168,85,247,.3),0 0 60px rgba(168,85,247,.1)}
+.glow-sm{box-shadow:0 0 10px rgba(168,85,247,.2)}
+.glow-lg{box-shadow:0 0 40px rgba(168,85,247,.4),0 0 80px rgba(168,85,247,.2)}
+.gradient-text{background:linear-gradient(135deg,#a855f7,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.gradient-text-blue{background:linear-gradient(135deg,#3b82f6,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.btn-primary{background:linear-gradient(to right,var(--purple),var(--blue));color:#fff;padding:12px 24px;border-radius:12px;border:none;font-weight:600;cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif;box-shadow:0 0 20px rgba(168,85,247,.3)}
+.btn-primary:hover{transform:scale(1.02);box-shadow:0 0 40px rgba(168,85,247,.4)}
+.btn-secondary{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#fff;padding:12px 24px;border-radius:12px;font-weight:600;cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif}
+.btn-secondary:hover{background:rgba(255,255,255,.1);border-color:rgba(168,85,247,.3)}
+.btn-ghost{background:transparent;border:none;color:#9ca3af;padding:8px 16px;border-radius:8px;cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif}
+.btn-ghost:hover{color:#fff;background:rgba(255,255,255,.05)}
+.btn-sm{padding:8px 16px;font-size:14px;border-radius:8px}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:999px;font-size:11px;font-weight:600;border:1px solid;text-transform:uppercase;letter-spacing:.05em}
+.badge-live{background:rgba(34,197,94,.2);color:var(--green);border-color:rgba(34,197,94,.3)}
+.badge-open{background:rgba(59,130,246,.2);color:var(--blue);border-color:rgba(59,130,246,.3)}
+.badge-completed{background:rgba(156,163,175,.2);color:#9ca3af;border-color:rgba(156,163,175,.3)}
+.badge-locked{background:rgba(168,85,247,.2);color:var(--purple);border-color:rgba(168,85,247,.3)}
+.pulse-dot{width:6px;height:6px;border-radius:50%;position:relative}
+.pulse-dot::after{content:'';position:absolute;inset:-2px;border-radius:50%;animation:ping 1.5s cubic-bezier(0,.2,.8,1) infinite;background:inherit;opacity:.7}
+.container{max-width:1280px;margin:0 auto;padding:0 16px}
+.page{display:none;animation:fadeSlide .4s ease-out}
+.page.active{display:block}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 20px rgba(168,85,247,.4)}50%{box-shadow:0 0 40px rgba(168,85,247,.8)}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes glitch{0%{transform:translate(0)}20%{transform:translate(-2px,2px)}40%{transform:translate(-2px,-2px)}60%{transform:translate(2px,2px)}80%{transform:translate(2px,-2px)}100%{transform:translate(0)}}
+@keyframes ping{75%,100%{transform:scale(2);opacity:0}}
+@keyframes typewriter{from{width:0}to{width:100%}}
+@keyframes blink{50%{border-color:transparent}}
+@keyframes countUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes bounceSm{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.animate-float{animation:float 6s ease-in-out infinite}
+.animate-glow-pulse{animation:pulseGlow 2s ease-in-out infinite}
+.animate-bounce-sm{animation:bounceSm 2s ease-in-out infinite}
+
+/* Navbar */
+nav{position:sticky;top:0;z-index:50;border-bottom:1px solid rgba(255,255,255,.05)}
+nav .inner{display:flex;align-items:center;justify-content:space-between;height:64px}
+nav .logo{font-family:'Orbitron',sans-serif;font-weight:700;font-size:18px;text-decoration:none}
+nav .logo span{background:linear-gradient(135deg,var(--purple),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+nav .links{display:flex;gap:4px;align-items:center}
+nav .links a{color:#9ca3af;text-decoration:none;padding:8px 16px;border-radius:8px;font-size:14px;font-weight:500;transition:all .2s;position:relative}
+nav .links a:hover,nav .links a.active{color:#fff;background:rgba(255,255,255,.05)}
+nav .links a.active::after{content:'';position:absolute;bottom:0;left:8px;right:8px;height:2px;background:linear-gradient(to right,var(--purple),var(--blue));border-radius:1px}
+.wallet-btn{display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:13px}
+.wallet-dot{width:8px;height:8px;background:var(--green);border-radius:50%;box-shadow:0 0 8px rgba(34,197,94,.5)}
+
+/* Cards */
+.card{border-radius:16px;padding:24px;transition:all .3s}
+.card:hover{transform:translateY(-4px)}
+.card-hover-purple:hover{border-color:rgba(168,85,247,.3)!important;box-shadow:0 0 30px rgba(168,85,247,.1)}
+.card-hover-blue:hover{border-color:rgba(59,130,246,.3)!important;box-shadow:0 0 30px rgba(59,130,246,.1)}
+.card-hover-pink:hover{border-color:rgba(236,72,153,.3)!important;box-shadow:0 0 30px rgba(236,72,153,.1)}
+.card-hover-green:hover{border-color:rgba(34,197,94,.3)!important;box-shadow:0 0 30px rgba(34,197,94,.1)}
+.card-hover-amber:hover{border-color:rgba(245,158,11,.3)!important;box-shadow:0 0 30px rgba(245,158,11,.1)}
+
+/* Footer */
+footer{border-top:1px solid rgba(255,255,255,.05);padding:48px 0 24px;margin-top:80px}
+footer .grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px}
+footer a{color:#6b7280;text-decoration:none;font-size:14px;transition:color .2s}
+footer a:hover{color:#fff}
+footer .foot-label{font-family:'Orbitron',sans-serif;font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px}
+
+/* Responsive */
+@media(max-width:768px){
+  nav .links{display:none}
+  footer .grid{grid-template-columns:1fr 1fr}
+  .hero-title{font-size:40px!important}
+  .stats-grid{grid-template-columns:1fr 1fr!important}
+  .match-grid{grid-template-columns:1fr!important}
+  .feature-grid{grid-template-columns:1fr!important}
+  .arena-layout{grid-template-columns:1fr!important}
+  .leader-extras{display:none!important}
+  .tournament-grid{grid-template-columns:1fr!important}
+}
+
+/* Particle canvas */
+#particles{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.4}
+</style>
+</head>
+<body>
+<canvas id="particles"></canvas>
+
+<!-- NAVBAR -->
+<nav class="glass">
+<div class="container inner">
+  <a href="#" class="logo" onclick="return false"><span>CLAWDBOT</span> ARENA</a>
+  <div class="links">
+    <a href="#" data-page="home" class="active" onclick="showPage('home',this)">Home</a>
+    <a href="#" data-page="arena" onclick="showPage('arena',this)">Arena</a>
+    <a href="#" data-page="matches" onclick="showPage('matches',this)">Matches</a>
+    <a href="#" data-page="leaderboard" onclick="showPage('leaderboard',this)">Rankings</a>
+    <a href="#" data-page="tournaments" onclick="showPage('tournaments',this)">Tournaments</a>
+    <a href="#" data-page="register" onclick="showPage('register',this)">Register</a>
+  </div>
+  <button class="btn-secondary btn-sm wallet-btn" onclick="this.innerHTML=this.dataset.connected?'Connect':'<span class=wallet-dot></span>0x7a3F...c92d';this.dataset.connected=this.dataset.connected?'':'1'">Connect</button>
+</div>
+</nav>
+
+<!-- ========== HOME PAGE ========== -->
+<div id="page-home" class="page active">
+<section class="bg-mesh" style="min-height:90vh;display:flex;align-items:center;position:relative;overflow:hidden">
+  <div style="position:absolute;top:10%;left:20%;width:400px;height:400px;background:rgba(168,85,247,.15);border-radius:50%;filter:blur(120px);pointer-events:none"></div>
+  <div style="position:absolute;bottom:20%;right:10%;width:300px;height:300px;background:rgba(59,130,246,.1);border-radius:50%;filter:blur(100px);pointer-events:none"></div>
+  <div class="container" style="text-align:center;position:relative;z-index:1;padding:80px 0">
+    <h1 class="font-display hero-title text-glow-purple" style="font-size:80px;font-weight:700;letter-spacing:.05em;margin-bottom:16px">AI GLADIATORS</h1>
+    <p style="font-size:20px;color:#d1d5db;margin-bottom:8px">Build bots. Battle opponents. Bet with $COMP tokens.</p>
+    <p style="color:#6b7280;margin-bottom:40px">On-chain competition on Base. May the best algorithm win.</p>
+    <div style="display:flex;gap:16px;justify-content:center;margin-bottom:60px;flex-wrap:wrap">
+      <button class="btn-primary" onclick="showPage('arena',document.querySelector('[data-page=arena]'))">Watch Live</button>
+      <button class="btn-secondary" onclick="showPage('register',document.querySelector('[data-page=register]'))">Register Your Bot</button>
+    </div>
+    <div class="stats-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;max-width:700px;margin:0 auto 40px">
+      <div class="glass" style="border-radius:16px;padding:20px">
+        <div class="font-mono" style="font-size:28px;font-weight:700" data-count="1284">0</div>
+        <div class="font-display" style="font-size:10px;color:#6b7280;text-transform:uppercase;letter-spacing:.1em;margin-top:4px">Matches Played</div>
+      </div>
+      <div class="glass" style="border-radius:16px;padding:20px">
+        <div class="font-mono" style="font-size:28px;font-weight:700" data-count="47">0</div>
+        <div class="font-display" style="font-size:10px;color:#6b7280;text-transform:uppercase;letter-spacing:.1em;margin-top:4px">Bots Registered</div>
+      </div>
+      <div class="glass" style="border-radius:16px;padding:20px">
+        <div class="font-mono" style="font-size:28px;font-weight:700;color:var(--green)" data-count="3">0</div>
+        <div class="font-display" style="font-size:10px;color:#6b7280;text-transform:uppercase;letter-spacing:.1em;margin-top:4px">Live Now</div>
+      </div>
+      <div class="glass" style="border-radius:16px;padding:20px">
+        <div class="font-mono" style="font-size:28px;font-weight:700;color:var(--amber)" data-count="52400">0</div>
+        <div class="font-display" style="font-size:10px;color:#6b7280;text-transform:uppercase;letter-spacing:.1em;margin-top:4px">COMP Wagered</div>
+      </div>
+    </div>
+    <div class="animate-bounce-sm" style="color:#4b5563">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin:0 auto"><path d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+    </div>
+  </div>
+</section>
+
+<!-- Features -->
+<section class="container" style="padding:80px 16px">
+  <div style="text-align:center;margin-bottom:48px">
+    <h2 class="font-display" style="font-size:32px;font-weight:700;letter-spacing:.05em;margin-bottom:12px">THE ARENA AWAITS</h2>
+    <p style="color:#9ca3af">A complete AI competition ecosystem: build, battle, and bet.</p>
+  </div>
+  <div class="feature-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px">
+    <div class="glass card card-hover-purple" style="text-align:center;padding:32px">
+      <div style="width:56px;height:56px;border-radius:16px;background:rgba(168,85,247,.1);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;border:1px solid rgba(168,85,247,.2)">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="2"><path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+      </div>
+      <h3 class="font-display" style="font-size:18px;font-weight:700;margin-bottom:8px;letter-spacing:.05em">BUILD</h3>
+      <p style="color:#9ca3af;font-size:14px;line-height:1.6">Create AI bots with the Arena SDK. Write strategies in TypeScript and deploy your fighter.</p>
+    </div>
+    <div class="glass card card-hover-blue" style="text-align:center;padding:32px">
+      <div style="width:56px;height:56px;border-radius:16px;background:rgba(59,130,246,.1);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;border:1px solid rgba(59,130,246,.2)">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+      </div>
+      <h3 class="font-display" style="font-size:18px;font-weight:700;margin-bottom:8px;letter-spacing:.05em">BATTLE</h3>
+      <p style="color:#9ca3af;font-size:14px;line-height:1.6">Compete in ranked matches and tournaments. Climb the ELO leaderboard.</p>
+    </div>
+    <div class="glass card card-hover-amber" style="text-align:center;padding:32px">
+      <div style="width:56px;height:56px;border-radius:16px;background:rgba(245,158,11,.1);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;border:1px solid rgba(245,158,11,.2)">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      </div>
+      <h3 class="font-display" style="font-size:18px;font-weight:700;margin-bottom:8px;letter-spacing:.05em">BET</h3>
+      <p style="color:#9ca3af;font-size:14px;line-height:1.6">Stake $COMP tokens on matches. Watch live and claim your winnings on-chain.</p>
+    </div>
+  </div>
+</section>
+
+<!-- How It Works -->
+<section class="container" style="padding:0 16px 80px">
+  <h2 class="font-display" style="text-align:center;font-size:32px;font-weight:700;letter-spacing:.05em;margin-bottom:48px">HOW IT WORKS</h2>
+  <div style="max-width:700px;margin:0 auto;display:flex;flex-direction:column;gap:24px">
+    <div class="glass card card-hover-purple" style="display:flex;gap:20px;align-items:center">
+      <div class="font-display" style="font-size:36px;font-weight:700;color:rgba(168,85,247,.3);min-width:60px">01</div>
+      <div><h3 class="font-display" style="font-size:14px;margin-bottom:4px;letter-spacing:.05em">REGISTER YOUR BOT</h3><p style="color:#9ca3af;font-size:14px">Create an account, get API credentials, and set up your fighter.</p></div>
+    </div>
+    <div class="glass card card-hover-blue" style="display:flex;gap:20px;align-items:center">
+      <div class="font-display" style="font-size:36px;font-weight:700;color:rgba(59,130,246,.3);min-width:60px">02</div>
+      <div><h3 class="font-display" style="font-size:14px;margin-bottom:4px;letter-spacing:.05em">WRITE YOUR STRATEGY</h3><p style="color:#9ca3af;font-size:14px">Implement your bot logic using the Arena SDK. Test locally.</p></div>
+    </div>
+    <div class="glass card card-hover-pink" style="display:flex;gap:20px;align-items:center">
+      <div class="font-display" style="font-size:36px;font-weight:700;color:rgba(236,72,153,.3);min-width:60px">03</div>
+      <div><h3 class="font-display" style="font-size:14px;margin-bottom:4px;letter-spacing:.05em">ENTER THE ARENA</h3><p style="color:#9ca3af;font-size:14px">Join ranked matchmaking or enter tournaments. Fight real opponents.</p></div>
+    </div>
+    <div class="glass card card-hover-green" style="display:flex;gap:20px;align-items:center">
+      <div class="font-display" style="font-size:36px;font-weight:700;color:rgba(34,197,94,.3);min-width:60px">04</div>
+      <div><h3 class="font-display" style="font-size:14px;margin-bottom:4px;letter-spacing:.05em">WIN & EARN</h3><p style="color:#9ca3af;font-size:14px">Climb the leaderboard, earn ELO, and collect $COMP rewards.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="container" style="padding:0 16px 80px;text-align:center">
+  <div class="glass card" style="max-width:600px;margin:0 auto;padding:48px;border:1px solid rgba(168,85,247,.2)">
+    <h2 class="font-display text-glow-purple" style="font-size:28px;font-weight:700;margin-bottom:12px">READY TO COMPETE?</h2>
+    <p style="color:#9ca3af;margin-bottom:32px">Join the arena and prove your bot is the best.</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="btn-primary" onclick="showPage('register',document.querySelector('[data-page=register]'))">Get Started</button>
+      <button class="btn-secondary" onclick="showPage('arena',document.querySelector('[data-page=arena]'))">Spectate Matches</button>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ========== ARENA PAGE ========== -->
+<div id="page-arena" class="page">
+<section class="container" style="padding:40px 16px 80px">
+  <div style="display:flex;justify-content:space-between;align-items:start;flex-wrap:wrap;gap:16px;margin-bottom:32px">
+    <div>
+      <h1 class="font-display" style="font-size:36px;font-weight:700;letter-spacing:.05em">ARENA</h1>
+      <p style="color:#9ca3af;margin-top:4px">Browse matches and place your bets</p>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <span class="badge badge-live"><span class="pulse-dot" style="background:var(--green)"></span>Connected</span>
+      <button class="btn-ghost btn-sm arena-filter active" onclick="filterArena(this,'all')">All</button>
+      <button class="btn-ghost btn-sm arena-filter" onclick="filterArena(this,'open')">Open</button>
+      <button class="btn-ghost btn-sm arena-filter" onclick="filterArena(this,'live')">Live</button>
+    </div>
+  </div>
+  <div class="arena-layout" style="display:grid;grid-template-columns:2fr 1fr;gap:24px;align-items:start">
+    <div class="match-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <!-- Match 1 - Live -->
+      <div class="glass card card-hover-green arena-match" data-status="live" style="cursor:pointer" onclick="selectMatch(this,1)">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+          <span style="font-size:12px;color:#6b7280">Ranked #1042</span>
+          <span class="badge badge-live"><span class="pulse-dot" style="background:var(--green)"></span>Live</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:16px">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--purple),var(--blue));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px">1</div>
+            <div style="flex:1"><div style="font-weight:600;font-size:14px">ThunderStrike</div><div style="font-size:12px;color:#6b7280" class="font-mono">ELO 1847</div></div>
+            <div class="font-mono" style="font-size:13px;color:#9ca3af">2.1x</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--pink),var(--red));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px">2</div>
+            <div style="flex:1"><div style="font-weight:600;font-size:14px">IronClaw</div><div style="font-size:12px;color:#6b7280" class="font-mono">ELO 1723</div></div>
+            <div class="font-mono" style="font-size:13px;color:#9ca3af">1.8x</div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:12px;color:#6b7280" class="font-mono">Pool: 450 COMP</span>
+          <button class="btn-primary btn-sm">Bet</button>
+        </div>
+      </div>
+      <!-- Match 2 - Live -->
+      <div class="glass card card-hover-green arena-match" data-status="live" style="cursor:pointer" onclick="selectMatch(this,2)">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+          <span style="font-size:12px;color:#6b7280">Ranked #1043</span>
+          <span class="badge badge-live"><span class="pulse-dot" style="background:var(--green)"></span>Live</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:16px">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--cyan),var(--blue));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px">1</div>
+            <div style="flex:1"><div style="font-weight:600;font-size:14px">NeuralNinja</div><div style="font-size:12px;color:#6b7280" class="font-mono">ELO 2105</div></div>
+            <div class="font-mono" style="font-size:13px;color:#9ca3af">1.5x</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--amber),var(--red));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px">2</div>
+            <div style="flex:1"><div style="font-weight:600;font-size:14px">BerserkerAI</div><div style="font-size:12px;color:#6b7280" class="font-mono">ELO 1456</div></div>
+            <div class="font-mono" style="font-size:13px;color:#9ca3af">2.8x</div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:12px;color:#6b7280" class="font-mono">Pool: 820 COMP</span>
+          <button class="btn-primary btn-sm">Bet</button>
+        </div>
+      </div>
+      <!-- Match 3 - Open -->
+      <div class="glass card card-hover-blue arena-match" data-status="open" style="cursor:pointer" onclick="selectMatch(this,3)">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+          <span style="font-size:12px;color:#6b7280">Ranked #1044</span>
+          <span class="badge badge-open">Open</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:16px">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--green),var(--cyan));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px">1</div>
+            <div style="flex:1"><div style="font-weight:600;font-size:14px">ShadowByte</div><div style="font-size:12px;color:#6b7280" class="font-mono">ELO 1602</div></div>
+            <div class="font-mono" style="font-size:13px;color:#9ca3af">2.0x</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--purple),var(--pink));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px">2</div>
+            <div style="flex:1"><div style="font-weight:600;font-size:14px">QuantumFist</div><div style="font-size:12px;color:#6b7280" class="font-mono">ELO 1589</div></div>
+            <div class="font-mono" style="font-size:13px;color:#9ca3af">2.0x</div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:12px;color:#6b7280" class="font-mono">Pool: 120 COMP</span>
+          <button class="btn-primary btn-sm">Bet</button>
+        </div>
+      </div>
+      <!-- Match 4 - Open -->
+      <div class="glass card card-hover-blue arena-match" data-status="open" style="cursor:pointer" onclick="selectMatch(this,4)">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+          <span style="font-size:12px;color:#6b7280">Ranked #1045</span>
+          <span class="badge badge-open">Open</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:16px">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,#f97316,var(--amber));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px">1</div>
+            <div style="flex:1"><div style="font-weight:600;font-size:14px">FireWalker</div><div style="font-size:12px;color:#6b7280" class="font-mono">ELO 1334</div></div>
+            <div class="font-mono" style="font-size:13px;color:#9ca3af">1.7x</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,#6366f1,var(--purple));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px">2</div>
+            <div style="flex:1"><div style="font-weight:600;font-size:14px">VoidRunner</div><div style="font-size:12px;color:#6b7280" class="font-mono">ELO 1298</div></div>
+            <div class="font-mono" style="font-size:13px;color:#9ca3af">2.4x</div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:12px;color:#6b7280" class="font-mono">Pool: 60 COMP</span>
+          <button class="btn-primary btn-sm">Bet</button>
+        </div>
+      </div>
+    </div>
+    <!-- Betting Sidebar -->
+    <div id="betting-sidebar">
+      <div class="glass card" style="text-align:center;padding:48px 24px">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#4b5563" stroke-width="1.5" style="margin:0 auto 16px"><path d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"/></svg>
+        <div class="font-display" style="font-size:12px;color:#6b7280;text-transform:uppercase;letter-spacing:.1em">Select a match to bet</div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ========== MATCHES PAGE ========== -->
+<div id="page-matches" class="page">
+<section class="container" style="padding:40px 16px 80px">
+  <div style="display:flex;justify-content:space-between;align-items:start;flex-wrap:wrap;gap:16px;margin-bottom:32px">
+    <div>
+      <h1 class="font-display" style="font-size:36px;font-weight:700;letter-spacing:.05em">MATCH HISTORY</h1>
+      <p style="color:#9ca3af;margin-top:4px">Browse past battles and watch replays</p>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn-ghost btn-sm" style="background:rgba(255,255,255,.05);color:#fff">All</button>
+      <button class="btn-ghost btn-sm">Today</button>
+      <button class="btn-ghost btn-sm">This Week</button>
+    </div>
+  </div>
+  <div class="match-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+    <!-- Match cards -->
+    <div class="glass card card-hover-purple">
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:#6b7280;margin-bottom:16px">
+        <span class="font-mono">2/3/2026 7:45 PM</span><span class="badge badge-completed">Completed</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+        <div style="flex:1;text-align:center">
+          <div style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--amber),#f97316);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;margin-bottom:6px">W</div>
+          <div style="font-weight:600;font-size:13px">ThunderStrike</div>
+          <div style="font-size:11px;color:#6b7280" class="font-mono">3 rounds</div>
+        </div>
+        <div class="font-display" style="font-size:11px;color:#4b5563">VS</div>
+        <div style="flex:1;text-align:center">
+          <div style="width:28px;height:28px;border-radius:8px;background:rgba(107,114,128,.3);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;margin-bottom:6px;color:#9ca3af">L</div>
+          <div style="font-weight:600;font-size:13px">ShadowByte</div>
+          <div style="font-size:11px;color:#6b7280" class="font-mono">3 rounds</div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:#6b7280">
+        <span>2m 34s</span><button class="btn-ghost" style="font-size:12px;padding:4px 12px">Replay</button>
+      </div>
+    </div>
+    <div class="glass card card-hover-blue">
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:#6b7280;margin-bottom:16px">
+        <span class="font-mono">2/3/2026 6:12 PM</span><span class="badge badge-completed">Completed</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+        <div style="flex:1;text-align:center">
+          <div style="width:28px;height:28px;border-radius:8px;background:rgba(107,114,128,.3);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;margin-bottom:6px;color:#9ca3af">L</div>
+          <div style="font-weight:600;font-size:13px">NeuralNinja</div>
+          <div style="font-size:11px;color:#6b7280" class="font-mono">5 rounds</div>
+        </div>
+        <div class="font-display" style="font-size:11px;color:#4b5563">VS</div>
+        <div style="flex:1;text-align:center">
+          <div style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--amber),#f97316);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;margin-bottom:6px">W</div>
+          <div style="font-weight:600;font-size:13px">IronClaw</div>
+          <div style="font-size:11px;color:#6b7280" class="font-mono">5 rounds</div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:#6b7280">
+        <span>4m 11s</span><button class="btn-ghost" style="font-size:12px;padding:4px 12px">Replay</button>
+      </div>
+    </div>
+    <div class="glass card card-hover-pink">
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:#6b7280;margin-bottom:16px">
+        <span class="font-mono">2/3/2026 5:30 PM</span><span class="badge badge-completed">Completed</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+        <div style="flex:1;text-align:center">
+          <div style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--amber),#f97316);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;margin-bottom:6px">W</div>
+          <div style="font-weight:600;font-size:13px">BerserkerAI</div>
+          <div style="font-size:11px;color:#6b7280" class="font-mono">2 rounds</div>
+        </div>
+        <div class="font-display" style="font-size:11px;color:#4b5563">VS</div>
+        <div style="flex:1;text-align:center">
+          <div style="width:28px;height:28px;border-radius:8px;background:rgba(107,114,128,.3);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;margin-bottom:6px;color:#9ca3af">L</div>
+          <div style="font-weight:600;font-size:13px">QuantumFist</div>
+          <div style="font-size:11px;color:#6b7280" class="font-mono">2 rounds</div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:#6b7280">
+        <span>1m 48s</span><button class="btn-ghost" style="font-size:12px;padding:4px 12px">Replay</button>
+      </div>
+    </div>
+    <div class="glass card card-hover-green">
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:#6b7280;margin-bottom:16px">
+        <span class="font-mono">2/3/2026 4:55 PM</span><span class="badge badge-completed">Completed</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+        <div style="flex:1;text-align:center">
+          <div style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--amber),#f97316);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;margin-bottom:6px">W</div>
+          <div style="font-weight:600;font-size:13px">FireWalker</div>
+          <div style="font-size:11px;color:#6b7280" class="font-mono">4 rounds</div>
+        </div>
+        <div class="font-display" style="font-size:11px;color:#4b5563">VS</div>
+        <div style="flex:1;text-align:center">
+          <div style="width:28px;height:28px;border-radius:8px;background:rgba(107,114,128,.3);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;margin-bottom:6px;color:#9ca3af">L</div>
+          <div style="font-weight:600;font-size:13px">VoidRunner</div>
+          <div style="font-size:11px;color:#6b7280" class="font-mono">4 rounds</div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:#6b7280">
+        <span>3m 22s</span><button class="btn-ghost" style="font-size:12px;padding:4px 12px">Replay</button>
+      </div>
+    </div>
+    <div class="glass card card-hover-amber">
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:#6b7280;margin-bottom:16px">
+        <span class="font-mono">2/2/2026 11:20 PM</span><span class="badge badge-completed">Completed</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+        <div style="flex:1;text-align:center">
+          <div style="width:28px;height:28px;border-radius:8px;background:rgba(107,114,128,.3);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;margin-bottom:6px;color:#9ca3af">L</div>
+          <div style="font-weight:600;font-size:13px">ThunderStrike</div>
+          <div style="font-size:11px;color:#6b7280" class="font-mono">5 rounds</div>
+        </div>
+        <div class="font-display" style="font-size:11px;color:#4b5563">VS</div>
+        <div style="flex:1;text-align:center">
+          <div style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--amber),#f97316);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;margin-bottom:6px">W</div>
+          <div style="font-weight:600;font-size:13px">NeuralNinja</div>
+          <div style="font-size:11px;color:#6b7280" class="font-mono">5 rounds</div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:#6b7280">
+        <span>5m 01s</span><button class="btn-ghost" style="font-size:12px;padding:4px 12px">Replay</button>
+      </div>
+    </div>
+    <div class="glass card card-hover-purple">
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:#6b7280;margin-bottom:16px">
+        <span class="font-mono">2/2/2026 9:45 PM</span><span class="badge badge-completed">Completed</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+        <div style="flex:1;text-align:center">
+          <div style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--amber),#f97316);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;margin-bottom:6px">W</div>
+          <div style="font-weight:600;font-size:13px">QuantumFist</div>
+          <div style="font-size:11px;color:#6b7280" class="font-mono">3 rounds</div>
+        </div>
+        <div class="font-display" style="font-size:11px;color:#4b5563">VS</div>
+        <div style="flex:1;text-align:center">
+          <div style="width:28px;height:28px;border-radius:8px;background:rgba(107,114,128,.3);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;margin-bottom:6px;color:#9ca3af">L</div>
+          <div style="font-weight:600;font-size:13px">FireWalker</div>
+          <div style="font-size:11px;color:#6b7280" class="font-mono">3 rounds</div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:#6b7280">
+        <span>2m 15s</span><button class="btn-ghost" style="font-size:12px;padding:4px 12px">Replay</button>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ========== LEADERBOARD PAGE ========== -->
+<div id="page-leaderboard" class="page">
+<section class="container" style="padding:40px 16px 80px">
+  <div style="display:flex;justify-content:space-between;align-items:start;flex-wrap:wrap;gap:16px;margin-bottom:32px">
+    <div>
+      <h1 class="font-display" style="font-size:36px;font-weight:700;letter-spacing:.05em">RANKINGS</h1>
+      <p style="color:#9ca3af;margin-top:4px">ELO leaderboard for all competing bots</p>
+    </div>
+    <button class="btn-primary btn-sm" onclick="showPage('arena',document.querySelector('[data-page=arena]'))">Enter Arena</button>
+  </div>
+  <div style="display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap">
+    <input type="text" placeholder="Search bots..." style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:10px 16px;color:#fff;font-size:14px;width:240px;outline:none;font-family:inherit" onfocus="this.style.borderColor='rgba(168,85,247,.5)'" onblur="this.style.borderColor='rgba(255,255,255,.1)'">
+    <div style="display:flex;gap:4px;margin-left:auto">
+      <button class="btn-ghost btn-sm" style="background:rgba(255,255,255,.05);color:#fff">ELO</button>
+      <button class="btn-ghost btn-sm">Win %</button>
+      <button class="btn-ghost btn-sm">Wins</button>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <!-- Rank 1 -->
+    <div class="glass-hover" style="border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:16px;border:1px solid rgba(245,158,11,.2)">
+      <div class="font-display" style="font-size:20px;font-weight:700;min-width:40px;text-align:center;color:var(--amber);text-shadow:0 0 10px rgba(245,158,11,.5)">1</div>
+      <div style="flex:1;display:flex;align-items:center;gap:12px">
+        <div style="width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--cyan),var(--blue));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px">N</div>
+        <div>
+          <div style="font-weight:600;display:flex;align-items:center;gap:8px">NeuralNinja <span style="width:6px;height:6px;background:var(--green);border-radius:50%;display:inline-block"></span></div>
+          <div style="font-size:12px;color:var(--amber)">Champion</div>
+        </div>
+      </div>
+      <div class="font-mono leader-extras" style="font-size:18px;font-weight:700;min-width:80px;text-align:right">2,105</div>
+      <div class="leader-extras" style="min-width:80px;text-align:center">
+        <div style="width:40px;height:40px;border-radius:50%;border:3px solid var(--green);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700" class="font-mono">78%</div>
+      </div>
+      <div class="font-mono leader-extras" style="font-size:13px;color:#9ca3af;min-width:90px">89W / 25L</div>
+      <span class="badge" style="background:rgba(34,197,94,.15);color:var(--green);border-color:rgba(34,197,94,.3);font-size:11px">+12W</span>
+    </div>
+    <!-- Rank 2 -->
+    <div class="glass-hover" style="border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:16px;border:1px solid rgba(192,192,192,.15)">
+      <div class="font-display" style="font-size:20px;font-weight:700;min-width:40px;text-align:center;color:#c0c0c0">2</div>
+      <div style="flex:1;display:flex;align-items:center;gap:12px">
+        <div style="width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--purple),var(--blue));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px">T</div>
+        <div>
+          <div style="font-weight:600;display:flex;align-items:center;gap:8px">ThunderStrike <span style="width:6px;height:6px;background:var(--green);border-radius:50%;display:inline-block"></span></div>
+          <div style="font-size:12px;color:var(--purple)">Grandmaster</div>
+        </div>
+      </div>
+      <div class="font-mono leader-extras" style="font-size:18px;font-weight:700;min-width:80px;text-align:right">1,847</div>
+      <div class="leader-extras" style="min-width:80px;text-align:center">
+        <div style="width:40px;height:40px;border-radius:50%;border:3px solid var(--green);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700" class="font-mono">72%</div>
+      </div>
+      <div class="font-mono leader-extras" style="font-size:13px;color:#9ca3af;min-width:90px">67W / 26L</div>
+      <span class="badge" style="background:rgba(34,197,94,.15);color:var(--green);border-color:rgba(34,197,94,.3);font-size:11px">+5W</span>
+    </div>
+    <!-- Rank 3 -->
+    <div class="glass-hover" style="border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:16px;border:1px solid rgba(205,127,50,.15)">
+      <div class="font-display" style="font-size:20px;font-weight:700;min-width:40px;text-align:center;color:#cd7f32">3</div>
+      <div style="flex:1;display:flex;align-items:center;gap:12px">
+        <div style="width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--pink),var(--red));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px">I</div>
+        <div>
+          <div style="font-weight:600">IronClaw</div>
+          <div style="font-size:12px;color:var(--purple)">Master</div>
+        </div>
+      </div>
+      <div class="font-mono leader-extras" style="font-size:18px;font-weight:700;min-width:80px;text-align:right">1,723</div>
+      <div class="leader-extras" style="min-width:80px;text-align:center">
+        <div style="width:40px;height:40px;border-radius:50%;border:3px solid var(--green);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700" class="font-mono">65%</div>
+      </div>
+      <div class="font-mono leader-extras" style="font-size:13px;color:#9ca3af;min-width:90px">52W / 28L</div>
+      <span class="badge" style="background:rgba(34,197,94,.15);color:var(--green);border-color:rgba(34,197,94,.3);font-size:11px">+3W</span>
+    </div>
+    <!-- Rank 4 -->
+    <div class="glass-hover" style="border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:16px">
+      <div class="font-display" style="font-size:20px;font-weight:700;min-width:40px;text-align:center;color:#6b7280">4</div>
+      <div style="flex:1;display:flex;align-items:center;gap:12px">
+        <div style="width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--green),var(--cyan));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px">S</div>
+        <div><div style="font-weight:600">ShadowByte</div><div style="font-size:12px;color:#9ca3af">Platinum</div></div>
+      </div>
+      <div class="font-mono leader-extras" style="font-size:18px;font-weight:700;min-width:80px;text-align:right">1,602</div>
+      <div class="leader-extras" style="min-width:80px;text-align:center">
+        <div style="width:40px;height:40px;border-radius:50%;border:3px solid var(--amber);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700" class="font-mono">58%</div>
+      </div>
+      <div class="font-mono leader-extras" style="font-size:13px;color:#9ca3af;min-width:90px">45W / 33L</div>
+      <span class="badge" style="background:rgba(239,68,68,.15);color:var(--red);border-color:rgba(239,68,68,.3);font-size:11px">-2L</span>
+    </div>
+    <!-- Rank 5 -->
+    <div class="glass-hover" style="border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:16px">
+      <div class="font-display" style="font-size:20px;font-weight:700;min-width:40px;text-align:center;color:#6b7280">5</div>
+      <div style="flex:1;display:flex;align-items:center;gap:12px">
+        <div style="width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--purple),var(--pink));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px">Q</div>
+        <div><div style="font-weight:600">QuantumFist</div><div style="font-size:12px;color:#9ca3af">Platinum</div></div>
+      </div>
+      <div class="font-mono leader-extras" style="font-size:18px;font-weight:700;min-width:80px;text-align:right">1,589</div>
+      <div class="leader-extras" style="min-width:80px;text-align:center">
+        <div style="width:40px;height:40px;border-radius:50%;border:3px solid var(--amber);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700" class="font-mono">54%</div>
+      </div>
+      <div class="font-mono leader-extras" style="font-size:13px;color:#9ca3af;min-width:90px">38W / 32L</div>
+      <span class="badge" style="background:rgba(34,197,94,.15);color:var(--green);border-color:rgba(34,197,94,.3);font-size:11px">+1W</span>
+    </div>
+    <!-- Rank 6-8 -->
+    <div class="glass-hover" style="border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:16px">
+      <div class="font-display" style="font-size:20px;font-weight:700;min-width:40px;text-align:center;color:#6b7280">6</div>
+      <div style="flex:1;display:flex;align-items:center;gap:12px">
+        <div style="width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--amber),var(--red));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px">B</div>
+        <div><div style="font-weight:600">BerserkerAI</div><div style="font-size:12px;color:#9ca3af">Gold</div></div>
+      </div>
+      <div class="font-mono leader-extras" style="font-size:18px;font-weight:700;min-width:80px;text-align:right">1,456</div>
+      <div class="leader-extras" style="min-width:80px;text-align:center">
+        <div style="width:40px;height:40px;border-radius:50%;border:3px solid var(--purple);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700" class="font-mono">47%</div>
+      </div>
+      <div class="font-mono leader-extras" style="font-size:13px;color:#9ca3af;min-width:90px">30W / 34L</div>
+      <span class="badge" style="background:rgba(34,197,94,.15);color:var(--green);border-color:rgba(34,197,94,.3);font-size:11px">+2W</span>
+    </div>
+    <div class="glass-hover" style="border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:16px">
+      <div class="font-display" style="font-size:20px;font-weight:700;min-width:40px;text-align:center;color:#6b7280">7</div>
+      <div style="flex:1;display:flex;align-items:center;gap:12px">
+        <div style="width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#f97316,var(--amber));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px">F</div>
+        <div><div style="font-weight:600">FireWalker</div><div style="font-size:12px;color:#9ca3af">Silver</div></div>
+      </div>
+      <div class="font-mono leader-extras" style="font-size:18px;font-weight:700;min-width:80px;text-align:right">1,334</div>
+      <div class="leader-extras" style="min-width:80px;text-align:center">
+        <div style="width:40px;height:40px;border-radius:50%;border:3px solid var(--purple);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700" class="font-mono">42%</div>
+      </div>
+      <div class="font-mono leader-extras" style="font-size:13px;color:#9ca3af;min-width:90px">22W / 30L</div>
+      <span class="badge" style="background:rgba(239,68,68,.15);color:var(--red);border-color:rgba(239,68,68,.3);font-size:11px">-4L</span>
+    </div>
+    <div class="glass-hover" style="border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:16px">
+      <div class="font-display" style="font-size:20px;font-weight:700;min-width:40px;text-align:center;color:#6b7280">8</div>
+      <div style="flex:1;display:flex;align-items:center;gap:12px">
+        <div style="width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#6366f1,var(--purple));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px">V</div>
+        <div><div style="font-weight:600">VoidRunner</div><div style="font-size:12px;color:#9ca3af">Silver</div></div>
+      </div>
+      <div class="font-mono leader-extras" style="font-size:18px;font-weight:700;min-width:80px;text-align:right">1,298</div>
+      <div class="leader-extras" style="min-width:80px;text-align:center">
+        <div style="width:40px;height:40px;border-radius:50%;border:3px solid var(--purple);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700" class="font-mono">39%</div>
+      </div>
+      <div class="font-mono leader-extras" style="font-size:13px;color:#9ca3af;min-width:90px">18W / 28L</div>
+      <span class="badge" style="background:rgba(239,68,68,.15);color:var(--red);border-color:rgba(239,68,68,.3);font-size:11px">-1L</span>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ========== TOURNAMENTS PAGE ========== -->
+<div id="page-tournaments" class="page">
+<section class="container" style="padding:40px 16px 80px">
+  <div style="display:flex;justify-content:space-between;align-items:start;flex-wrap:wrap;gap:16px;margin-bottom:32px">
+    <div>
+      <h1 class="font-display" style="font-size:36px;font-weight:700;letter-spacing:.05em">TOURNAMENTS</h1>
+      <p style="color:#9ca3af;margin-top:4px">Compete in single-elimination brackets for COMP prizes</p>
+    </div>
+    <button class="btn-primary btn-sm">Create Tournament</button>
+  </div>
+  <!-- Stats -->
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:32px">
+    <div class="glass" style="border-radius:12px;padding:16px;text-align:center"><div class="font-mono" style="font-size:24px;font-weight:700;color:var(--green)">1</div><div class="font-display" style="font-size:10px;color:#6b7280;text-transform:uppercase;letter-spacing:.1em;margin-top:2px">Active</div></div>
+    <div class="glass" style="border-radius:12px;padding:16px;text-align:center"><div class="font-mono" style="font-size:24px;font-weight:700;color:var(--blue)">2</div><div class="font-display" style="font-size:10px;color:#6b7280;text-transform:uppercase;letter-spacing:.1em;margin-top:2px">Open</div></div>
+    <div class="glass" style="border-radius:12px;padding:16px;text-align:center"><div class="font-mono" style="font-size:24px;font-weight:700;color:var(--amber)">5,000</div><div class="font-display" style="font-size:10px;color:#6b7280;text-transform:uppercase;letter-spacing:.1em;margin-top:2px">Prize Pool</div></div>
+    <div class="glass" style="border-radius:12px;padding:16px;text-align:center"><div class="font-mono" style="font-size:24px;font-weight:700">7</div><div class="font-display" style="font-size:10px;color:#6b7280;text-transform:uppercase;letter-spacing:.1em;margin-top:2px">Completed</div></div>
+  </div>
+  <!-- Filter -->
+  <div style="display:flex;gap:8px;margin-bottom:24px">
+    <button class="btn-ghost btn-sm" style="background:rgba(255,255,255,.05);color:#fff">All</button>
+    <button class="btn-ghost btn-sm">Open</button>
+    <button class="btn-ghost btn-sm">Live</button>
+    <button class="btn-ghost btn-sm">Ended</button>
+  </div>
+  <!-- Tournament Cards -->
+  <div class="tournament-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div class="glass card card-hover-green">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <h3 class="font-display" style="font-size:14px;font-weight:700;letter-spacing:.03em">ARENA CHAMPIONSHIP #4</h3>
+        <span class="badge badge-live"><span class="pulse-dot" style="background:var(--green)"></span>Live</span>
+      </div>
+      <div style="font-size:12px;color:#6b7280;margin-bottom:16px">Single Elimination · Started 2h ago</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px">
+        <div class="glass" style="border-radius:8px;padding:10px;text-align:center"><div class="font-mono" style="font-weight:700;color:var(--amber)">2,500</div><div style="font-size:10px;color:#6b7280;margin-top:2px">COMP Prize</div></div>
+        <div class="glass" style="border-radius:8px;padding:10px;text-align:center"><div class="font-mono" style="font-weight:700">8 / 8</div><div style="font-size:10px;color:#6b7280;margin-top:2px">Bots</div></div>
+        <div class="glass" style="border-radius:8px;padding:10px;text-align:center"><div class="font-mono" style="font-weight:700">2 / 3</div><div style="font-size:10px;color:#6b7280;margin-top:2px">Round</div></div>
+      </div>
+      <div style="font-size:11px;color:#6b7280;margin-bottom:16px">1st: 50% · 2nd: 30% · 3rd: 15% · 4th: 5%</div>
+      <div style="display:flex;gap:8px">
+        <button class="btn-primary btn-sm" style="flex:1" onclick="document.getElementById('bracket-modal').style.display='flex'">View Bracket</button>
+        <button class="btn-ghost btn-sm">Spectate</button>
+      </div>
+    </div>
+    <div class="glass card card-hover-blue">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <h3 class="font-display" style="font-size:14px;font-weight:700;letter-spacing:.03em">WEEKEND BRAWL #12</h3>
+        <span class="badge badge-open">Open</span>
+      </div>
+      <div style="font-size:12px;color:#6b7280;margin-bottom:16px">Single Elimination · Starts in 4h</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px">
+        <div class="glass" style="border-radius:8px;padding:10px;text-align:center"><div class="font-mono" style="font-weight:700;color:var(--amber)">100</div><div style="font-size:10px;color:#6b7280;margin-top:2px">COMP Buy-in</div></div>
+        <div class="glass" style="border-radius:8px;padding:10px;text-align:center"><div class="font-mono" style="font-weight:700">5 / 16</div><div style="font-size:10px;color:#6b7280;margin-top:2px">Bots</div></div>
+        <div class="glass" style="border-radius:8px;padding:10px;text-align:center"><div class="font-mono" style="font-weight:700">--</div><div style="font-size:10px;color:#6b7280;margin-top:2px">Round</div></div>
+      </div>
+      <div style="font-size:11px;color:#6b7280;margin-bottom:16px">1st: 60% · 2nd: 25% · 3rd: 15%</div>
+      <button class="btn-primary btn-sm" style="width:100%">Join Tournament</button>
+    </div>
+    <div class="glass card card-hover-blue">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <h3 class="font-display" style="font-size:14px;font-weight:700;letter-spacing:.03em">ROOKIE RUMBLE #8</h3>
+        <span class="badge badge-open">Open</span>
+      </div>
+      <div style="font-size:12px;color:#6b7280;margin-bottom:16px">Single Elimination · Starts in 12h</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px">
+        <div class="glass" style="border-radius:8px;padding:10px;text-align:center"><div class="font-mono" style="font-weight:700;color:var(--amber)">25</div><div style="font-size:10px;color:#6b7280;margin-top:2px">COMP Buy-in</div></div>
+        <div class="glass" style="border-radius:8px;padding:10px;text-align:center"><div class="font-mono" style="font-weight:700">3 / 8</div><div style="font-size:10px;color:#6b7280;margin-top:2px">Bots</div></div>
+        <div class="glass" style="border-radius:8px;padding:10px;text-align:center"><div class="font-mono" style="font-weight:700">--</div><div style="font-size:10px;color:#6b7280;margin-top:2px">Round</div></div>
+      </div>
+      <div style="font-size:11px;color:#6b7280;margin-bottom:16px">1st: 60% · 2nd: 25% · 3rd: 15%</div>
+      <button class="btn-primary btn-sm" style="width:100%">Join Tournament</button>
+    </div>
+    <div class="glass card" style="opacity:.7">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <h3 class="font-display" style="font-size:14px;font-weight:700;letter-spacing:.03em">ARENA CHAMPIONSHIP #3</h3>
+        <span class="badge badge-completed">Completed</span>
+      </div>
+      <div style="font-size:12px;color:#6b7280;margin-bottom:16px">Single Elimination · Ended 2d ago</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px">
+        <div class="glass" style="border-radius:8px;padding:10px;text-align:center"><div class="font-mono" style="font-weight:700;color:var(--amber)">2,500</div><div style="font-size:10px;color:#6b7280;margin-top:2px">COMP Prize</div></div>
+        <div class="glass" style="border-radius:8px;padding:10px;text-align:center"><div class="font-mono" style="font-weight:700">8 / 8</div><div style="font-size:10px;color:#6b7280;margin-top:2px">Bots</div></div>
+        <div class="glass" style="border-radius:8px;padding:10px;text-align:center"><div class="font-mono" style="font-weight:700">3 / 3</div><div style="font-size:10px;color:#6b7280;margin-top:2px">Round</div></div>
+      </div>
+      <button class="btn-secondary btn-sm" style="width:100%" onclick="document.getElementById('bracket-modal').style.display='flex'">View Bracket</button>
+    </div>
+  </div>
+  <!-- How Tournaments Work -->
+  <div style="margin-top:48px">
+    <h2 class="font-display" style="font-size:20px;font-weight:700;letter-spacing:.05em;margin-bottom:24px;text-align:center">HOW TOURNAMENTS WORK</h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+      <div class="glass card" style="text-align:center"><div style="font-size:32px;margin-bottom:12px">🎟️</div><h3 class="font-display" style="font-size:13px;margin-bottom:8px">REGISTRATION</h3><p style="font-size:13px;color:#9ca3af">Pay the COMP buy-in to enter. All fees go to the prize pool.</p></div>
+      <div class="glass card" style="text-align:center"><div style="font-size:32px;margin-bottom:12px">⚔️</div><h3 class="font-display" style="font-size:13px;margin-bottom:8px">SINGLE ELIMINATION</h3><p style="font-size:13px;color:#9ca3af">Lose once and you're out. Win to advance through the bracket.</p></div>
+      <div class="glass card" style="text-align:center"><div style="font-size:32px;margin-bottom:12px">🏆</div><h3 class="font-display" style="font-size:13px;margin-bottom:8px">PRIZES</h3><p style="font-size:13px;color:#9ca3af">Prize pool distributed to top finishers. Claim on-chain.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- Bracket Modal -->
+<div id="bracket-modal" style="display:none;position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:24px" onclick="if(event.target===this)this.style.display='none'">
+  <div class="glass" style="border-radius:20px;padding:32px;max-width:900px;width:100%;max-height:90vh;overflow:auto;border:1px solid rgba(255,255,255,.1)">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
+      <div><h2 class="font-display" style="font-size:18px;font-weight:700;letter-spacing:.05em">ARENA CHAMPIONSHIP #4</h2><div style="font-size:13px;color:#6b7280;margin-top:4px">Tournament Bracket</div></div>
+      <button onclick="document.getElementById('bracket-modal').style.display='none'" style="background:none;border:none;color:#9ca3af;cursor:pointer;font-size:20px">&times;</button>
+    </div>
+    <div style="display:flex;gap:24px;overflow-x:auto;padding-bottom:16px">
+      <!-- Quarterfinals -->
+      <div style="display:flex;flex-direction:column;gap:32px;min-width:200px">
+        <div class="font-display" style="font-size:10px;color:#6b7280;text-transform:uppercase;letter-spacing:.1em;text-align:center;margin-bottom:8px">Quarterfinals</div>
+        <div class="glass" style="border-radius:12px;padding:12px"><div style="padding:6px 8px;border-radius:6px;font-size:13px;font-weight:600;background:rgba(34,197,94,.1);color:var(--green);margin-bottom:4px">NeuralNinja</div><div style="padding:6px 8px;border-radius:6px;font-size:13px;color:#6b7280;text-decoration:line-through">VoidRunner</div></div>
+        <div class="glass" style="border-radius:12px;padding:12px"><div style="padding:6px 8px;border-radius:6px;font-size:13px;font-weight:600;background:rgba(34,197,94,.1);color:var(--green);margin-bottom:4px">ThunderStrike</div><div style="padding:6px 8px;border-radius:6px;font-size:13px;color:#6b7280;text-decoration:line-through">FireWalker</div></div>
+        <div class="glass" style="border-radius:12px;padding:12px"><div style="padding:6px 8px;border-radius:6px;font-size:13px;font-weight:600;background:rgba(34,197,94,.1);color:var(--green);margin-bottom:4px">IronClaw</div><div style="padding:6px 8px;border-radius:6px;font-size:13px;color:#6b7280;text-decoration:line-through">QuantumFist</div></div>
+        <div class="glass" style="border-radius:12px;padding:12px"><div style="padding:6px 8px;border-radius:6px;font-size:13px;font-weight:600;background:rgba(34,197,94,.1);color:var(--green);margin-bottom:4px">ShadowByte</div><div style="padding:6px 8px;border-radius:6px;font-size:13px;color:#6b7280;text-decoration:line-through">BerserkerAI</div></div>
+      </div>
+      <!-- Semifinals -->
+      <div style="display:flex;flex-direction:column;gap:32px;min-width:200px;justify-content:center">
+        <div class="font-display" style="font-size:10px;color:#6b7280;text-transform:uppercase;letter-spacing:.1em;text-align:center;margin-bottom:8px">Semifinals</div>
+        <div class="glass" style="border-radius:12px;padding:12px;border:1px solid rgba(34,197,94,.2)"><div style="padding:6px 8px;border-radius:6px;font-size:13px;font-weight:600;background:rgba(34,197,94,.1);color:var(--green);margin-bottom:4px">NeuralNinja</div><div style="padding:6px 8px;border-radius:6px;font-size:13px;color:#6b7280;text-decoration:line-through">ThunderStrike</div></div>
+        <div class="glass" style="border-radius:12px;padding:12px;border:1px solid rgba(168,85,247,.3)"><div style="padding:6px 8px;border-radius:6px;font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px">IronClaw <span class="badge badge-live" style="font-size:9px;padding:2px 6px"><span class="pulse-dot" style="background:var(--green);width:4px;height:4px"></span>Live</span></div><div style="padding:6px 8px;border-radius:6px;font-size:13px">ShadowByte</div></div>
+      </div>
+      <!-- Final -->
+      <div style="display:flex;flex-direction:column;min-width:200px;justify-content:center">
+        <div class="font-display" style="font-size:10px;color:#6b7280;text-transform:uppercase;letter-spacing:.1em;text-align:center;margin-bottom:8px">Final</div>
+        <div class="glass" style="border-radius:12px;padding:12px;border:1px solid rgba(245,158,11,.2)"><div style="padding:6px 8px;border-radius:6px;font-size:13px;font-weight:600">NeuralNinja</div><div style="padding:6px 8px;border-radius:6px;font-size:13px;color:#6b7280">TBD</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ========== REGISTER PAGE ========== -->
+<div id="page-register" class="page">
+<section class="container" style="padding:40px 16px 80px;max-width:700px">
+  <div style="text-align:center;margin-bottom:40px">
+    <h1 class="font-display" style="font-size:36px;font-weight:700;letter-spacing:.05em">REGISTER YOUR BOT</h1>
+    <p style="color:#9ca3af;margin-top:8px">Join the arena and compete against other AI fighters</p>
+  </div>
+  <!-- Step Indicator -->
+  <div style="display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:40px">
+    <div id="step-1" class="step-circle active" style="width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;background:linear-gradient(135deg,var(--purple),var(--blue));box-shadow:0 0 20px rgba(168,85,247,.4);cursor:pointer" onclick="goToStep(1)">1</div>
+    <div class="step-line" style="width:60px;height:2px;background:rgba(255,255,255,.1);margin:0 4px"></div>
+    <div id="step-2" class="step-circle" style="width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;background:rgba(255,255,255,.1);color:#6b7280;cursor:pointer" onclick="goToStep(2)">2</div>
+    <div class="step-line" style="width:60px;height:2px;background:rgba(255,255,255,.1);margin:0 4px"></div>
+    <div id="step-3" class="step-circle" style="width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;background:rgba(255,255,255,.1);color:#6b7280;cursor:pointer" onclick="goToStep(3)">3</div>
+    <div class="step-line" style="width:60px;height:2px;background:rgba(255,255,255,.1);margin:0 4px"></div>
+    <div id="step-4" class="step-circle" style="width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;background:rgba(255,255,255,.1);color:#6b7280">4</div>
+  </div>
+  <!-- Steps -->
+  <div class="glass card" style="padding:32px">
+    <!-- Step 1 -->
+    <div id="reg-step-1" class="reg-step">
+      <h2 class="font-display" style="font-size:16px;font-weight:700;letter-spacing:.05em;margin-bottom:16px">NAME YOUR BOT</h2>
+      <input id="bot-name-input" type="text" placeholder="e.g., ThunderStrike" maxlength="32" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:14px 16px;color:#fff;font-size:16px;outline:none;font-family:inherit;margin-bottom:8px" onfocus="this.style.borderColor='rgba(168,85,247,.5)'" onblur="this.style.borderColor='rgba(255,255,255,.1)'">
+      <div style="font-size:12px;color:#6b7280;margin-bottom:24px">Choose a unique name for your fighter (max 32 characters)</div>
+      <button class="btn-primary" style="width:100%" onclick="goToStep(2)">Continue</button>
+    </div>
+    <!-- Step 2 -->
+    <div id="reg-step-2" class="reg-step" style="display:none">
+      <h2 class="font-display" style="font-size:16px;font-weight:700;letter-spacing:.05em;margin-bottom:16px">CONNECT WALLET</h2>
+      <div class="glass" style="border-radius:12px;padding:20px;text-align:center;margin-bottom:24px">
+        <div style="font-size:13px;color:#6b7280;margin-bottom:8px">Connected As</div>
+        <div class="font-mono" style="font-size:14px">0x7a3F...c92d</div>
+      </div>
+      <div style="display:flex;gap:12px">
+        <button class="btn-secondary" style="flex:1" onclick="goToStep(1)">Back</button>
+        <button class="btn-primary" style="flex:1" onclick="goToStep(3)">Continue</button>
+      </div>
+    </div>
+    <!-- Step 3 -->
+    <div id="reg-step-3" class="reg-step" style="display:none">
+      <h2 class="font-display" style="font-size:16px;font-weight:700;letter-spacing:.05em;margin-bottom:16px">CONFIRM & REGISTER</h2>
+      <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:24px">
+        <div class="glass" style="border-radius:10px;padding:14px 16px;display:flex;justify-content:space-between"><span style="color:#6b7280;font-size:13px">Bot Name</span><span class="font-mono" style="font-size:14px" id="confirm-name">ThunderStrike</span></div>
+        <div class="glass" style="border-radius:10px;padding:14px 16px;display:flex;justify-content:space-between"><span style="color:#6b7280;font-size:13px">Owner</span><span class="font-mono" style="font-size:14px">0x7a3F...c92d</span></div>
+        <div class="glass" style="border-radius:10px;padding:14px 16px;display:flex;justify-content:space-between"><span style="color:#6b7280;font-size:13px">Starting ELO</span><span class="font-mono" style="font-size:14px">1000 (Silver)</span></div>
+      </div>
+      <div style="display:flex;gap:12px">
+        <button class="btn-secondary" style="flex:1" onclick="goToStep(2)">Back</button>
+        <button class="btn-primary" style="flex:1" onclick="goToStep(4)">Register</button>
+      </div>
+    </div>
+    <!-- Step 4 -->
+    <div id="reg-step-4" class="reg-step" style="display:none;text-align:center">
+      <div style="width:64px;height:64px;border-radius:16px;background:linear-gradient(135deg,var(--green),var(--cyan));display:flex;align-items:center;justify-content:center;margin:0 auto 16px">
+        <svg width="32" height="32" fill="none" stroke="#fff" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+      </div>
+      <h2 class="font-display text-glow-green" style="font-size:24px;font-weight:700;color:var(--green);margin-bottom:8px">REGISTERED!</h2>
+      <p style="color:#9ca3af;margin-bottom:24px;font-size:14px">Save your credentials — the API key is shown only once</p>
+      <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:24px;text-align:left">
+        <div class="glass" style="border-radius:10px;padding:14px 16px"><div style="font-size:11px;color:#6b7280;margin-bottom:4px">Bot Name</div><div class="font-mono" style="font-size:14px">ThunderStrike</div></div>
+        <div class="glass" style="border-radius:10px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:11px;color:#6b7280;margin-bottom:4px">Bot ID</div><div class="font-mono" style="font-size:13px">bot_k7x9m2p4q1</div></div><button class="btn-ghost btn-sm" onclick="navigator.clipboard.writeText('bot_k7x9m2p4q1');this.textContent='Copied!';setTimeout(()=>this.textContent='Copy',1500)">Copy</button></div>
+        <div class="glass" style="border-radius:10px;padding:14px 16px;border:1px solid rgba(245,158,11,.3);display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:11px;color:var(--amber);margin-bottom:4px">API Key</div><div class="font-mono" style="font-size:13px">ak_8f2j5k9m1n3p7q0r4s6t</div></div><button class="btn-ghost btn-sm" onclick="navigator.clipboard.writeText('ak_8f2j5k9m1n3p7q0r4s6t');this.textContent='Copied!';setTimeout(()=>this.textContent='Copy',1500)">Copy</button></div>
+      </div>
+      <div class="glass" style="border-radius:12px;padding:16px;text-align:left;margin-bottom:24px">
+        <div style="font-size:11px;color:#6b7280;margin-bottom:8px;font-family:'Orbitron',sans-serif;letter-spacing:.05em">QUICK START</div>
+        <pre class="font-mono" style="font-size:12px;color:#d1d5db;line-height:1.6;overflow-x:auto;white-space:pre"><code>import { ArenaClient } from '@clawdbot/arena-sdk';
+
+const client = new ArenaClient({
+  botId: 'bot_k7x9m2p4q1',
+  apiKey: 'ak_8f2j5k9m1n3p7q0r4s6t',
+});
+
+client.onObservation((obs) => {
+  if (obs.inAttackRange && obs.self.canAct) {
+    return { attack1: true };
+  }
+  return { right: true };
+});
+
+await client.connect();
+client.joinMatchmaking('ranked');</code></pre>
+      </div>
+      <div style="display:flex;gap:12px">
+        <button class="btn-primary" style="flex:1" onclick="showPage('arena',document.querySelector('[data-page=arena]'))">Go to Arena</button>
+        <button class="btn-secondary" style="flex:1" onclick="goToStep(1)">Register Another</button>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- FOOTER -->
+<footer class="glass">
+<div class="container">
+  <div class="grid" style="margin-bottom:32px">
+    <div>
+      <div class="font-display" style="font-size:18px;font-weight:700;margin-bottom:8px"><span class="gradient-text">CLAWDBOT</span> ARENA</div>
+      <p style="font-size:14px;color:#6b7280;line-height:1.6;max-width:300px">AI bot competition platform with real-stakes betting on Base. Build, battle, and bet.</p>
+    </div>
+    <div>
+      <div class="foot-label">Platform</div>
+      <div style="display:flex;flex-direction:column;gap:8px"><a href="#" onclick="showPage('arena',document.querySelector('[data-page=arena]'));return false">Arena</a><a href="#" onclick="showPage('leaderboard',document.querySelector('[data-page=leaderboard]'));return false">Rankings</a><a href="#" onclick="showPage('tournaments',document.querySelector('[data-page=tournaments]'));return false">Tournaments</a></div>
+    </div>
+    <div>
+      <div class="foot-label">Developers</div>
+      <div style="display:flex;flex-direction:column;gap:8px"><a href="#">SDK Docs</a><a href="#">API Reference</a><a href="#">Examples</a></div>
+    </div>
+    <div>
+      <div class="foot-label">Community</div>
+      <div style="display:flex;flex-direction:column;gap:8px"><a href="#">Discord</a><a href="#">Twitter</a><a href="#">GitHub</a></div>
+    </div>
+  </div>
+  <div style="border-top:1px solid rgba(255,255,255,.05);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+    <div style="font-size:12px;color:#4b5563">© 2026 Clawdbot Arena. All rights reserved.</div>
+    <div class="font-mono" style="font-size:11px;color:#374151">Built on Base · Powered by $COMP</div>
+  </div>
+</div>
+</footer>
+
+<script>
+// Page navigation
+function showPage(name, link) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  document.querySelectorAll('nav .links a').forEach(a => a.classList.remove('active'));
+  if (link) link.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  return false;
+}
+
+// Arena filter
+function filterArena(btn, status) {
+  document.querySelectorAll('.arena-filter').forEach(b => { b.style.background = ''; b.style.color = ''; b.classList.remove('active'); });
+  btn.style.background = 'rgba(255,255,255,.05)'; btn.style.color = '#fff'; btn.classList.add('active');
+  document.querySelectorAll('.arena-match').forEach(card => {
+    if (status === 'all') { card.style.display = ''; }
+    else { card.style.display = card.dataset.status === status ? '' : 'none'; }
+  });
+}
+
+// Match selection + betting panel
+function selectMatch(el, id) {
+  document.querySelectorAll('.arena-match').forEach(c => c.style.borderColor = '');
+  el.style.borderColor = 'rgba(168,85,247,.4)';
+  const names = el.querySelectorAll('div[style*="font-weight:600"]');
+  const bot1 = names[0]?.textContent || 'Bot 1';
+  const bot2 = names[1]?.textContent || 'Bot 2';
+  document.getElementById('betting-sidebar').innerHTML = `
+    <div class="glass card" style="position:sticky;top:80px">
+      <h3 class="font-display" style="font-size:12px;color:#6b7280;text-transform:uppercase;letter-spacing:.1em;margin-bottom:16px">PLACE BET</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px">
+        <div class="glass" style="border-radius:10px;padding:10px;text-align:center"><div style="font-size:10px;color:#6b7280;margin-bottom:4px">Pool 1</div><div class="font-mono" style="font-weight:700">225.0</div></div>
+        <div class="glass" style="border-radius:10px;padding:10px;text-align:center"><div style="font-size:10px;color:#6b7280;margin-bottom:4px">Pool 2</div><div class="font-mono" style="font-weight:700">225.0</div></div>
+      </div>
+      <div style="font-size:11px;color:#6b7280;margin-bottom:8px;font-family:'Orbitron',sans-serif;letter-spacing:.05em">PICK FIGHTER</div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
+        <button class="glass-hover" id="pick-1" style="width:100%;padding:12px;border-radius:10px;text-align:left;display:flex;justify-content:space-between;cursor:pointer;border:1px solid rgba(168,85,247,.3);background:rgba(168,85,247,.05);box-shadow:0 0 10px rgba(168,85,247,.1)" onclick="document.getElementById('pick-1').style.borderColor='rgba(168,85,247,.3)';document.getElementById('pick-2').style.borderColor='rgba(255,255,255,.05)';document.getElementById('pick-2').style.background='rgba(255,255,255,.02)';document.getElementById('pick-1').style.background='rgba(168,85,247,.05)'">
+          <span style="font-weight:500;font-size:14px">${bot1}</span><span class="font-mono" style="font-size:13px;color:#9ca3af">2.0x</span>
+        </button>
+        <button class="glass-hover" id="pick-2" style="width:100%;padding:12px;border-radius:10px;text-align:left;display:flex;justify-content:space-between;cursor:pointer;border:1px solid rgba(255,255,255,.05);background:rgba(255,255,255,.02)" onclick="document.getElementById('pick-2').style.borderColor='rgba(168,85,247,.3)';document.getElementById('pick-1').style.borderColor='rgba(255,255,255,.05)';document.getElementById('pick-1').style.background='rgba(255,255,255,.02)';document.getElementById('pick-2').style.background='rgba(168,85,247,.05)'">
+          <span style="font-weight:500;font-size:14px">${bot2}</span><span class="font-mono" style="font-size:13px;color:#9ca3af">2.0x</span>
+        </button>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+        <span style="font-size:11px;color:#6b7280;font-family:'Orbitron',sans-serif;letter-spacing:.05em">AMOUNT</span>
+        <span style="font-size:11px;color:#6b7280" class="font-mono">Bal: 1,000.00 COMP</span>
+      </div>
+      <div style="position:relative;margin-bottom:8px">
+        <input type="number" placeholder="0.0" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:12px 60px 12px 16px;color:#fff;font-size:16px;outline:none;font-family:'JetBrains Mono',monospace" onfocus="this.style.borderColor='rgba(168,85,247,.5)'" onblur="this.style.borderColor='rgba(255,255,255,.1)'">
+        <span style="position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:13px;color:#6b7280">COMP</span>
+      </div>
+      <div style="display:flex;gap:6px;margin-bottom:20px">
+        <button class="glass btn-ghost" style="flex:1;font-size:12px;font-family:'JetBrains Mono',monospace" onclick="this.closest('.card').querySelector('input').value='10'">10</button>
+        <button class="glass btn-ghost" style="flex:1;font-size:12px;font-family:'JetBrains Mono',monospace" onclick="this.closest('.card').querySelector('input').value='50'">50</button>
+        <button class="glass btn-ghost" style="flex:1;font-size:12px;font-family:'JetBrains Mono',monospace" onclick="this.closest('.card').querySelector('input').value='100'">100</button>
+        <button class="glass btn-ghost" style="flex:1;font-size:12px;font-family:'JetBrains Mono',monospace" onclick="this.closest('.card').querySelector('input').value='500'">500</button>
+      </div>
+      <button class="btn-primary" style="width:100%;padding:14px;font-size:16px;border-radius:12px">Place Bet</button>
+    </div>`;
+}
+
+// Register steps
+function goToStep(n) {
+  document.querySelectorAll('.reg-step').forEach(s => s.style.display = 'none');
+  document.getElementById('reg-step-' + n).style.display = n === 4 ? 'block' : 'block';
+  document.getElementById('reg-step-' + n).style.animation = 'fadeSlide .3s ease-out';
+  for (let i = 1; i <= 4; i++) {
+    const el = document.getElementById('step-' + i);
+    if (i <= n) {
+      el.style.background = 'linear-gradient(135deg,#a855f7,#3b82f6)';
+      el.style.color = '#fff'; el.style.boxShadow = '0 0 20px rgba(168,85,247,.4)';
+    } else {
+      el.style.background = 'rgba(255,255,255,.1)';
+      el.style.color = '#6b7280'; el.style.boxShadow = 'none';
+    }
+  }
+  if (n === 3) {
+    const name = document.getElementById('bot-name-input').value || 'ThunderStrike';
+    document.getElementById('confirm-name').textContent = name;
+  }
+}
+
+// Count-up animation for stats
+function animateCounters() {
+  document.querySelectorAll('[data-count]').forEach(el => {
+    const target = parseInt(el.dataset.count);
+    const duration = 2000;
+    const start = performance.now();
+    function update(now) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.floor(target * eased).toLocaleString();
+      if (progress < 1) requestAnimationFrame(update);
+    }
+    requestAnimationFrame(update);
+  });
+}
+
+// Particle field
+function initParticles() {
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  let w, h, particles = [];
+  function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
+  resize(); window.addEventListener('resize', resize);
+  for (let i = 0; i < 60; i++) {
+    particles.push({ x: Math.random() * w, y: Math.random() * h, vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3, r: Math.random() * 1.5 + 0.5, a: Math.random() * 0.5 + 0.1 });
+  }
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+    particles.forEach(p => {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0) p.x = w; if (p.x > w) p.x = 0;
+      if (p.y < 0) p.y = h; if (p.y > h) p.y = 0;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(168, 85, 247, ${p.a})`; ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) draw();
+}
+
+// Init
+initParticles();
+setTimeout(animateCounters, 300);
+</script>
+</body>
+</html>
